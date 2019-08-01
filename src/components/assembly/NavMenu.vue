@@ -2,44 +2,63 @@
   <el-aside style="width: 256px;">
     <el-menu :default-active="activeIndex" text-color="#909191" active-text-color="#834295" class="el-menu-vertical-demo" :collapse="this.$store.state.isCollapse" :unique-opened="true" @select="handleSelect">
       <el-submenu index="1">
-        <template slot="title" class="el-icon1"><i class="el-icon-mobile-phone"></i><span>Dashboard</span></template>
+        <template slot="title" class="el-icon1"><i class="el-icon-menu"></i><span>Dashboard</span></template>
         <el-menu-item index="/Page">监控台</el-menu-item>
       </el-submenu>
       <el-submenu index="2">
         <template class="el-icon1" slot="title"><i class="el-icon-menu"></i><span>系统管理</span></template>
         <el-menu-item index="/Operational">操作日志</el-menu-item>
         <el-menu-item index="/Approval">审批流程</el-menu-item>
-        <el-menu-item index="">操作员</el-menu-item>
+        <el-menu-item index="/Operator">操作员</el-menu-item>
+        <el-menu-item index="/Structure">组织架构</el-menu-item>
+        <el-menu-item index="/Dictionary">词典管理</el-menu-item>
+        <el-menu-item index="/Custom">自定义项管理</el-menu-item>
       </el-submenu>
       <el-submenu index="3">
-        <template slot="title"><i class="el-icon-setting"></i><span>基础设置</span></template>
-        <el-menu-item index="">词典</el-menu-item>
-        <el-menu-item index="">自定义项</el-menu-item>
-        <el-menu-item index="">医生</el-menu-item>
+        <template slot="title"><i class="el-icon-view"></i><span>审批管理</span></template>
+        <el-menu-item index="">待审批</el-menu-item>
+        <el-menu-item index="">我的申请</el-menu-item>
+        <el-menu-item index="">我的审批</el-menu-item>
       </el-submenu>
       <el-submenu index="4">
-        <template slot="title"><i class="el-icon-time"></i><span>会员管理</span></template>
-        <el-menu-item index="">会员注册</el-menu-item>
-        <el-menu-item index="">个人档案</el-menu-item>
-        <el-menu-item index="">充值管理</el-menu-item>
-        <el-menu-item index="">订单管理</el-menu-item>
+        <template slot="title"><i class="el-icon-setting"></i><span>风险管理</span></template>
+        <el-menu-item index="/Equipment">设备设施管理</el-menu-item>
+        <el-menu-item index="/Jobs">岗位管理</el-menu-item>
+        <el-menu-item index="/Process">作业流程</el-menu-item>
+        <el-menu-item index="/ExStanderd">执行标准</el-menu-item>
+        <el-menu-item index="/RciManage">风控项管理</el-menu-item>
+        <el-menu-item index="">风控项配置</el-menu-item>
+        <el-menu-item index="">风险点管理</el-menu-item>
       </el-submenu>
       <el-submenu index="5">
-        <template slot="title"><i class="el-icon-star-on"></i><span>会员积分</span></template>
-        <el-menu-item index="">积分兑换</el-menu-item>
-        <el-menu-item index="">积分规则</el-menu-item>
-        <el-menu-item index="">兑换规则</el-menu-item>
-        <el-menu-item index="">积分调整</el-menu-item>
+        <template slot="title"><i class="el-icon-bell"></i><span>隐患排查</span></template>
+        <el-menu-item index="">巡查任务管理</el-menu-item>
+        <el-menu-item index="">作业申请</el-menu-item>
+        <el-menu-item index="">巡检任务</el-menu-item>
+        <el-menu-item index="">临时任务</el-menu-item>
+        <el-menu-item index="">隐患控制</el-menu-item>
+        <el-menu-item index="">视频监控</el-menu-item>
       </el-submenu>
       <el-submenu index="6">
-        <template slot="title"><i class="el-icon-time"></i><span>产品管理</span></template>
-        <el-menu-item index="">产品列表</el-menu-item>
-        <el-menu-item index="">预约管理</el-menu-item>
-        <el-menu-item index="">处理结果</el-menu-item>
+        <template slot="title"><i class="el-icon-time"></i><span>档案管理</span></template>
+        <el-menu-item index="">风险公示</el-menu-item>
+        <el-menu-item index="">资质管理</el-menu-item>
+        <el-menu-item index="">培训管理</el-menu-item>
+        <el-menu-item index="">安全会议</el-menu-item>
       </el-submenu>
       <el-submenu index="7">
         <template slot="title"><i class="el-icon-tickets"></i><span>报表管理</span></template>
-        <el-menu-item index="">我的报表</el-menu-item>
+        <el-menu-item index="">安全风险三清单</el-menu-item>
+        <el-menu-item index="">分级管控表</el-menu-item>
+        <el-menu-item index="">岗位报表</el-menu-item>
+        <el-menu-item index="">作业申请报表</el-menu-item>
+        <el-menu-item index="">风险分级控制报表</el-menu-item>
+        <el-menu-item index="">隐患整改控制报表</el-menu-item>
+      </el-submenu>
+      <el-submenu index="8">
+        <template slot="title"><i class="el-icon-tickets"></i><span>职业健康</span></template>
+        <el-menu-item index="">健康档案</el-menu-item>
+        <el-menu-item index="">体检管理</el-menu-item>
       </el-submenu>
     </el-menu>
   </el-aside>

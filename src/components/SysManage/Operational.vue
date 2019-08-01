@@ -84,7 +84,7 @@ export default {
 .main{
     background-color: #fff;
     margin: 26px;
-    width: 90%
+    width: calc(100%-256px)
 }
 .top{
     text-align: left;
