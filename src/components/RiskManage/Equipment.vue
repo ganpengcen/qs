@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <Header title="风险管理" text="设备设施管理"></Header>
     <div class="main">
       <el-row>
@@ -19,18 +19,25 @@
           </el-tree>
         </el-col>
         <el-col :span="19">
-            <div class="top">
-                <div>
-                    <el-input placeholder="请输入设备名称"></el-input>
-                    <el-button type="primary">查询</el-button>
-                    <el-button type="primary">导出Excel</el-button>   
-                </div>
+          <div class="top">
+            <div>
+              <el-input placeholder="请输入设备名称"></el-input>
+              <el-button type="primary">查询</el-button>
+              <el-button type="primary">导出Excel</el-button>
             </div>
-            <el-table>
-
-            </el-table>
+          </div>
+          <el-table :data="tdab" border height="500">
+            <el-table-column type="expand">
+              <template slot-scope="prop"></template>
+            </el-table-column>
+            <el-table-column v-for="(i,e) in tbla" :label="i.label" :key="e" :prop="i.pp"></el-table-column>
+            <el-table-column label="操作">
+              <el-button type="text">修改</el-button>
+              <el-button type="text">删除</el-button>
+            </el-table-column>
+          </el-table>
         </el-col>
-      </el-row> 
+      </el-row>
     </div>
   </div>
 </template>
@@ -42,6 +49,12 @@ export default {
   },
   data() {
     return {
+      tbla: [
+        { label: "设备编号", pp: "num" },
+        { label: "名称", pp: "nm" },
+        { label: "设备类别", pp: "dty" },
+        { label: "使用单位", pp: "unit" }
+      ],
       treedata: [
         {
           label: "1",
@@ -57,13 +70,18 @@ export default {
         }
       ],
       tdab: [
-        {
-          name: "asdasda",
-          sex: "male",
-          account: "asdasda1111",
-          leader: true,
-          level: true
-        }
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
+        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
       ],
       defaultProps: { children: "children", label: "label" }
     };
@@ -71,50 +89,74 @@ export default {
 };
 </script>
 <style scoped>
+.whi {
+  background-color: #fff;
+  width: 100%;
+}
+.content {
+  overflow: hidden;
+  height: 100%;
+}
+.el-row {
+  overflow: auto;
+}
 .main {
   margin-left: 25px;
+  overflow: hidden;
 }
-.el-tree{
-    height:500px;
+.el-table{
+  overflow: auto
 }
-.custom-tree-node{
-    flex: 1;
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    justify-content: space-between;
-    padding-right: 8px;
+.el-tree {
+  height: 500px;
 }
-.ad{
-  width: 100%
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  justify-content: space-between;
+  padding-right: 8px;
 }
-.ad::after{
-  content: '';
+.top::after {
+  content: "";
   display: block;
   clear: both;
 }
-.el-col-4{
+.top {
+  margin-bottom: 10px;
   background: #fff;
-    border-top: 2px solid #049eff;
-    border-radius: 3px;
 }
-.top>div{
-    width: 50%;
-    float: right;
-    padding: 10px 0 15px 0;
+.ad {
+  width: 100%;
 }
-.top>div>.el-input{
-    width: 45%
+.ad::after {
+  content: "";
+  display: block;
+  clear: both;
 }
-.el-col-19{
-    margin-left: 25px;
-    background-color: #fff;
-    border-top: 2px solid #049eff;
-    border-radius: 5px; 
+.el-col-4 {
+  background: #fff;
+  border-top: 2px solid #049eff;
+  border-radius: 3px;
+  max-height: ;
 }
-.el-col-4>.ad>.el-button{
+.top > div {
+  width: 50%;
+  float: right;
+  padding: 10px 0 15px 0;
+}
+.top > div > .el-input {
+  width: 45%;
+}
+.el-col-19 {
+  margin-left: 25px;
+  border-top: 2px solid #049eff;
+  border-radius: 5px;
+}
+.el-col-4 > .ad > .el-button {
   margin-right: 10px;
   padding-bottom: 0;
-  float: right
+  float: right;
 }
 </style>

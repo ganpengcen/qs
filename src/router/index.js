@@ -19,6 +19,7 @@ const Jobs = resolve => void (require(['../components/RiskManage/Jobs.vue'], res
 const Process = resolve => void (require(['../components/RiskManage/Process.vue'], resolve));
 const ExStanderd = resolve => void (require(['../components/RiskManage/ExStanderd.vue'], resolve));
 const RciManage = resolve => void (require(['../components/RiskManage/RciManage.vue'], resolve));
+const RcConfig = resolve => void (require(['../components/RiskManage/RcConfig.vue'], resolve));
 const Reskmanagement=resolve=>void(require(['../components/riskManagement/reskmanagement2.vue'],resolve));
 const testapply=resolve=>void(require(['../components/riskManagement/testapply2.vue'],resolve));
 const patroltask=resolve=>void(require(['../components/riskManagement/patroltask2.vue'],resolve));
@@ -109,6 +110,11 @@ export default new Router({
           path: '/RciManage',
           name: 'RciManage',
           component: RciManage
+        },
+        {
+          path: '/RcConfig',
+          name: 'RcConfig',
+          component: RcConfig
         },
         {
           path:'/1',

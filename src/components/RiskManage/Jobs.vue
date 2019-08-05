@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="content">
     <Header title="风险管理" text="岗位管理"></Header>
-    <div class="main">
+    <div class="top">
       <el-row>
         <el-col :span="4">
           <el-button type="primary">新建</el-button>
@@ -13,7 +13,10 @@
           <a href="#">导出为Excel</a>
         </el-col>
       </el-row>
-      <el-table :data="tbd" border :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
+    </div>
+    <div class="main">
+      
+      <el-table max-height="502" :data="tbd" border :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
         <el-table-column type="expand">
           <template slot-scope="props">
             
@@ -29,9 +32,11 @@
           <el-button type="text">人员管理</el-button>
         </el-table-column>
       </el-table>
+      
+    </div>
+    <div class="pge">
       <el-pagination :page-size="5" background layout="prev,pager,next" :total="tbd.length"></el-pagination>
     </div>
-    
   </div>
 </template>
 <script>
@@ -49,16 +54,23 @@ export default {
         {nmb:'1',name:'ajskad',respos:'asdasda',respostel:'56541113331'},
         {nmb:'1',name:'ajskad',respos:'asdasda',respostel:'56541113331'},
         {nmb:'1',name:'ajskad',respos:'asdasda',respostel:'56541113331'},
-        {nmb:'1',name:'ajskad',respos:'asdasda',respostel:'56541113331'},
+        
       ]
     };
   }
 };
 </script>
 <style scoped>
+.content{
+  overflow: hidden;
+  height: 100%;
+}
 .main {
-  width: 96.1%;
+  width: 96.8%;
+  height: calc(100% - 200px);
   margin-left: 25px;
+  margin-top: 10px;
+  overflow: auto;
 }
 .el-col-4 .el-button {
   margin: 10px 0 10px 20px;
@@ -90,10 +102,14 @@ export default {
 .el-table{
   margin-top: 15px;
 }
-.el-pagination{
-  float: right;
-  position: fixed;
-  bottom: 60px;
-  right: 30px;
+.top{
+  width: 96.8%;
+  margin-left: 25px;
+}
+.pge {
+  width:96.8%;
+  margin-left: 25px;
+  height: 50px;
+  text-align: right;
 }
 </style>

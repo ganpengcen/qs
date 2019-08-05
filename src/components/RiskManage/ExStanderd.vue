@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div class="content">
     <Header title="风险管理" text="执行标准"></Header>
-    <div class="main">
-      <div class="top">
+    <div class="top">
         <el-button type="primary">新建</el-button>
       </div>
-      <el-table :data="standTable" border :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center','padding':'0'}">
+    <div class="main">
+      
+      <el-table height="535" :data="standTable" border :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center','padding':'0'}">
         <el-table-column label="编号" prop="snb"></el-table-column>
         <el-table-column label="名称" prop="sname"></el-table-column>
         <el-table-column label="风控项" prop="rci"></el-table-column>
@@ -15,8 +16,9 @@
           <el-button type="text">删除</el-button>
         </el-table-column>
       </el-table>
-      <el-pagination :total="standTable.length" :page-size="5" layout="prev,pager,next"></el-pagination>
+      
     </div>
+    <div class="pge"><el-pagination :total="standTable.length" :page-size="5" layout="prev,pager,next"></el-pagination></div>
   </div>
 </template>
 <script>
@@ -42,12 +44,19 @@ export default {
 }
 </script>
 <style scoped>
+.content{
+  height: 100%;
+  overflow: hidden;
+}
 .main{
-  width: 96.1%;
+  overflow: auto;
+  width: calc(100% - 50px);
   margin-left: 25px;
+  height: calc(100% - 182px)
 }
 .top{
-  width: 100%;
+  margin-left: 25px;
+  width: calc(100% - 50px);
   border-top:2px solid #409eff;
   border-radius: 5px; 
   background: #fff
@@ -58,9 +67,10 @@ export default {
 .el-table{
   margin-top: 15px;
 }
-.el-pagination{
-  position: fixed;
-  bottom: 60px;
-  right: 30px;
+.pge {
+  width:96.8%;
+  margin-left: 25px;
+  height: 50px;
+  text-align: right;
 }
 </style>

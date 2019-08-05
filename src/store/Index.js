@@ -41,7 +41,12 @@ const mutations={
         state.tags.forEach(item => {
             item.active=false
         });
-        state.tags.push(item);
+        if(state.tags.length<=7){
+            state.tags.push(item);
+        }else if(state.tags.length>7){
+            state.tags.shift()
+            state.tags.push(item);
+        }
         state.pageArr.push(item.currentPath);
     },
     changeCheckMenu(state,flag){

@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="content">
     <Header title="风险管理" text="作业流程"></Header>
-    <div class="main">
+    <div class="top">
       <el-row>
         <el-col :span="4">
           <el-button type="primary">新建</el-button>
@@ -13,7 +13,16 @@
           <a href="#">导出为Excel</a>
         </el-col>
       </el-row>
-      <el-table border :data="processTable" :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
+      </div>
+    <div class="main">
+      
+      <el-table
+        height="502"
+        border
+        :data="processTable"
+        :header-cell-style="{'text-align':'center'}"
+        :cell-style="{'text-align':'center'}"
+      >
         <el-table-column type="expand">
           <template slot-scope="prop"></template>
         </el-table-column>
@@ -31,9 +40,11 @@
           <el-button type="text">流程</el-button>
         </el-table-column>
       </el-table>
+    </div>
+    <div class="pge">
       <el-pagination :page-size="5" :total="processTable.length" layout="prev,pager,next"></el-pagination>
-    </div>  
-  </div>  
+    </div>
+  </div>
 </template>
 <script>
 import Header from "../assembly/Header";
@@ -41,24 +52,32 @@ export default {
   components: {
     Header
   },
-  data(){
+  data() {
     return {
-      processTable:[
-        {numb:'1',pname:'askld',bck:true,descr:'爱仕达撒所撒多'},
-        {numb:'1',pname:'askld',bck:false,descr:'爱仕达撒所撒多'},
-        {numb:'1',pname:'askld',bck:false,descr:'爱仕达撒所撒多'},
-        {numb:'1',pname:'askld',bck:true,descr:'爱仕达撒所撒多'},
-        {numb:'1',pname:'askld',bck:true,descr:'爱仕达撒所撒多'},
-        {numb:'1',pname:'askld',bck:true,descr:'爱仕达撒所撒多'},
+      processTable: [
+        { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" },
+        { numb: "1", pname: "askld", bck: false, descr: "爱仕达撒所撒多" },
+        { numb: "1", pname: "askld", bck: false, descr: "爱仕达撒所撒多" },
+        { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" },
+        { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" },
+        { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" },
+        { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" },
       ]
-    }
+    };
   }
-}
+};
 </script>
 <style scoped>
+.content {
+  height: 100%;
+  overflow: hidden;
+}
 .main {
-  width: 96.1%;
+  width: 96.8%;
+  height: calc(100% - 200px);
   margin-left: 25px;
+  margin-top: 10px;
+  overflow: auto;
 }
 .el-col-4 .el-button {
   margin: 10px 0 10px 20px;
@@ -70,29 +89,36 @@ export default {
   float: right;
   margin: 0 0 10px 0;
 }
-.el-row{
+.el-row {
   background: #fff;
   border-top: 2px solid #049eff;
   border-radius: 5px;
+  width: 100%;
+  margin-bottom: 15px;
 }
-.el-col-9>a{
+.el-col-9 > a {
   font-size: 14px;
   display: inline-block;
   text-align: center;
   background-color: #409eff;
   color: #fff;
-  margin:10px 0 0 0;
+  margin: 10px 0 0 0;
   line-height: 40px;
   width: 100px;
   text-decoration: none;
   border-radius: 3px;
 }
-.el-table{
-  margin-top: 15px;
+.el-table {
+  width: 100%;
 }
-.el-pagination{
-  position: fixed;
-  bottom: 60px;
-  right: 30px;
+.top{
+  width: 96.8%;
+  margin-left: 25px;
+}
+.pge {
+  width:96.8%;
+  margin-left: 25px;
+  height: 50px;
+  text-align: right;
 }
 </style>
