@@ -7,8 +7,9 @@ import VueRouter from 'vue-router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '../static/css/my.css'
-
-
+import '../static/cssreset.css'
+import QuillEditor from 'vue-quill-editor'
+Vue.use(QuillEditor)
 import {
   post,
   get,

@@ -19,6 +19,19 @@ const Jobs = resolve => void (require(['../components/RiskManage/Jobs.vue'], res
 const Process = resolve => void (require(['../components/RiskManage/Process.vue'], resolve));
 const ExStanderd = resolve => void (require(['../components/RiskManage/ExStanderd.vue'], resolve));
 const RciManage = resolve => void (require(['../components/RiskManage/RciManage.vue'], resolve));
+const Reskmanagement=resolve=>void(require(['../components/riskManagement/reskmanagement2.vue'],resolve));
+const testapply=resolve=>void(require(['../components/riskManagement/testapply2.vue'],resolve));
+const patroltask=resolve=>void(require(['../components/riskManagement/patroltask2.vue'],resolve));
+const tempTask=resolve=>void(require(['../components/riskManagement/temporaryTask.vue'],resolve));
+const reskcontral=resolve=>void(require(['../components/riskManagement/reskcontral.vue'],resolve));
+const video=resolve=>void(require(['../components/riskManagement/video.vue'],resolve));
+const riskshow=resolve=>void(require(['../components/files/riskshow.vue'],resolve));
+const natrue=resolve=>void(require(['../components/files/natrul.vue'],resolve));
+const safety=resolve=>void(require(['../components/files/safety.vue'],resolve));
+const train=resolve=>void(require(['../components/files/train.vue'],resolve));
+const health=resolve=>void(require(['../components/health/health.vue'],resolve));
+const manage=resolve=>void(require(['../components/health/manage.vue'],resolve));
+
 
 export default new Router({
   routes: [
@@ -97,6 +110,67 @@ export default new Router({
           name: 'RciManage',
           component: RciManage
         },
+        {
+          path:'/1',
+          name:'Reskmanagement',
+          component:Reskmanagement
+        },
+        {
+          path:'/2',
+          name:'testapply',
+          component:testapply
+        },
+        {
+          path:'/3',
+          name:'patroltask',
+          component:patroltask
+        },
+        {
+          path:'/4',
+          name:'tempTask',
+          component:tempTask
+        },
+        {
+          path:'/5',
+          name:'reskcontral',
+          component:reskcontral
+        },
+        {
+          path:'/6',
+          name:'video',
+          component:video
+        },
+        {
+          path:'/7',
+          name:'riskshow',
+          component:riskshow
+        },
+        {
+          path:'/8',
+          name:'natrue',
+          component:natrue
+        },
+        {
+          path:'/9',
+          name:'train',
+          component:train
+        }
+        ,
+        {
+          path:'/10',
+          name:'safety',
+          component:safety
+        },
+        {
+          path:'/11',
+          name:'health',
+          component:health
+        },
+        {
+          path:'/12',
+          name:'manage',
+          component:manage
+        }
       ]
 
     }
