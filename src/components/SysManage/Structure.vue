@@ -7,8 +7,8 @@
           <div class="title">
             <span>组织架构</span>
             <el-button type="text" @click="dialog1 = true">+</el-button>
-            <el-dialog width="35%" :visible.sync="dialog1" :append-to-body="true" title="新建组织架构">
-              <el-form>
+            <el-dialog width="35%" :visible.sync="dialog1" title="新建组织架构">
+              <el-form label-width="100px">
                 <el-form-item label="上级:">
                   <el-input disabled v-model="las"></el-input>
                 </el-form-item>
@@ -344,10 +344,10 @@ export default {
   padding-right: 8px;
 }
 .el-form .el-input {
-  width: 90%;
+  width: 87%;
 }
 .title .el-form {
-  text-align: right;
+  text-align: center;
 }
 .title .el-form-item {
   margin: 10px 29px;

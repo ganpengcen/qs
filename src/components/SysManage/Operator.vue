@@ -367,7 +367,8 @@ export default {
   margin: 5px 0
 }
 .el-pagination {
-  text-align: center;
+  text-align: right;
+  background: #fff
 }
 .tt .el-checkbox{
   margin-top: 0

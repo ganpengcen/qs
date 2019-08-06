@@ -5,19 +5,82 @@
       <el-row>
         <el-col :span="4">
           <div class="ad">
-            <el-button type="text" size="mini">+</el-button>
+            <el-button type="text" size="mini" @click="dg1=true">+</el-button>
+            <el-dialog width="35%" :visible.sync="dg1" :append-to-body="true" title="新建组织架构">
+              <el-form label-width="50px">
+                <el-form-item label="上级:">
+                  <el-input disabled v-model="las"></el-input>
+                </el-form-item>
+                <el-form-item label="名称:">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-form>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dg1 = false">取 消</el-button>
+                <el-button type="primary" @click="dg1 = false">确 定</el-button>
+              </span>
+            </el-dialog>
           </div>
-          <el-tree :data="treedata" accordion :props="defaultProps" :expand-on-click-node="true">
+          
+          <el-tree @node-click="get" :data="treedata" accordion :props="defaultProps" :expand-on-click-node="true">
             <span class="custom-tree-node" slot-scope="{node,data}">
               <span>{{node.label}}</span>
               <span>
-                <el-button size="mini" type="text">+</el-button>
-                <el-button size="mini" type="text">-</el-button>
-                <el-button size="mini" type="text">新建设备</el-button>
+                <el-button size="mini" type="text" @click="dg1=true">+</el-button>
+                <el-button size="mini" type="text" @click="del1()">-</el-button>
+                <el-button size="mini" type="text" @click="dg2=true">新建设备</el-button>
               </span>
             </span>
           </el-tree>
         </el-col>
+        <el-dialog width="48%" title="新建设备" :visible.sync="dg2">
+          <el-form :inline="true">
+            <el-form-item label="设备编号">
+              <el-input></el-input>
+            </el-form-item>
+            <el-form-item label="名称">
+              <el-input></el-input>
+            </el-form-item>
+            <el-form-item label="组织架构">
+              <el-cascader :options="treedata" v-model="selec"></el-cascader>
+            </el-form-item>
+            <el-form-item label="附件">
+              <el-upload ><el-button size="small" type="primary">点击上传</el-button></el-upload>
+            </el-form-item>
+            <el-divider></el-divider>
+            <el-form-item label="aaa">
+              <el-input></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+                <el-button @click="dg2 = false">取 消</el-button>
+                <el-button type="primary" @click="dg2= false">确 定</el-button>
+              </span>
+        </el-dialog>
+        <el-dialog width="48%" title="修改设备" :visible.sync="dg3">
+          <el-form :inline="true">
+            <el-form-item label="设备编号">
+              <el-input></el-input>
+            </el-form-item>
+            <el-form-item label="名称">
+              <el-input></el-input>
+            </el-form-item>
+            <el-form-item label="组织架构">
+              <el-cascader :options="treedata" v-model="selec"></el-cascader>
+            </el-form-item>
+            <el-form-item label="附件">
+              <el-upload ><el-button size="small" type="primary">点击上传</el-button></el-upload>
+            </el-form-item>
+            <el-divider></el-divider>
+            <el-form-item label="aaa">
+              <el-input></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+                <el-button @click="dg3 = false">取 消</el-button>
+                <el-button type="primary" @click="dg3= false">确 定</el-button>
+              </span>
+        </el-dialog>
         <el-col :span="19">
           <div class="top">
             <div>
@@ -32,8 +95,8 @@
             </el-table-column>
             <el-table-column v-for="(i,e) in tbla" :label="i.label" :key="e" :prop="i.pp"></el-table-column>
             <el-table-column label="操作">
-              <el-button type="text">修改</el-button>
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="dg3=true">修改</el-button>
+              <el-button type="text" @click="del2()">删除</el-button>
             </el-table-column>
           </el-table>
         </el-col>
@@ -49,6 +112,11 @@ export default {
   },
   data() {
     return {
+      selec:'',
+      dg2:false,
+      dg3:false,
+      dg1:false,
+      las:'无上级',
       tbla: [
         { label: "设备编号", pp: "num" },
         { label: "名称", pp: "nm" },
@@ -85,6 +153,50 @@ export default {
       ],
       defaultProps: { children: "children", label: "label" }
     };
+  },
+  methods:{
+     get(data) {
+      console.log(data.label);
+      this.las = data.label;
+    },
+    del1(){
+      this.$confirm("将要执行删除操作,是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    del2(){
+      this.$confirm("将要执行删除操作,是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    }
   }
 };
 </script>
@@ -139,7 +251,7 @@ export default {
   background: #fff;
   border-top: 2px solid #049eff;
   border-radius: 3px;
-  max-height: ;
+  max-height: 500px;
 }
 .top > div {
   width: 50%;

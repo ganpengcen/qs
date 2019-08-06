@@ -3,16 +3,17 @@
     <el-header :class="{ header_collapsing: this.$store.state.isCollapse == false, header_collapsed: this.$store.state.isCollapse == true }">
       <el-row>
         <el-col :span="5">
-          <div class="btn-left">
-            <img src="../../../static/img/logo.png">
-          </div>
+          <h2>安全风险平台</h2>
+          <!-- <div class="btn-left">
+            <img src="../../../static/img/logo.png"> 
+          </div> -->
         </el-col>
         <el-col :span="1" class="photo-right">
           <img src="../../../static/img/qq.png" alt="">
         </el-col>
-        <el-col :span="1" class="btn-right ">
+        <!-- <el-col :span="1" class="btn-right ">
           <img src="../../../static/img/twotone-notifications-24px@2x.png" alt="">
-        </el-col>
+        </el-col> -->
       <el-col :span="1" class="btn-right">
           <img src="../../../static/img/baseline-apps-24px@2x.png" alt="" @click="handleClick">
       </el-col>
@@ -36,14 +37,14 @@
 <style scoped>
   /* 菜单未折叠时顶部的样式 */
   .header_collapsing {
-    background: white;
+    background: #409eff;
     min-width: 1290px;
     min-height: 64px;
     border-bottom: 1px solid #e4eaec;
   }
   /* 菜单折叠后顶部的样式 */
   .header_collapsed {
-    background: white;
+    background: #409eff;
     min-width: 1255px;
     min-height: 64px;
     border-bottom: 1px solid #e4eaec;
@@ -83,5 +84,10 @@
     width: 40px;
     height: 40px;
     border-radius : 50%;
+  }
+  h2{
+    color: #fff;
+    font-size: 28px;
+    margin-top: 20px;
   }
 </style>

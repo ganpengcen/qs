@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <Header title="风险管理" text="风控项配置"></Header>
     <div class="main">
       <el-row>
@@ -59,18 +59,22 @@
               <el-button type="primary">增加</el-button>
             </div>
           </div>
+          <div class="tb">
           <el-table height="570" :data="cfigdata" border :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
             <el-table-column label="风控项编号" prop="fknum"></el-table-column>
             <el-table-column label="名称" prop="fkname"></el-table-column>
             <el-table-column label="类别" prop="fktype"></el-table-column>
             <el-table-column label="操作">
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="del()">删除</el-button>
             </el-table-column>
-          </el-table>
-          <el-pagination :total="cfigdata.length" :page-size="5" layout="prev,pager,next"></el-pagination>
+          </el-table></div>
+          <div>
+            <el-pagination :total="cfigdata.length" :page-size="5" layout="prev,pager,next"></el-pagination>
+          </div>
         </el-col>
       </el-row>
     </div>
+    
   </div>
 </template>
 <script>
@@ -370,15 +374,7 @@ export default {
         {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
         {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
         {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
+        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},        
       ]
     };
   },
@@ -391,11 +387,38 @@ export default {
     },
     getIy(e) {
       this.active2 = e;
-    }
+    },
+    del() {
+      this.$confirm("将要执行删除操作,是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
   }
 };
 </script>
 <style scoped>
+.tb{
+  overflow: auto;
+  height: calc(100% - 100px)
+}
+.content{
+  overflow: hidden;
+  height: 100%;
+}
 .active {
   color: #409eff !important;
 }
@@ -441,8 +464,7 @@ export default {
   margin-top: 10px;
 }
 .el-pagination{
-  position: fixed;
-  bottom: 60px;
-  right: 30px;
+  height: 25px;
+  text-align: right
 }
 </style>

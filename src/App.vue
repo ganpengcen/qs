@@ -52,4 +52,11 @@ export default {
   .el-tabs--left .el-tabs__item.is-left{
     width: 200px !important;
   }
+  .el-dialog__wrapper{
+  overflow-y: hidden;
+  height: 100%
+}
+.el-dialog{
+  overflow-y: hidden
+}
 </style>

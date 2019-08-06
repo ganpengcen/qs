@@ -127,8 +127,9 @@ export default {
 </script>
 <style scoped>
 .el-pagination {
-  text-align: center;
+  text-align: right;
   margin-top: 15px;
+  background: #fff
 }
 .content {
   height: 100%;
@@ -180,6 +181,6 @@ export default {
 }
 .el-dialog__body{
   overflow: auto; 
-
 }
+
 </style>
