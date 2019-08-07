@@ -52,19 +52,19 @@
       </el-submenu>
       <el-submenu index="5">
         <template slot="title"><i class="el-icon-bell"></i><span>隐患排查</span></template>
-        <el-menu-item index="/1">巡查任务管理</el-menu-item>
-        <el-menu-item index="/2">作业申请</el-menu-item>
-        <el-menu-item index="/3">巡检任务</el-menu-item>
-        <el-menu-item index="/4">临时任务</el-menu-item>
-        <el-menu-item index="/5">隐患控制</el-menu-item>
-        <el-menu-item index="/6">视频监控</el-menu-item>
+        <el-menu-item index="/Reskmanagement">巡查任务管理</el-menu-item>
+        <el-menu-item index="/testapply">作业申请</el-menu-item>
+        <el-menu-item index="/patroltask">巡检任务</el-menu-item>
+        <el-menu-item index="/tempTask">临时任务</el-menu-item>
+        <el-menu-item index="/reskcontral">隐患控制</el-menu-item>
+        <el-menu-item index="/video">视频监控</el-menu-item>
       </el-submenu>
       <el-submenu index="6">
         <template slot="title"><i class="el-icon-time"></i><span>档案管理</span></template>
-        <el-menu-item index="/7">风险公示</el-menu-item>
-        <el-menu-item index="/8">资质管理</el-menu-item>
-        <el-menu-item index="/9">培训管理</el-menu-item>
-        <el-menu-item index="/10">安全会议</el-menu-item>
+        <el-menu-item index="/riskshow">风险公示</el-menu-item>
+        <el-menu-item index="/natrue">资质管理</el-menu-item>
+        <el-menu-item index="/train">培训管理</el-menu-item>
+        <el-menu-item index="/safety">安全会议</el-menu-item>
       </el-submenu>
       <el-submenu index="7">
         <template slot="title"><i class="el-icon-tickets"></i><span>报表管理</span></template>
@@ -77,8 +77,8 @@
       </el-submenu>
       <el-submenu index="8">
         <template slot="title"><i class="el-icon-tickets"></i><span>职业健康</span></template>
-        <el-menu-item index="/11">健康档案</el-menu-item>
-        <el-menu-item index="/12">体检管理</el-menu-item>
+        <el-menu-item index="/health">健康档案</el-menu-item>
+        <el-menu-item index="/manage">体检管理</el-menu-item>
       </el-submenu>
     </el-menu>
   </el-aside>

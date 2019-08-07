@@ -3,7 +3,7 @@
     <Header title="档案管理" text="安全会议"></Header>
     <div class="table">
       <div class="table-top">
-        <el-button type="primary">新建</el-button>
+        <el-button type="primary" @click="dialogFormVisible = true">新建</el-button>
         <div style="float: right;margin-right: 20px">
           <el-form :inline="true">
             <el-form-item label="关键词:">
@@ -28,32 +28,6 @@
             </el-table-column>
             <el-table-column prop="StateName" label="主持">
             </el-table-column>
-            <el-table-column label="操作">
-              <template slot-scope="scope">
-                <el-popover trigger="click" placement="bottom" class="minw">
-                  <ul>
-                    <li style="text-align: center;margin-bottom: 10px;width: 100px">
-                      <el-button type="primary" size="small"  style="width:80px">任务详情</el-button>
-                    </li>
-                    <li style="text-align: center;margin-bottom: 10px;width: 100px">
-                      <el-button type="warning" size="small"  style="width: 80px">分配人员</el-button>
-                    </li>
-                    <li style="text-align: center;margin-bottom: 10px;width: 100px">
-                      <el-button type="danger" size="small"  style="width: 80px" @click="stopcontent=true">发起审核</el-button>
-                    </li>
-                    <li style="text-align: center;margin-bottom: 10px;width: 100px">
-                      <el-button type="danger" size="small"  style="width: 80px" @click="stopcontent=true">审核</el-button>
-                    </li>
-                    <li style="text-align: center;margin-bottom: 10px;width: 100px">
-                      <el-button type="info" size="small"  style="width: 80px" @click="deletecontent=true">删除</el-button>
-                    </li>
-                  </ul>
-                  <div slot="reference">
-                    <el-button type="primary" style="width: 100px;" size="small">操作</el-button>
-                  </div>
-                </el-popover>
-              </template>
-            </el-table-column>
           </el-table>
         </div>
       </div>
@@ -69,6 +43,67 @@
         :total="400">
       </el-pagination>
     </div>
+    <div >
+      <el-dialog title="新建风险点" :visible.sync="dialogFormVisible" width="680px">
+        <div class="content">
+          <el-form :inline="true" :model="formInline"   label-width="100px">
+            <el-form-item label="名称：" :label-width="formLabelWidth" >
+              <el-input v-model="form.name" autocomplete="off"  style="width:180px"></el-input>
+            </el-form-item>
+            <el-form-item label="危险因素：" :label-width="formLabelWidth"   >
+              <el-select v-model="form.riskreason" placeholder="请选择活动区域"  style="width:180px">
+                <el-option  v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="会议日期：" >
+              <el-col :span="11">
+                <el-form-item prop="date1">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
+                </el-form-item>
+              </el-col>
+
+            </el-form-item>
+            <el-form-item label="名称：" :label-width="formLabelWidth" >
+              <el-input v-model="form.name" autocomplete="off"  style="width:180px"></el-input>
+            </el-form-item>
+            <el-form-item label="名称：" :label-width="formLabelWidth" >
+              <el-input v-model="form.name" autocomplete="off"  style="width:180px"></el-input>
+            </el-form-item>
+            <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-change="handleChange"
+              :file-list="fileList">
+              <span  >附件：</span>
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+            <div class="edit_container">
+              <span >内容：</span>
+              <quill-editor
+                v-model="content"
+                ref="myQuillEditor"
+                :options="editorOption"
+                @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
+                @change="onEditorChange($event)">
+              </quill-editor> </div>
+
+            <el-form-item label="会议：" >
+              <el-input v-model="form.name" autocomplete="off" style="width:210px"></el-input>
+            </el-form-item>
+            <el-form-item label="会议："  >
+              <el-input v-model="form.name" autocomplete="off" style="width:210px"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false" >取消</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false">确定</el-button>
+        </div>
+      </el-dialog>
+    </div>
+
   </div>
 </template>
 
@@ -77,6 +112,9 @@
   export default {
     components: {
       Header
+    },
+    components:{
+      Header,
     },
     methods: {
       handleSizeChange(val) {
@@ -88,6 +126,40 @@
     },
     data () {
       return {
+        dialogFormVisible: false,
+        form: {
+          Consequence: "",
+          EmergencyMeasure: "",
+          Notes:"",
+          ManagementMeasure: "",
+          ChargePerson: "",
+          risklevel: "",
+          OrganzingFrame:" ",
+          riskreason:"",
+          name:'',
+          delivery: false,
+          type: [],
+          resource: "",
+          desc: ""
+        },
+        editorOption:{
+          modules:{
+            toolbar:[
+              ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+              ['blockquote', 'code-block']
+            ]
+          }
+        },
+        dialogFormVisible:false,
+        ruleForm:{
+          date1: "",
+          date2: "",
+        } ,
+        formInline: {
+          user: '',
+          region: '',
+        },
+
         currentPage1: 5,
         currentPage2: 5,
         currentPage3: 5,
@@ -244,7 +316,6 @@
     }
   }
 </script>
-
 <style scoped>
   .wrapper{
     height: 100%;
@@ -271,5 +342,11 @@
   }
   .wrapper  .table-foot .el-pagination{
     text-align: right !important;
+  }
+  .content{
+    overflow-y:scroll;
+    height:350px;
+    margin:10px;
+    background-color:white;
   }
 </style>

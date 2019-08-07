@@ -1,476 +1,311 @@
 <template>
   <div class="content">
     <Header title="系统管理" text="审批流程"></Header>
-    <div class="main">
-      <el-row>
-        <el-col :span="6">
-          <div class="lefttop">
-            <span>审批流程</span>&nbsp;
-            <el-button type="text" @click="dialog1=true">新建</el-button>
-            <el-dialog title="新建审批流程" :append-to-body="true" :visible.sync="dialog1" width="35%">
-              <el-form>
-                <el-form-item label="业务类型:">
-                  <el-select v-model="sel1" placeholder="请选择">
-                    <el-option
-                      v-for="i in options"
-                      :key="i.value"
-                      :label="i.label"
-                      :value="i.value"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="流程名称:">
-                  <el-input v-model="flowname"></el-input>
-                </el-form-item>
-              </el-form>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialog1 = false">取消</el-button>
-                <el-button type="primary">确定</el-button>
-              </span>
-            </el-dialog>
+    <div class="dialog-wrapper" style="background-color: white;padding: 10px;display: flex;">
+      <div class="dialog-left" style="line-height: 30px;flex: 0 1 200px;overflow: auto;height: calc(100vh - 240px);padding-left: 10px">
+        <div class="left-top" style="display: flex;">
+          <span style=" flex:1;width: 50%;text-align: center;border-radius: 3px"  :class="{'point':true}">流程</span>
+        </div>
+        <div>
+          <p style="margin-top: 15px;font-size: 15px">节点名称</p>
+          <el-input v-model="checkNodeName" size="small" @change="changeNodename" value="12"></el-input>
+        </div>
+        <div style="margin-top: 10px">
+          <p>节点类型</p>
+          <el-radio v-model="nodeType" label="simple">单人审核</el-radio>
+          <el-radio v-model="nodeType" label="mut">多人审核</el-radio>
+          <p style="margin-top: 10px">选择审核人:</p>
+          <p style="font-size: 12px;padding-left: 15px">(最多20人)</p>
+          <el-select :multiple="nodeType=='mut'" @change="selectChange()" v-model="selectValue">
+            <el-option v-for="(item,index) in personDetail" :label="item.name" :value="item.name"  :key="item.index"></el-option>
+          </el-select>
+        </div>
+      </div>
+      <div class="dialog-right" style="flex: 1;overflow: auto;height: calc(100vh - 240px)" v-if="branch">
+        <div v-for="(item,index1) in branch" :key="index1" style="margin-bottom: 10px">
+          <div class="top" @click="fold(index1)" ref="topFolder">
+            <span style="margin-right: 10px">业务类型:{{item.type}}</span>
+            <span>流程名称:{{item.name}}</span>
+            <span style="float: right;margin-right: 10px">
+                  <el-button size="small" @click="save(index1)">保存</el-button>
+                </span>
           </div>
-          <div class="select">
-            <el-select v-model="sel" placeholder="请选择">
-              <el-option v-for="i in options" :key="i.value" :label="i.label" :value="i.value"></el-option>
-            </el-select>
-            <el-button type="primary" size="small">查询</el-button>
-          </div>
-          <div class="lefttb">
-            <el-table
-              :data="tableData"
-              ref="multipleTable"
-              :header-cell-style="{'text-align':'center'}"
-              :cell-style="{'text-align':'center'}"
-              @row-click="SelectClick"
-              highlight-current-row
-              @current-change="handleChange"
-              max-height="500"
-            >
-              <el-table-column prop="name" label="名称"></el-table-column>
-              <el-table-column prop="type" label="类型"></el-table-column>
-              <el-table-column label="操作">
-                <el-button type="text" @click="digVisib=true">修改</el-button>
-                <el-dialog title="修改审批流程" :visible.sync="digVisib" :append-to-body="true">
-                  <el-form>
-                    <el-form-item label="业务类型:">
-                      <el-select v-model="tp.type" :placeholder="tp.type"></el-select>
-                    </el-form-item>
-                    <el-form-item label="流程名称:">
-                      <el-input v-model="tp.name"></el-input>
-                    </el-form-item>
-                  </el-form>
-                  <span slot="footer" class="dialog-footer">
-                    <el-button @click="digVisib = false">取消</el-button>
-                    <el-button type="primary">确定</el-button>
-                  </span>
-                </el-dialog>
-                <el-button type="text" @click="open()">删除</el-button>
-              </el-table-column>
-            </el-table>
-          </div>
-          <div class="pge">
-            <el-pagination background :total="tableData.length" layout="prev,pager,next"></el-pagination>
-          </div>
-        </el-col>
-        <el-col :span="17">
-          <div class="topcontent">
-            <el-button type="primary" size="medium" @click="ndg=true">新建节点</el-button>
-          </div>
-          <el-dialog title="新建节点" :visible.sync="ndg">
-            <el-form :model="form">
-              <el-form-item label="流程名称"></el-form-item>
-              <el-row>
-                <el-col :span="22">
-                  <el-form-item label="节点名称">
-                    <el-input v-model="form.name"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label="节点顺序">
-                    <el-input v-model="form.order"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="14">
-                  <el-form-item label="节点类型">
-                    <el-select v-model="form.vl">
-                      <el-option label="普通" value="1"></el-option>
-                      <el-option label="多人会审" value="2"></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dg1= false">取 消</el-button>
-              <el-button type="primary" @click="dg1 = false">确 定</el-button>
-            </span>
-          </el-dialog>
-          <div class="tab">
-            <el-table
-              :data="data"
-              border
-              :header-cell-style="{'text-align':'center'}"
-              :cell-style="{'text-align':'center'}"
-              @row-click="gtDe"
-              max-height="500"
-            >
-              <el-table-column label="业务类型" prop="type"></el-table-column>
-              <el-table-column label="审批节点" prop="node"></el-table-column>
-              <el-table-column label="节点顺序" prop="order"></el-table-column>
-              <el-table-column label="节点类型" prop="nodetype"></el-table-column>
-              <el-table-column label="创建时间" prop="cdate"></el-table-column>
-              <el-table-column label="操作">
-                <el-button type="text" @click="dgVisib=true" size="small">修改</el-button>
-                <el-dialog
-                  width="40%"
-                  title="修改流程节点"
-                  :visible.sync="dgVisib"
-                  :append-to-body="true"
-                >
-                  <el-form>
-                    <el-row>
-                      <el-col :span="24">
-                        <el-form-item label="节点名称：">
-                          <el-input class="nd" v-model="tp1.node"></el-input>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="10">
-                        <el-form-item label="节点顺序：">
-                          <el-input class="od" v-model="tp1.order"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="14">
-                        <el-form-item label="节点类型：">
-                          <el-input class="nt" v-model="tp1.nodetype"></el-input>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                  <span slot="footer" class="dialog-footer">
-                    <el-button @click="dgVisib = false">取消</el-button>
-                    <el-button type="primary">确定</el-button>
-                  </span>
-                </el-dialog>
-                <el-button type="text" @click="open1()" size="small">删除</el-button>
-                <el-button type="text" size="small" @click="outerVis=true">审批人</el-button>
-                <el-dialog width="65%" title="审批人" :visible.sync="outerVis">
-                  <el-form>
-                    <div class="info">
-                      <el-form :inline="true">
-                        <el-form-item label="业务类型：">{{tp1.type}}</el-form-item>
-                        <el-form-item label="审批节点：">{{tp1.node}}</el-form-item>
-                        <el-form-item label="节点顺序：">{{tp1.order}}</el-form-item>
-                        <el-form-item label="节点类型：">{{tp1.nodetype}}</el-form-item>
-                      </el-form>
+          <div class="foldDiv" :class="{fold:!(foldDetail.indexOf(index1)===(-1))}">
+            <div class="main" style="padding: 20px;" >
+              <div >
+                <draggable v-model="item.Node" >
+                  <transition-group tag="div" class="drop-wrapper">
+                    <div class="nodeWrapper" v-for="(data,index2) in item.Node" :key="data.name" ref="node">
+                      <div @click="dianji(index1,index2)" style=" border-radius: 2px;
+                       float: left; width: 160px;margin-top: 20px" :class="{active:indexone === index1 && indextwo === index2}">
+                        <div class="node">
+                          <p style="margin-bottom: 10px;font-size: 16px;line-height: 20px;margin-top: 10px">{{data.name}}</p>
+                          <div style="padding-left: 10px;font-size: 15px;margin-top: 10px">
+                            <span v-for="(name, index) in data.family" :index="index" style="margin-right: 6px;">{{name.name}}</span>
+                          </div>
+                          <i class="el-icon-delete" style="position: absolute;top: 10px;right: 10px;" @click="deleteNode(index1,index2)"></i>
+                        </div>
+                      </div>
+                      <div style="float: left;width: 90px;height: 62px;background-color: rgba(209, 209, 209,0.2);margin-top: 20px;padding-top: 30px">
+                        <img src="../../../static/img/arrow.jpg" style="width: 90px;height: 30px;">
+                      </div>
                     </div>
-                    <el-row>
-                      <el-col :span="6">
-                        <el-form-item label="节点顺序">
-                          <el-input style="width:55%"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item label="审批人">
-                          <el-select style="width:70%" v-model="slct">
-                            <el-option
-                              v-for="(i,e) in slctData"
-                              :key="e"
-                              :label="i.label"
-                              :value="i.value"
-                            ></el-option>
-                          </el-select>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="4">
-                        <el-button type="primary">增加</el-button>
-                      </el-col>
-                    </el-row>
-                    <el-table
-                      border
-                      row-click="gtfr"
-                      :data="aprover"
-                      :header-cell-style="{'text-align':'center'}"
-                      :cell-style="{'text-align':'center'}"
-                    >
-                      <el-table-column prop="node" label="审批节点"></el-table-column>
-                      <el-table-column prop="apro" label="审批人"></el-table-column>
-                      <el-table-column prop="name" label="姓名"></el-table-column>
-                      <el-table-column prop="order" label="审批顺序"></el-table-column>
-                      <el-table-column label="操作">
-                        <el-button type="text" @click="innerVis=true">修改</el-button>
-                        <el-dialog title="修改审批人" :visible.sync="innerVis" :append-to-body="true">
-                          <el-form :inline="true">
-                            <el-form-item label="审批人">
-                              <el-input v-model="tp1.name"></el-input>
-                            </el-form-item>
-                            <el-form-item label="审批顺序">
-                              <el-input v-model="tp1.order"></el-input>
-                            </el-form-item>
-                          </el-form>
-                        </el-dialog>
-                        <el-button type="text" @click="open3()">删除</el-button>
-                      </el-table-column>
-                    </el-table>
-                  </el-form>
-                </el-dialog>
-              </el-table-column>
-            </el-table>
+                  </transition-group>
+                </draggable>
+              </div>
+
+              <div style="float: left;width: 160px;border: 1px solid rgba(209, 209, 209,0.2);margin-left: 5px;height: 90px;margin-top: 20px;
+               font-size: 48px;text-align: center;line-height: 90px;" @click="addNodeDetail(index1)">+</div>
+              <div style="clear: both;height: 0px;"></div>
+            </div>
           </div>
-          <div>
-            <el-pagination :total="data.length" layout="prev,pager,next"></el-pagination>
-          </div>
-        </el-col>
-      </el-row>
+        </div>
+
+        <div class="add" style="margin: 20px 0 0 30px">
+          <el-link type="primary" :underline="false" @click="addBranch=true">+添加流程</el-link>
+        </div>
+
+      </div>
     </div>
+
+    <el-dialog title="新建审批流程" :visible.sync="addBranch" style="height: 100%;width: 100%;overflow: hidden">
+      <div style="height: 200px;overflow-x: hidden;overflow-y: auto;background-color: white;padding-top: 20px">
+        <el-form labelWidth="180px" v-model="form">
+          <el-form-item label="业务类型">
+            <el-select v-model="form.type">
+              <el-option v-for="(item, index) in typeDetail" :label="item.name" :value="item.name" :key="index"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="流程名称">
+            <el-input style="width: 200px" v-model="form.name"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer">
+        <el-button @click="addBranch = false">取消</el-button>
+        <el-button @click="dialogadd" type="primary">确认</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
-import Header from "../assembly/Header";
-export default {
-  components: {
-    Header
-  },
-  data() {
-    return {
-      sel: "",
-      sel1: "",
-      options: [
-        { value: "选项1", label: "作业申请" },
-        { value: "选项2", label: "巡检任务" },
-        { value: "选项3", label: "任务单据" },
-        { value: "选项4", label: "隐患管控" },
-        { value: "选项5", label: "临时任务" }
-      ],
-      tableData: [
-        { name: "111", type: "作业申请" },
-        { name: "111", type: "巡检任务" },
-        { name: "111", type: "任务单据" },
-        { name: "111", type: "隐患控制" },
-        { name: "111", type: "作业申请" },
-        { name: "111", type: "临时任务" },
-        { name: "111", type: "任务单据" },
-        { name: "111", type: "巡检任务" }
-      ],
-      data: [
-        {
-          type: "临时任务",
-          node: "1",
-          order: "1",
-          nodetype: "普通",
-          cdate: "1",
-          apro: "as65as1",
-          name: "asa52525"
+  import Header from "../assembly/Header";
+  import draggable from 'vuedraggable'
+  import ElRadio from "../../../node_modules/element-ui/packages/radio/src/radio.vue";
+  import ElRadioGroup from "../../../node_modules/element-ui/packages/radio/src/radio-group.vue";
+  export default {
+    components: {
+      ElRadioGroup,
+      ElRadio,
+      Header,
+      draggable
+    },
+    data() {
+      return {
+        foldDetail:[],
+        nodeType:'mut',
+        personDetail:[
+          {name: '一'},
+          {name: 'er'},
+          {name: 'san'},
+          {name: 'si'},
+          {name: 'wu'},
+          {name: '6'}
+        ],
+        addBranch:false,
+        form: {
+          name:'',
+          type:''
         },
-        {
-          type: "临时任务",
-          node: "1",
-          order: "1",
-          nodetype: "普通",
-          cdate: "1",
-          apro: "as65as1",
-          name: "asa52525"
-        },
-        {
-          type: "临时任务",
-          node: "1",
-          order: "1",
-          nodetype: "普通",
-          cdate: "1",
-          apro: "as65as1",
-          name: "asa52525"
+        typeDetail: [
+          {name:'作业申请'},
+          {name:'巡察任务'}
+        ],
+        branch:[
+          {
+            type:'业务类型',
+            name:'流程名称',
+            Node:[
+              {
+                name:'节点一',
+                deleteShow:false,
+                family:[{
+                  name:'er'
+                },
+                  {
+                    name:'san'
+                  }
+                ]
+              },
+              {
+                name:'节点二',
+                family:[
+                  {
+                    name:'er'
+                  },
+                  {
+                    name:'san'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type:'业务类型',
+            name:'流程名称',
+            Node:[
+              {
+                name:'节点一',
+                family:[{
+                  name:'er'
+                },
+                  {
+                    name:'san'
+                  }
+                ]
+              },
+              {
+                name:'节点二',
+                family:[{
+                  name:'er'
+                },
+                  {
+                    name:'er'
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        type:'fromdata',
+        checkNodeName: '',
+        selectValue:'',
+        indexone:'0',
+        indextwo:'0',
+        foldIndex:''
+      }
+    },
+    methods: {
+      deleteNode(index1,index2) {
+        this.branch[index1].Node.splice(index2,1)
+      },
+      fold (index1) {
+        if(this.foldDetail.indexOf(index1)!==(-1)){
+          var index = this.foldDetail.indexOf(index1)
+          console.log('index'+index)
+          this.foldDetail.splice(index,1)
+        } else {
+          this.foldDetail.push(index1)
         }
-      ],
-      dialog1: false,
-      flowname: "",
-      currentRow: null,
-      dgVisib: false,
-      digVisib: false,
-      tp: {},
-      tp1: {},
-      outerVis: false,
-      innerVis: false,
-      form: { order: "", name: "", vl: "" },
-      aprover: [{ node: "1", apro: "asdasda", name: "asdjhaa", order: "2" }],
-      slct: "",
-      ndg: false,
-      slctData: [
-        { value: "选项1", label: "1" },
-        { value: "选项2", label: "2" },
-        { value: "选项3", label: "3" },
-        { value: "选项4", label: "4" },
-        { value: "选项5", label: "5" },
-        { value: "选项6", label: "6" },
-        { value: "选项7", label: "7" },
-        { value: "选项8", label: "8" },
-        { value: "选项9", label: "9" }
-      ]
-    };
-  },
-  methods: {
-    open() {
-      this.$confirm("确定要删除该条记录吗？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功"
-          });
+        console.log(this.foldDetail)
+      },
+      save (index) {
+        alert('第'+ (index+1)+'排数据保存成功')
+      },
+      selectChange(){
+        console.log(this.indexone)
+        let len = this.selectValue.length
+        var temp = []
+        for (var i = 0; i < len; i++) {
+          temp.push({
+            name: this.selectValue[i]
+          })
+        }
+        this.branch[this.indexone].Node[this.indextwo].family = temp
+      },
+      dianji (index1,index2) {
+        console.log('dianjile')
+        let temp = []
+        let len = this.branch[index1].Node[index2].family.length
+        this.branch[index1].Node[index2].family.forEach((item)=>{
+          temp.push(item.name)
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
-    open1() {
-      this.$confirm("确定要删除该条记录吗？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功"
-          });
+        this.selectValue = temp
+        this.indexone = index1
+        this.indextwo = index2
+      },
+      dialogadd () {
+        this.branch.push(  {
+          fold:false,
+          type:this.form.type,
+          name:this.form.name,
+          Node:[{
+            name:'',
+            family:[{
+              name:''
+            },
+              {
+                name:''
+              }
+            ]
+          }
+          ]},)
+        this.addBranch=false
+      },
+      addNodeDetail (index1) {
+        this.branch[index1].Node.push( {
+          name:'',
+          family:[{
+            name:''
+          }
+          ]
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
-    open3() {
-      this.$confirm("确定要删除该条记录吗？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
-    gtDe(row) {
-      console.log(row);
-      this.tp1 = row;
-    },
-    SelectClick(row) {
-      console.log(row);
-      this.$refs.multipleTable.setCurrentRow(row);
-      this.tp = row;
-    },
-    handleChange(val) {
-      this.currentRow = val;
+      },
+      changeNodename () {
+        this.branch[this.indexone].Node[this.indextwo].name = this.checkNodeName
+        console.log(this.checkNodeName)
+      }
     }
-  }
-};
+  };
 </script>
 <style scoped>
-.select,
-.lefttop,
-.topcontent {
-  background: #fff;
-}
-.content {
-  height: 100%;
-  overflow: hidden;
-}
-.tab,
-.lefttb {
-  overflow: auto;
-}
-.lefttb {
-  height: calc(100% - 200px);
-}
-.el-pagination {
-  text-align: center;
-  margin-top: 15px;
-}
-.select .el-select {
-  width: 60%;
-  margin-left: 20px;
-}
-.el-dialog__wrapper {
-  overflow: hidden;
-  height: 100%;
-}
-.el-dialog__body {
-  overflow: auto;
-  height: calc(100% - 25px);
-}
-.main {
-  margin-left: 25px;
-  overflow: hidden;
-  height: 100%;
-}
-.el-dialog .el-input {
-  width: 70%;
-}
-.lefttop {
-  text-align: left;
-  padding: 0 10px;
-}
-.main > .el-row {
-  width: 100%;
-  margin: 0 auto;
-  /* padding: 20px 20px 0 20px; */
-  background-color: #f4f4f4;
-}
-.main > .el-row > .el-col {
-}
-.main > .el-row > .el-col:nth-child(2) {
-  margin-left: 25px;
-}
-.topcontent {
-  margin-bottom: 15px;
-  text-align: right;
-  padding: 10px 30px;
-}
-.main > .el-row > .el-col-18 {
-  border-top: 2px solid #409eff;
-  border-radius: 8px 8px 0 0;
-}
-.main > .el-row > .el-col-18 .el-table {
-  margin: 20px 0;
-}
-.el-col .el-form-item .od {
-  width: 50%;
-}
-.el-col .el-form-item .nt {
-  width: 69%;
-}
-.el-col .el-form-item .nd {
-  width: 82%;
-}
-.el-dialog-body el-form {
-  margin: 0 auto;
-}
-.info .el-form-item {
-  margin-right: 10px;
-}
-.info {
-  text-align: left;
-}
-.pge {
-  height: 50px;
-  margin-top: 10px;
-}
+  .select,
+  .lefttop,
+  .topcontent {
+    background: #fff;
+  }
+  .content {
+    height:100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .point {
+    background-color: gainsboro;
+  }
+  .dialog-left{
+    display: inline-block;
+    width: 200px;
+    height: 500px;
+    border: 1px solid beige;
+    margin-right: 10px;
+  }
+  .foldDiv{
+    border: 2px solid #eee9e9;
+  }
+  .fold{
+    display: none;
+  }
+  .node {
+    border: 1px solid rgba(209, 209, 209,0.2);
+    height: 90px;
+    position: relative
+  }
+  .node i {
+    display: none;
+  }
+  .node:hover i{
+    display: block;
+  }
+  .top{
+    background-color: #eee9e9;
+    height: 35px;
+    line-height: 35px;
+    padding-left: 15px;
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+  }
+  .active{
+    border: 1px solid grey;
+  }
 </style>

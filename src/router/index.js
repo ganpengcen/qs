@@ -16,6 +16,7 @@ const Dictionary = resolve => void (require(['../components/SysManage/Dictionary
 const Custom = resolve => void (require(['../components/SysManage/Custom.vue'], resolve));
 const Equipment = resolve => void (require(['../components/RiskManage/Equipment.vue'], resolve));
 const Jobs = resolve => void (require(['../components/RiskManage/Jobs.vue'], resolve));
+const point = resolve => void (require(['../components/RiskManage/pointManage.vue'], resolve));
 const Process = resolve => void (require(['../components/RiskManage/Process.vue'], resolve));
 const ExStanderd = resolve => void (require(['../components/RiskManage/ExStanderd.vue'], resolve));
 const RciManage = resolve => void (require(['../components/RiskManage/RciManage.vue'], resolve));
@@ -117,63 +118,63 @@ export default new Router({
           component: RcConfig
         },
         {
-          path:'/1',
+          path:'/Reskmanagement',
           name:'Reskmanagement',
           component:Reskmanagement
         },
         {
-          path:'/2',
+          path:'/testapply',
           name:'testapply',
           component:testapply
         },
         {
-          path:'/3',
+          path:'/patroltask',
           name:'patroltask',
           component:patroltask
         },
         {
-          path:'/4',
+          path:'/tempTask',
           name:'tempTask',
           component:tempTask
         },
         {
-          path:'/5',
+          path:'/reskcontral',
           name:'reskcontral',
           component:reskcontral
         },
         {
-          path:'/6',
+          path:'/video',
           name:'video',
           component:video
         },
         {
-          path:'/7',
+          path:'/riskshow',
           name:'riskshow',
           component:riskshow
         },
         {
-          path:'/8',
+          path:'/natrue',
           name:'natrue',
           component:natrue
         },
         {
-          path:'/9',
+          path:'/train',
           name:'train',
           component:train
         }
         ,
         {
-          path:'/10',
+          path:'/safety',
           name:'safety',
           component:safety
         },
         {
-          path:'/11',
+          path:'/health',
           name:'health',
           component:health
         },
         {
-          path:'/12',
+          path:'/manage',
           name:'manage',
           component:manage
         }
