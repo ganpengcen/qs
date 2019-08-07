@@ -6,9 +6,9 @@
         <el-col :span="4">
           <div class="ad">
             <el-button type="text" size="mini" @click="dg1=true">+</el-button>
-            <el-dialog width="35%" :visible.sync="dg1" :append-to-body="true" title="新建组织架构">
+            <el-dialog width="25%" :visible.sync="dg1" :append-to-body="true" title="新建设备类别">
               <div class="info">
-              <el-form label-width="50px">
+              <el-form label-width="75px">
                 <el-form-item label="上级:">
                   <el-input disabled v-model="las"></el-input>
                 </el-form-item>
@@ -24,12 +24,27 @@
             </el-dialog>
             
           </div>
-          
+          <el-dialog width="25%" :visible.sync="dg4" :append-to-body="true" title="新建设备类别">
+              <div class="info">
+              <el-form label-width="75px">
+                <el-form-item label="上级:">
+                  <el-input disabled v-model="les"></el-input>
+                </el-form-item>
+                <el-form-item label="名称:">
+                  <el-input></el-input>
+                </el-form-item>
+              </el-form>
+              </div>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dg4 = false">取 消</el-button>
+                <el-button type="primary" @click="dg4 = false">确 定</el-button>
+              </span>
+            </el-dialog>
           <el-tree @node-click="get" :data="treedata" accordion :props="defaultProps" :expand-on-click-node="true">
             <span class="custom-tree-node" slot-scope="{node,data}">
               <span>{{node.label}}</span>
               <span>
-                <el-button size="mini" type="text" @click="dg1=true">+</el-button>
+                <el-button size="mini" type="text" @click="dg4=true">+</el-button>
                 <el-button size="mini" type="text" @click="del1()">-</el-button>
                 <el-button size="mini" type="text" @click="dg2=true">新建设备</el-button>
               </span>
@@ -38,7 +53,7 @@
         </el-col>
         <el-dialog width="48%" title="新建设备" :visible.sync="dg2">
           <div class="info">
-          <el-form :inline="true">
+          <el-form label-width="75px" :inline="true">
             <el-form-item label="设备编号">
               <el-input></el-input>
             </el-form-item>
@@ -64,7 +79,7 @@
         </el-dialog>
         <el-dialog width="48%" title="修改设备" :visible.sync="dg3">
           <div class="info">
-          <el-form :inline="true">
+          <el-form label-width="75px" :inline="true">
             <el-form-item label="设备编号">
               <el-input></el-input>
             </el-form-item>
@@ -123,7 +138,9 @@ export default {
       dg2:false,
       dg3:false,
       dg1:false,
+      dg4:false,
       las:'无上级',
+      les:'无上级',
       tbla: [
         { label: "设备编号", pp: "num" },
         { label: "名称", pp: "nm" },
@@ -164,7 +181,7 @@ export default {
   methods:{
      get(data) {
       console.log(data.label);
-      this.las = data.label;
+      this.les = data.label;
     },
     del1(){
       this.$confirm("将要执行删除操作,是否继续?", "提示", {

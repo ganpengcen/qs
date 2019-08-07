@@ -25,7 +25,7 @@
       <el-table
         @row-click="view"
         :data="tableData"
-        height="calc(100% - 75px)"
+        height="calc(100% - 88px)"
         border
         :header-cell-style="{'text-align':'center'}"
         :cell-style="{'text-align':'center'}"
@@ -35,8 +35,8 @@
         <el-table-column label="操作结果" prop="Structure"></el-table-column>
         <el-table-column label="日志内容" prop="log">
           <el-button type="text" @click="dialogVisible=true">查看</el-button>
-          <el-dialog title="日志内容" :visible.sync="dialogVisible">
-            <div class="info">{{viewlog}}</div></el-dialog>
+          <el-dialog title="日志内容" width="30%" :visible.sync="dialogVisible">
+            <div class="info"><p>{{viewlog}}</p></div></el-dialog>
         </el-table-column>
         <el-table-column label="操作" prop="operation">
           <el-button type="text" @click="open()">删除</el-button>
@@ -49,6 +49,7 @@
   </div>
 </template>
 <script>
+import api from '../../axios/api'
 import Header from "../assembly/Header";
 export default {
   components: {
@@ -121,6 +122,25 @@ export default {
       viewlog: ""
     };
   },
+  // created() {
+  //   let url = api.LogsPage;
+  //   let ifo = {
+  //     PageSize: 6,
+  //     PageIndex:0,
+  //     KeyWord: "",
+  //     Query: {
+  //       logContent: ""
+  //     },
+  //     OrderString: "",
+  //     ToExcel: true
+  //   };
+  //   console.log(sessionStorage)
+  //   this.$post(url,ifo).then(res=>{
+  //     console.log(res)
+  //   }).catch(err=>{
+  //     console.log(err)
+  //   })
+  // },
   methods: {
     open() {
       this.$confirm("确定要删除该条记录吗？", "提示", {
@@ -155,8 +175,9 @@ export default {
 }
 .el-pagination {
   text-align: right;
-  margin-top: 15px;
-  background: #fff
+  margin: 15px 0 0 25px; 
+  background: #fff;
+  width: 96%;
 }
 .content {
   height: 100%;
@@ -167,6 +188,9 @@ export default {
   width: calc(100% - 55px);
   overflow: hidden;
   height:calc(100% - 160px);
+}
+.el-dialog{
+  text-align: left
 }
 .top {
   width: calc(100% - 40px);

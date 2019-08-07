@@ -41,9 +41,9 @@ const mutations={
         state.tags.forEach(item => {
             item.active=false
         });
-        if(state.tags.length<=7){
+        if(state.tags.length<7){
             state.tags.push(item);
-        }else if(state.tags.length>7){
+        }else if(state.tags.length>=7){
             state.tags.shift()
             state.tags.push(item);
         }

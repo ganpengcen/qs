@@ -32,7 +32,7 @@ export default {
   }
   .el-dialog__body {
     background-color: #f4f4f4;
-    padding: 20px;
+    padding: 10px;
   }
   .el-table__header tr,
   .el-table__header th {
