@@ -19,7 +19,7 @@
       <div class="tbs">
         <el-tabs tab-position="left" closable>
           <el-tab-pane v-for="(i,e) in select" :key="e" :label="i.title">
-            <el-table :data="i.table" max-height="500">
+            <el-table :data="i.table" height="calc(100vh - 300px)">
               <el-table-column prop="name" label="名称"></el-table-column>
               <el-table-column prop="Remarks" label="备注"></el-table-column>
               <el-table-column label="操作">
@@ -69,37 +69,58 @@ export default {
             { name: "asdtfc", Remarks: "as4656" },
             { name: "asdtfc", Remarks: "as4656" },
             { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" }
+            { name: "asdtfc", Remarks: "as4656" },
+            { name: "asdtfc", Remarks: "as4656" },
+            { name: "asdtfc", Remarks: "as4656" },
+            { name: "asdtfc", Remarks: "as4656" },
+            { name: "asdtfc", Remarks: "as4656" },
+            { name: "asdtfc", Remarks: "as4656" },
+            { name: "asdtfc", Remarks: "as4656" },
+            { name: "asdtfc", Remarks: "as4656" },
           ]
         },
         { title: "asdasas", table: [{ name: "a1231fc", Remarks: "as4123" }] },
         { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
         { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
         { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] }
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
+        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
       ]
     };
   }
 };
 </script>
 <style scoped>
-.main {
-  margin-left: 25px;
-}
 .el-tabs {
   width: 96%;
   margin: 15px 0 0 25px;
-  max-height: 500px;
+  height: calc(100vh - 300px)
 }
 .el-input,.el-textarea{
-    width: 70%
+  width: 70%
 }
-/* .el-table{
-    overflow: auto
-} */
+
 .main {
   overflow: auto;
-  height: calc(100% - 55px);
+  margin-left: 25px;
+  height: calc(100% - 125px);
 }
 .content {
   overflow: hidden;

@@ -1,7 +1,43 @@
 <template>
   <div class="content">
     <Header title="风险管理" text="岗位管理"></Header>
-    <div class="top">
+    
+    <el-dialog width="40%" title="新建岗位" :visible.sync="dg1">
+      <div class="info">
+        <el-form :inline="true" label-width="75px">
+          <el-form-item label="岗位编号">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="岗位名称">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="组织架构">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="责任人">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="主要任务">
+            <el-input type="textarea" :rows="3"></el-input>
+          </el-form-item>
+          <el-form-item label="附件">
+            <el-upload>
+              <el-button size="small" type="primary">点击上传</el-button>
+            </el-upload>
+          </el-form-item>
+          <el-divider></el-divider>
+          <el-form-item label="开发部">
+            <el-input></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dg1 = false">取 消</el-button>
+        <el-button type="primary" @click="dg1= false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <div class="main">
+      <div class="top">
       <el-row class="mbd">
         <el-col :span="4">
           <el-button type="primary" @click="dg1=true">新建</el-button>
@@ -14,41 +50,8 @@
         </el-col>
       </el-row>
     </div>
-    <el-dialog width="40%" title="新建岗位" :visible.sync="dg1">
-      <el-form :inline="true" label-width="75px">
-        <el-form-item label="岗位编号">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="岗位名称">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="组织架构">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="责任人">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="主要任务">
-          <el-input type="textarea" :rows="3"></el-input>
-        </el-form-item>
-        <el-form-item label="附件">
-          <el-upload>
-            <el-button size="small" type="primary">点击上传</el-button>
-          </el-upload>
-        </el-form-item>
-        <el-divider></el-divider>
-        <el-form-item label="开发部">
-          <el-input></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dg1 = false">取 消</el-button>
-        <el-button type="primary" @click="dg1= false">确 定</el-button>
-      </span>
-    </el-dialog>
-    <div class="main">
       <el-table
-        max-height="502"
+        height="calc(100% - 75px)"
         :data="tbd"
         border
         :header-cell-style="{'text-align':'center'}"
@@ -70,6 +73,7 @@
       </el-table>
     </div>
     <el-dialog width="40%" title="修改岗位" :visible.sync="dg2">
+      <div class="info">
       <el-form :inline="true" label-width="75px">
         <el-form-item label="岗位编号">
           <el-input></el-input>
@@ -96,12 +100,14 @@
           <el-input></el-input>
         </el-form-item>
       </el-form>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dg2 = false">取 消</el-button>
         <el-button type="primary" @click="dg2= false">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog title="人员管理" :visible.sync="dg3">
+      <div class="info">
       <el-row>
         <el-col :span="8">
           <el-form label-width="100px" size="small">
@@ -136,7 +142,7 @@
             </el-form-item>
             <el-button type="primary">增加</el-button>
           </el-form>
-          <el-table :data="deptb" border size="mini">
+          <el-table height="168px" :data="deptb" border size="mini">
             <el-table-column label="姓名" prop="name"></el-table-column>
             <el-table-column label="部门" prop="dept"></el-table-column>
             <el-table-column label="操作">
@@ -145,6 +151,7 @@
           </el-table>
         </el-col>
       </el-row>
+      </div>
     </el-dialog>
     <div class="pge">
       <el-pagination :page-size="5" background layout="prev,pager,next" :total="tbd.length"></el-pagination>
@@ -200,7 +207,25 @@ export default {
           name: "ajskad",
           respos: "asdasda",
           respostel: "56541113331"
-        }
+        },
+        {
+          nmb: "1",
+          name: "ajskad",
+          respos: "asdasda",
+          respostel: "56541113331"
+        },
+        {
+          nmb: "1",
+          name: "ajskad",
+          respos: "asdasda",
+          respostel: "56541113331"
+        },
+        {
+          nmb: "1",
+          name: "ajskad",
+          respos: "asdasda",
+          respostel: "56541113331"
+        },
       ],
       info:{},
       treedata: [
@@ -251,19 +276,22 @@ export default {
 };
 </script>
 <style scoped>
+.info{
+  background: #fff;
+  padding: 15px
+}
 .content {
   overflow: hidden;
   height: 100%;
 }
-.el-divider{
+.el-col-1 .el-divider{
   height: 237px;
 }
 .main {
   width: 96.8%;
-  height: calc(100% - 200px);
-  margin-left: 25px;
-  margin-top: 10px;
-  overflow: auto;
+  height: calc(100% - 130px);
+  margin:10px 0 10px 25px;
+  overflow: hidden;
 }
 .el-col-4 .el-button {
   margin: 10px 0 10px 20px;
@@ -302,14 +330,12 @@ export default {
   margin-top: 15px;
 }
 .top {
-  width: 96.8%;
-  margin-left: 25px;
+  width: 100%;
 }
 .pge {
   width: 96.8%;
-  padding-top: 5px;
   margin-left: 25px;
-  height: 50px;
+  height: 35px;
   text-align: right;
   background: #fff;
 }

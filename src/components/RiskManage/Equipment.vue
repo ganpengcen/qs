@@ -7,6 +7,7 @@
           <div class="ad">
             <el-button type="text" size="mini" @click="dg1=true">+</el-button>
             <el-dialog width="35%" :visible.sync="dg1" :append-to-body="true" title="新建组织架构">
+              <div class="info">
               <el-form label-width="50px">
                 <el-form-item label="上级:">
                   <el-input disabled v-model="las"></el-input>
@@ -15,11 +16,13 @@
                   <el-input></el-input>
                 </el-form-item>
               </el-form>
+              </div>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dg1 = false">取 消</el-button>
                 <el-button type="primary" @click="dg1 = false">确 定</el-button>
               </span>
             </el-dialog>
+            
           </div>
           
           <el-tree @node-click="get" :data="treedata" accordion :props="defaultProps" :expand-on-click-node="true">
@@ -34,6 +37,7 @@
           </el-tree>
         </el-col>
         <el-dialog width="48%" title="新建设备" :visible.sync="dg2">
+          <div class="info">
           <el-form :inline="true">
             <el-form-item label="设备编号">
               <el-input></el-input>
@@ -52,12 +56,14 @@
               <el-input></el-input>
             </el-form-item>
           </el-form>
+          </div>
           <span slot="footer" class="dialog-footer">
                 <el-button @click="dg2 = false">取 消</el-button>
                 <el-button type="primary" @click="dg2= false">确 定</el-button>
               </span>
         </el-dialog>
         <el-dialog width="48%" title="修改设备" :visible.sync="dg3">
+          <div class="info">
           <el-form :inline="true">
             <el-form-item label="设备编号">
               <el-input></el-input>
@@ -76,6 +82,7 @@
               <el-input></el-input>
             </el-form-item>
           </el-form>
+          </div>
           <span slot="footer" class="dialog-footer">
                 <el-button @click="dg3 = false">取 消</el-button>
                 <el-button type="primary" @click="dg3= false">确 定</el-button>
@@ -89,7 +96,7 @@
               <el-button type="primary">导出Excel</el-button>
             </div>
           </div>
-          <el-table :data="tdab" border height="500">
+          <el-table :data="tdab" border height="calc(100vh - 300px)">
             <el-table-column type="expand">
               <template slot-scope="prop"></template>
             </el-table-column>
@@ -201,6 +208,10 @@ export default {
 };
 </script>
 <style scoped>
+.info{
+  background: #fff;
+  padding: 15px
+}
 .whi {
   background-color: #fff;
   width: 100%;
@@ -210,11 +221,12 @@ export default {
   height: 100%;
 }
 .el-row {
-  overflow: auto;
+  overflow: hidden;
 }
 .main {
   margin-left: 25px;
   overflow: hidden;
+  height: calc(100% - 85px);
 }
 .el-table{
   overflow: auto
@@ -251,7 +263,8 @@ export default {
   background: #fff;
   border-top: 2px solid #049eff;
   border-radius: 3px;
-  max-height: 500px;
+  overflow: auto;
+  height: calc(100vh - 210px);
 }
 .top > div {
   width: 50%;

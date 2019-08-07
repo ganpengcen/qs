@@ -60,7 +60,7 @@
             </div>
           </div>
           <div class="tb">
-          <el-table height="570" :data="cfigdata" border :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
+          <el-table height="calc(100vh - 325px)" :data="cfigdata" border :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
             <el-table-column label="风控项编号" prop="fknum"></el-table-column>
             <el-table-column label="名称" prop="fkname"></el-table-column>
             <el-table-column label="类别" prop="fktype"></el-table-column>
@@ -424,9 +424,15 @@ export default {
 }
 .main {
   margin-left: 25px;
+  overflow: hidden;
+  height: calc(100% - 85px);
 }
-.el-span-5 {
-  background: #fff;
+.el-col-5 {
+  overflow: auto;
+  height: calc(100vh - 270px)
+}
+.el-table{
+  overflow: auto
 }
 .el-row{
   display: flex
@@ -462,6 +468,10 @@ export default {
 }
 .el-table{
   margin-top: 10px;
+}
+.el-tabs{
+  box-shadow: none;
+  border: none
 }
 .el-pagination{
   height: 25px;

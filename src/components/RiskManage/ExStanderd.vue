@@ -1,10 +1,9 @@
 <template>
   <div class="content">
     <Header title="风险管理" text="执行标准"></Header>
-    <div class="top">
-        <el-button type="primary" @click="dg1=true">新建</el-button>
-      </div>
+    
       <el-dialog width="30%" :visible.sync="dg1" title="新建执行标准">
+        <div class="info">
         <el-form label-width="100px">
           <el-form-item label="编号">
             <el-input></el-input>
@@ -28,14 +27,17 @@
             <el-input type="textarea" :rows="3"></el-input>
           </el-form-item>
         </el-form>
+        </div>
         <span slot="footer" class="dialog-footer">
                       <el-button @click="dg1= false">取 消</el-button>
                       <el-button type="primary" @click="dg1 = false">确 定</el-button>
                     </span>
       </el-dialog>
     <div class="main">
-      
-      <el-table height="535" :data="standTable" border :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center','padding':'0'}">
+      <div class="top">
+        <el-button type="primary" @click="dg1=true">新建</el-button>
+      </div>
+      <el-table height="calc(100% - 75px)" :data="standTable" border :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center','padding':'0'}">
         <el-table-column label="编号" prop="snb"></el-table-column>
         <el-table-column label="名称" prop="sname"></el-table-column>
         <el-table-column label="风控项" prop="rci"></el-table-column>
@@ -48,6 +50,7 @@
       
     </div>
     <el-dialog width="30%" :visible.sync="dg2" title="新建执行标准">
+      <div class="info">
         <el-form label-width="100px">
           <el-form-item label="编号">
             <el-input></el-input>
@@ -71,6 +74,7 @@
             <el-input type="textarea" :rows="3"></el-input>
           </el-form-item>
         </el-form>
+        </div>
         <span slot="footer" class="dialog-footer">
                       <el-button @click="dg2= false">取 消</el-button>
                       <el-button type="primary" @click="dg2 = false">确 定</el-button>
@@ -140,19 +144,24 @@ export default {
 }
 </script>
 <style scoped>
+.info{
+  height: 400px;
+  overflow: auto;
+  background: #fff;
+  padding: 15px;
+}
 .content{
   height: 100%;
   overflow: hidden;
 }
 .main{
-  overflow: auto;
+  overflow: hidden;
   width: calc(100% - 50px);
-  margin-left: 25px;
-  height: calc(100% - 182px)
+  margin:0 0 10px 25px;
+  height: calc(100% - 133px)
 }
 .top{
-  margin-left: 25px;
-  width: calc(100% - 50px);
+  margin-bottom: 15px;
   border-top:2px solid #409eff;
   border-radius: 5px; 
   background: #fff
@@ -160,13 +169,10 @@ export default {
 .el-button{
   margin: 10px 0 10px 15px;
 }
-.el-table{
-  margin-top: 15px;
-}
 .pge {
   width:96.8%;
   margin-left: 25px;
-  height: 50px;
+  height: 32px;
   text-align: right;
   background: #fff
 }

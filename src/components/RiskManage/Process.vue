@@ -1,7 +1,73 @@
 <template>
   <div class="content">
     <Header title="风险管理" text="作业流程"></Header>
-    <div class="top">
+    
+    <el-dialog width="40%" :visible.sync="dg1" title="新建作业">
+      <div class="info">
+        <el-form :inline="true" label-width="75px">
+          <el-form-item label="作业编号">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="名称">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="作业岗位">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="流程回退">
+            <el-checkbox></el-checkbox>
+          </el-form-item>
+          <el-form-item label="作业描述">
+            <el-input type="textarea" :rows="3"></el-input>
+          </el-form-item>
+          <el-divider></el-divider>
+          <el-form-item label="日期">
+            <el-date-picker></el-date-picker>
+          </el-form-item>
+          <el-form-item label="流程哇">
+            <el-input></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dg1 = false">取 消</el-button>
+        <el-button type="primary" @click="dg1= false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog width="40%" :visible.sync="dg2" title="新建作业">
+      <div class="info">
+        <el-form :inline="true" label-width="75px">
+          <el-form-item label="作业编号">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="名称">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="作业岗位">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="流程回退">
+            <el-checkbox></el-checkbox>
+          </el-form-item>
+          <el-form-item label="作业描述">
+            <el-input type="textarea" :rows="3"></el-input>
+          </el-form-item>
+          <el-divider></el-divider>
+          <el-form-item label="日期">
+            <el-date-picker></el-date-picker>
+          </el-form-item>
+          <el-form-item label="流程哇">
+            <el-input></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dg2 = false">取 消</el-button>
+        <el-button type="primary" @click="dg2= false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <div class="main">
+      <div class="top">
       <el-row>
         <el-col :span="4">
           <el-button type="primary" @click="dg1=true">新建</el-button>
@@ -14,69 +80,8 @@
         </el-col>
       </el-row>
     </div>
-    <el-dialog width="40%" :visible.sync="dg1" title="新建作业">
-      <el-form :inline="true" label-width="75px">
-        <el-form-item label="作业编号">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="名称">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="作业岗位">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="流程回退">
-          <el-checkbox></el-checkbox>
-        </el-form-item>
-        <el-form-item label="作业描述">
-          <el-input type="textarea" :rows="3"></el-input>
-        </el-form-item>
-        <el-divider></el-divider>
-        <el-form-item label="日期">
-          <el-date-picker></el-date-picker>
-        </el-form-item>
-        <el-form-item label="流程哇">
-          <el-input></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dg1 = false">取 消</el-button>
-        <el-button type="primary" @click="dg1= false">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog width="40%" :visible.sync="dg2" title="新建作业">
-      <el-form :inline="true" label-width="75px">
-        <el-form-item label="作业编号">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="名称">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="作业岗位">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="流程回退">
-          <el-checkbox></el-checkbox>
-        </el-form-item>
-        <el-form-item label="作业描述">
-          <el-input type="textarea" :rows="3"></el-input>
-        </el-form-item>
-        <el-divider></el-divider>
-        <el-form-item label="日期">
-          <el-date-picker></el-date-picker>
-        </el-form-item>
-        <el-form-item label="流程哇">
-          <el-input></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dg2 = false">取 消</el-button>
-        <el-button type="primary" @click="dg2= false">确 定</el-button>
-      </span>
-    </el-dialog>
-    <div class="main">
       <el-table
-        height="502"
+        height="calc(100% - 73px)"
         border
         :data="processTable"
         :header-cell-style="{'text-align':'center'}"
@@ -105,35 +110,37 @@
       <el-pagination :page-size="5" :total="processTable.length" layout="prev,pager,next"></el-pagination>
     </div>
     <el-dialog width="65%" title="流程节点" :visible.sync="dg3">
-      <div class="ttl">
-        <span>作业编号:{{info.numb}}</span>
-        <span>作业名称:{{info.pname}}</span>
-        <el-checkbox v-model="info.bck" disabled>流程回退</el-checkbox>
+      <div class="info">
+        <div class="ttl">
+          <span>作业编号:{{info.numb}}</span>
+          <span>作业名称:{{info.pname}}</span>
+          <el-checkbox v-model="info.bck" disabled>流程回退</el-checkbox>
+        </div>
+        <el-form label-width="75px" :inline="true">
+          <el-form-item label="节点顺序">
+            <el-input v-model="nord"></el-input>
+          </el-form-item>
+          <el-form-item label="节点名称">
+            <el-input v-model="nname"></el-input>
+          </el-form-item>
+          <el-form-item label="节点岗位">
+            <el-input v-model="njb"></el-input>
+          </el-form-item>
+          <el-form-item label="节点描述">
+            <el-input type="textarea" :rows="3" v-model="ndes"></el-input>
+          </el-form-item>
+          <el-button type="primary" @click="add()">增加</el-button>
+        </el-form>
+        <el-table :data="dgtb" border :cell-style="{'padding':'0'}">
+          <el-table-column label="节点顺序" prop="nord"></el-table-column>
+          <el-table-column label="节点名称" prop="nname"></el-table-column>
+          <el-table-column label="节点岗位" prop="njb"></el-table-column>
+          <el-table-column label="描述" prop="ndes"></el-table-column>
+          <el-table-column label="操作">
+            <el-button type="text" @click="del()">删除</el-button>
+          </el-table-column>
+        </el-table>
       </div>
-      <el-form label-width="75px" :inline="true">
-        <el-form-item label="节点顺序">
-          <el-input v-model="nord"></el-input>
-        </el-form-item>
-        <el-form-item label="节点名称">
-          <el-input v-model="nname"></el-input>
-        </el-form-item>
-        <el-form-item label="节点岗位">
-          <el-input v-model="njb"></el-input>
-        </el-form-item>
-        <el-form-item label="节点描述" >
-          <el-input type="textarea" :rows="3" v-model="ndes"></el-input>
-        </el-form-item>
-        <el-button type="primary" @click="add()">增加</el-button>
-      </el-form>
-      <el-table :data="dgtb" border :cell-style="{'padding':'0'}">
-        <el-table-column label="节点顺序" prop="nord"></el-table-column>
-        <el-table-column label="节点名称" prop="nname"></el-table-column>
-        <el-table-column label="节点岗位" prop="njb"></el-table-column>
-        <el-table-column label="描述" prop="ndes"></el-table-column>
-        <el-table-column label="操作">
-          <el-button type="text" @click="del()">删除</el-button>
-        </el-table-column>
-      </el-table>
     </el-dialog>
   </div>
 </template>
@@ -159,10 +166,12 @@ export default {
         { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" },
         { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" },
         { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" },
-        { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" }
+        { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" },
+        { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" },
+        { numb: "1", pname: "askld", bck: true, descr: "爱仕达撒所撒多" },
       ],
       info: {},
-      dgtb:[],
+      dgtb: []
     };
   },
   methods: {
@@ -173,7 +182,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.dgtb.shift()
+          this.dgtb.shift();
           this.$message({
             type: "success",
             message: "删除成功"
@@ -190,29 +199,32 @@ export default {
       console.log(row);
       this.info = row;
     },
-    add(){
-      let ls={}
-      ls.nord=this.nord
-      ls.nname=this.nname
-      ls.njb=this.njb
-      ls.ndes=this.ndes
-      this.dgtb.push(ls)
-      console.log(this.dgtb)
+    add() {
+      let ls = {};
+      ls.nord = this.nord;
+      ls.nname = this.nname;
+      ls.njb = this.njb;
+      ls.ndes = this.ndes;
+      this.dgtb.push(ls);
+      console.log(this.dgtb);
     }
   }
 };
 </script>
 <style scoped>
+.info{
+  background: #fff;
+  padding: 15px;
+}
 .content {
   height: 100%;
   overflow: hidden;
 }
 .main {
   width: 96.8%;
-  height: calc(100% - 200px);
-  margin-left: 25px;
-  margin-top: 10px;
-  overflow: auto;
+  height: calc(100% - 140px);
+  margin:10px 0 10px 25px;
+  overflow: hidden;
 }
 .el-textarea {
   width: 460px;
@@ -250,8 +262,7 @@ export default {
   width: 100%;
 }
 .top {
-  width: 96.8%;
-  margin-left: 25px;
+  width: 100%
 }
 .el-dialog .el-form .el-button {
   margin-top: 35px;
@@ -266,7 +277,7 @@ export default {
 .pge {
   width: 96.8%;
   margin-left: 25px;
-  height: 50px;
+  height: 35px;
   text-align: right;
   background: #fff;
 }
