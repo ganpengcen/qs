@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '../router';
-	
+
 require('es6-promise').polyfill();
 
 
@@ -9,15 +9,16 @@ axios.defaults.baseURL = '';
 //http request 拦截器
 axios.interceptors.request.use(
 	config => {
-		const token = sessionStorage.Token
-		const accountid = sessionStorage.AccountID
+		const Token = sessionStorage.Token
+		const AccountID = sessionStorage.AccountID
+    console.log('token:'+Token)
 		config.data = JSON.stringify(config.data);
 		config.headers = {
 			'Content-Type': 'application/json;charset=UTF-8',
-			'Token':token,
-			'Accountid':accountid
+			'Token':Token,
+			'Accountid':AccountID
 		}
-		if(!token) {
+		if(!Token) {
 			router.push({
 				path: "/",
 			})

@@ -269,7 +269,10 @@
     width: 100%;
     overflow: hidden;
   }
-
+  .dialog-wrapper {
+    margin: 15px 25px 11px;
+    border-radius: 2px;
+  }
   .point {
     background-color: gainsboro;
   }

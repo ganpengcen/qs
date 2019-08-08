@@ -8,15 +8,15 @@ axios.defaults.baseURL = '';
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
-    const token = sessionStorage.token;
-    const accountid = sessionStorage.accountid;
+    const Token = sessionStorage.Token;
+    console.log('AXIOStoken:',Token)
     config.data = JSON.stringify(config.data);
     config.headers = {
-      'Content-Type': sessionStorage.header,
-      'Token':token,
-      'AccountID': accountid
+      ['Content-Type']: 'application/json;charset=UTF-8',
+      ['token']:sessionStorage.Token,
+      ['accountid']:sessionStorage.AccountID
     }
-    if(!token) {
+    if(!Token) {
       router.push({
         path: "/",
       })
@@ -74,8 +74,8 @@ export function get(url, params = {}) {
       params: params
     })
       .then(response => {
-        resolve(response);
-      })
+      resolve(response);
+    })
       .catch(err => {
         reject(err)
       })

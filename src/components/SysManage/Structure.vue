@@ -9,24 +9,24 @@
             <el-button type="text" @click="dialog1 = true">+</el-button>
             <el-dialog width="35%" :visible.sync="dialog1" title="新建组织架构">
               <div class="info">
-                <el-form label-width="100px">
+                <el-form label-width="100px" v-model="newOrgnize">
                   <el-form-item label="上级:">
-                    <el-input disabled v-model="las"></el-input>
+                    <el-input disabled v-model="newOrgnize.ParentID"></el-input>
                   </el-form-item>
                   <el-form-item label="名称:">
-                    <el-input></el-input>
+                    <el-input v-model="newOrgnize.OrgName"></el-input>
                   </el-form-item>
                   <el-form-item label="负责人:">
-                    <el-input></el-input>
+                    <el-input v-model="newOrgnize.Principal"></el-input>
                   </el-form-item>
                   <el-form-item label="电话:">
-                    <el-input></el-input>
+                    <el-input v-model="newOrgnize.PrincipalTel"></el-input>
                   </el-form-item>
                 </el-form>
               </div>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dialog1 = false">取 消</el-button>
-                <el-button type="primary" @click="dialog1 = false">确 定</el-button>
+                <el-button type="primary" @click="submitOrgnize()">确 定</el-button>
               </span>
             </el-dialog>
           </div>
@@ -192,6 +192,12 @@ export default {
 
   data() {
     return {
+      newOrgnize:{
+        ParentID:'',
+        OrgName:'',
+        Principal:'',
+        PrincipalTel:''
+      },
       digl: false,
       picker: [
         { label: "选项1", value: "TesA" },
@@ -295,6 +301,17 @@ export default {
     };
   },
   methods: {
+    submitOrgnize () {
+      this.$post(this.api.addOrg,
+        this.newOrgnize
+      ).then((data)=>{
+        this.dialog1 = false
+        console.log(data)
+      })
+      this.$get(this.api.getEmployeeModel+sessionStorage.AccountID).then(data=>{
+        console.log(data)
+      })
+    },
     get(data) {
       console.log(data.label);
       this.las = data.label;
@@ -321,6 +338,9 @@ export default {
     getdata(row) {
       console.log(row);
     }
+
+  },
+  created () {
   }
 };
 </script>

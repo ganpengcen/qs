@@ -59,4 +59,18 @@ export default {
 .el-dialog{
   overflow-y: hidden
 }
+ .wrapper ::-webkit-scrollbar{
+     width: 4px;
+   height: 4px;
+  }
+ .wrapper ::-webkit-scrollbar-track {
+     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+     border-radius: 0;
+     background:lightcyan;
+  }
+ .wrapper::-webkit-scrollbar-thumb {
+     border-radius: 5px;
+     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+     background:lightcyan;
+  }
 </style>

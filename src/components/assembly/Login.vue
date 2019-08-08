@@ -45,8 +45,20 @@
     },
     methods: {
       signin() {
-        this.$router.push({ path: '/Index' });
-        this.loading = true;
+        let that = this
+        this.$post(this.api.userSignin,{
+          "AccountCode": "1",
+          "Login": "gpc",
+          "Pwd": "123456"
+        }).then((data)=>{
+         if(data.status===200){
+           console.log(data)
+           sessionStorage.setItem('Token',data.data.Data.UserInfo.Token)
+           sessionStorage.setItem('AccountID',data.data.Data.AccountID)
+           that.$router.push({ path: '/Index' });
+        };
+        })
+
       }
     }
   }
