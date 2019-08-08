@@ -11,14 +11,14 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dg1= false">取 消</el-button>
-          <el-button type="primary" @click="dg1 = false">确 定</el-button>
+          <el-button type="primary" @click="newDic">确 定</el-button>
         </span>
       </el-dialog>
     </div>
     <div class="main">
       <div class="tbs">
         <el-tabs tab-position="left" closable>
-          <el-tab-pane v-for="(i,e) in select" :key="e" :label="i.title">
+          <el-tab-pane v-for="(i,e) in select" :key="e" :label="i.DictName" @click="getDictsPage(e)">
             <el-table :data="i.table" height="calc(100vh - 300px)">
               <el-table-column prop="name" label="名称"></el-table-column>
               <el-table-column prop="Remarks" label="备注"></el-table-column>
@@ -63,47 +63,48 @@ export default {
       txra:'',
       select: [
         {
-          title: "asdasas",
-          table: [
-            { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" },
-            { name: "asdtfc", Remarks: "as4656" },
-          ]
+          DictName: "",
+          ID:'',
+          IsSYS:''
         },
-        { title: "asdasas", table: [{ name: "a1231fc", Remarks: "as4123" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
-        { title: "asdasas", table: [{ name: "asdtfc", Remarks: "as4656" }] },
       ]
     };
+  },
+  methods: {
+    newDic(){
+      var param = {
+        DictName:this.tyname
+      }
+      this.$post(this.api.Dict.addDictType,param).then((data)=> {
+        if(data.data.Msg===''){
+          this.select.push({
+            title:this.tyname,
+            table:[]
+          })
+          this.dg1 = false
+          console.log(data)
+          this.tyname = ''
+        } else if(data.data.Msg.indexOf('已存在')!==(-1)){
+        }
+    })
+    },
+    getDictsPage (e) {
+      let param ={
+        "PageSize": 1,
+        "PageIndex": 2,
+        "KeyWord": "",
+        "Query": this.select[e].ID,
+        "OrderString": "",
+        "ToExcel": true
+      }
+      this.$post(this.api.Dict.getDictsPage,)
+    }
+  },
+  created () {
+    this.$get(this.api.Dict.getDictTypeItems).then((data)=>{
+      console.log(data)
+      this.select = data.data.Data
+  })
   }
 };
 </script>

@@ -193,7 +193,7 @@ export default {
   data() {
     return {
       newOrgnize:{
-        ParentID:'',
+        ParentID:sessionStorage.AccoundID,
         OrgName:'',
         Principal:'',
         PrincipalTel:''
