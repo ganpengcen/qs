@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <Header title="系统管理" text="操作员"></Header>
-    
+
     <el-dialog width="30%" :visible.sync="charVis" title="角色管理">
       <div class="info">
         <el-form :inline="true">
@@ -19,9 +19,9 @@
           </div>
         </div>
         <div class="selec">
-          <div class="top">
+          <div class="tp">
             <h3>权限配置</h3>
-            <el-button type="danger">删除</el-button>
+            <el-button type="danger" size="small">删除</el-button>
           </div>
           <el-divider></el-divider>
           <el-collapse accordion>
@@ -42,13 +42,13 @@
     </el-dialog>
     <div class="main">
       <div class="top">
-      <div class="right">
-        <span>关键字:</span>
-        <el-input v-model="sech" size="small"></el-input>
-        <el-button type="primary" size="small">查询</el-button>
-        <el-button type="success" size="small" @click="charVis=true">角色管理</el-button>
+        <div class="right">
+          <span>关键字:</span>
+          <el-input v-model="sech" size="small"></el-input>
+          <el-button type="primary" size="small">查询</el-button>
+          <el-button type="success" size="small" @click="charVis=true">角色管理</el-button>
+        </div>
       </div>
-    </div>
       <el-table
         :data="tdata"
         :header-cell-style="{'text-align':'center'}"
@@ -74,8 +74,10 @@
                   <el-button size="small" type="success" @click="modVis=true">修改</el-button>
                   <el-dialog width="20%" title="修改用户" :visible.sync="modVis" :append-to-body="true">
                     <div class="info">
-                      <el-checkbox v-model="see">查看他人数据</el-checkbox>
-                      <el-checkbox v-model="modif">修改他人数据</el-checkbox>
+                      <div class="cheks">
+                        <el-checkbox v-model="see">查看他人数据</el-checkbox>
+                        <el-checkbox v-model="modif">修改他人数据</el-checkbox>
+                      </div>
                     </div>
                     <span slot="footer" class="dialog-footer">
                       <el-button @click="modVis = false">取 消</el-button>
@@ -90,7 +92,21 @@
                   <el-button size="small" type="info" @click="reset()">重置</el-button>
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <el-button size="small" type="primary">角色</el-button>
+                  <el-button size="small" type="primary" @click="chdg=true">角色</el-button>
+                  <el-dialog :append-to-body="true" width="30%" title="权限配置" :visible.sync="chdg">
+                    <div class="info">
+                      <el-form label-width="100px">
+                        <el-form-item label="操作员">{{opet}}</el-form-item>
+                      </el-form>
+                      <div class="mange">
+                        <el-checkbox v-for="(i,e) in chks" v-model="i.state" :key="e">{{i.name}}</el-checkbox>
+                      </div>
+                    </div>
+                    <span slot="footer" class="dialog-footer">
+                      <el-button @click="chdg= false">取 消</el-button>
+                      <el-button type="primary" @click="chdg = false">确 定</el-button>
+                    </span>
+                  </el-dialog>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -125,7 +141,9 @@ export default {
         { name: "asdas3das" }
       ],
       active: 0,
+      opet: "6as566363",
       sech: "",
+      chdg: false,
       tdata: [
         {
           num: 1,
@@ -515,6 +533,12 @@ export default {
             }
           ]
         }
+      ],
+      chks: [
+        { name: "asda", state: false },
+        { name: "asda", state: true },
+        { name: "asda", state: true },
+        { name: "asda", state: false }
       ]
     };
   },
@@ -564,6 +588,24 @@ export default {
 };
 </script>
 <style scoped>
+.cheks .el-checkbox:first-child{
+  margin: 5px 0 15px 15px
+}
+.cheks .el-checkbox:last-child{
+  margin:0 0 5px 15px
+}
+.mange {
+  margin: 20px;
+  border: 1px solid #999;
+  border-top: 2px solid #999;
+  border-radius: 3px;
+}
+.mange .el-checkbox {
+  margin: 15px 0 0 25px;
+}
+.mange .el-checkbox:last-child {
+  margin-bottom: 15px;
+}
 .info {
   background: #fff;
   padding: 5px;
@@ -578,23 +620,25 @@ export default {
   height: 350px;
   overflow: auto;
 }
-.selec h3 {
+.tp h3 {
   text-align: left;
-  width: 74%;
+  font-size: 18px;
+  width: 68%;
   display: inline-block;
 }
-.selec .top {
+.selec .tp {
   margin-left: 0;
 }
 .chert button {
   width: 100%;
   background: #fff;
   font-size: 15px;
-  border: 1px solid #aaa;
+  border: none;
+  border-bottom: 1px solid #aaa;
   padding: 8px 5px;
 }
 .active {
-  background: #999 !important;
+  background: #ccc !important;
   border: 1px solid #fff !important;
 }
 .char {
@@ -645,7 +689,7 @@ export default {
 .el-pagination {
   text-align: right;
   background: #fff;
-  width:96.1%;
+  width: 96.1%;
   margin-left: 25px;
 }
 .tt .el-checkbox {

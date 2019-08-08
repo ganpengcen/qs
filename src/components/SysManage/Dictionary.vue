@@ -25,6 +25,7 @@
               <el-table-column label="操作">
                 <el-button type="text" @click="dg2=true">修改</el-button>
                 <el-dialog width="30%" title="修改词典项" :visible.sync="dg2" :append-to-body="true">
+                  <div class="info">
                   <el-form>
                     <el-form-item label="名称">
                       <el-input v-model="wname"></el-input>
@@ -33,10 +34,12 @@
                       <el-input v-model="txra" type="textarea" :rows="3"></el-input>
                     </el-form-item>
                   </el-form>
+                  </div>
                   <span slot="footer" class="dialog-footer">
                     <el-button @click="dg2= false">取 消</el-button>
                     <el-button type="primary" @click="dg2 = false">确 定</el-button>
                   </span>
+
                 </el-dialog>
                 <el-button type="text">删除</el-button>
               </el-table-column>
@@ -109,6 +112,10 @@ export default {
 };
 </script>
 <style scoped>
+.info{
+  background: #fff;
+  padding: 15px
+}
 .el-tabs {
   width: 96%;
   margin: 15px 0 0 25px;
@@ -117,7 +124,6 @@ export default {
 .el-input,.el-textarea{
   width: 70%
 }
-
 .main {
   overflow: auto;
   margin-left: 25px;

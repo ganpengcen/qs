@@ -411,10 +411,6 @@ export default {
 };
 </script>
 <style scoped>
-.tb{
-  overflow: auto;
-  height: calc(100% - 100px)
-}
 .content{
   overflow: hidden;
   height: 100%;
@@ -438,7 +434,7 @@ export default {
   display: flex
 }
 .sech .el-input {
-  width: 69%;
+  width: 58%;
 }
 .sech li {
   list-style: none;
@@ -468,6 +464,7 @@ export default {
 }
 .el-table{
   margin-top: 10px;
+  margin-bottom: 45px
 }
 .el-tabs{
   box-shadow: none;

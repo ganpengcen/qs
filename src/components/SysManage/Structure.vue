@@ -47,9 +47,9 @@
                 </span>
               </span>
             </el-tree>
-            <el-dialog title="新建人员" width="60%" :visible.sync="digl">
+            <el-dialog title="新建人员" width="1000px" :visible.sync="digl">
               <div class="info">
-                <el-form label-width="100px" :inline="true">
+                <el-form label-width="80px" :inline="true">
                   <el-form-item label="姓名:">
                     <el-input v-model="rowinf.name"></el-input>
                   </el-form-item>
@@ -106,7 +106,7 @@
               border
               :cell-style="{'text-align':'center'}"
               :header-cell-style="{'text-align':'center'}"
-              height="calc(100vh - 320px)"
+              height="calc(100vh - 435px)"
               @row-click="getdata"
             >
               <el-table-column prop="name" label="姓名"></el-table-column>
@@ -124,9 +124,9 @@
               </el-table-column>
               <el-table-column label="操作">
                 <el-button type="text" @click="dg1=true">修改</el-button>
-                <el-dialog title="修改人员" width="60%" :visible.sync="dg1">
+                <el-dialog title="修改人员" width="1000px" :visible.sync="dg1">
                   <div class="info">
-                    <el-form label-width="100px" :inline="true">
+                    <el-form label-width="80px" :inline="true">
                       <el-form-item label="姓名:">
                         <el-input v-model="rowinfo.name"></el-input>
                       </el-form-item>
@@ -387,7 +387,6 @@ export default {
 }
 .tp {
   padding: 15px;
-  width: calc(100% - 15px);
   text-align: right;
 }
 .el-col-18 {
@@ -428,6 +427,11 @@ export default {
 .pge {
   text-align: right;
   height: 30px;
+  margin-top:11px;
+  background: #fff;
+}
+.el-dialog{
+  min-width: 1000px;
 }
 .el-dialog__wrapper {
   overflow: hidden;

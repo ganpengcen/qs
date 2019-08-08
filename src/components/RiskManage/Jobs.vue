@@ -154,7 +154,7 @@
       </div>
     </el-dialog>
     <div class="pge">
-      <el-pagination :page-size="5" background layout="prev,pager,next" :total="tbd.length"></el-pagination>
+      <el-pagination :page-size="5" layout="prev,pager,next" :total="tbd.length"></el-pagination>
     </div>
   </div>
 </template>

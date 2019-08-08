@@ -33,15 +33,29 @@
 </template>
 
 <script>
+import api from "../../axios/api";
   export default {
     name: "Login",
     data() {
       return {
-        Login1:'',
-        Login2:'',
-        Login3:'',
+        loading: false,
+        Login1: "",
+        Login2: "",
+        Login3: "",
+        state: 0,
         Pwd:'',
+        MenuList: [],
+        value2:''
       }
+    },
+    mounted() {
+      let me = this;
+      document.onkeydown = function(event) {
+        var e = event || window.event;
+        if(e && e.keyCode == 13) { //回车键的键值为13
+          me.signin()
+        }
+      };//  xf  xf123456
     },
     methods: {
       signin() {
@@ -56,9 +70,19 @@
            sessionStorage.setItem('Token',data.data.Data.UserInfo.Token)
            sessionStorage.setItem('AccountID',data.data.Data.AccountID)
            that.$router.push({ path: '/Index' });
-        };
+        }
         })
 
+        // if (this.Login == "" || this.Pwd == "") {
+        //   this.$message({
+        //     message: "参数不能为空",
+        //     type: "warning"
+        //   });
+        //   return false;
+        // }
+        //
+
+        // this.loading = true;
       }
     }
   }
