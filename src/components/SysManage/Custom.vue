@@ -7,34 +7,34 @@
           <div>
             <p>自定义类型:</p>
           </div>
-          <div v-for="(i,e) in modifs" :key="e">
-            <b @click="send(e)">{{i.title}}</b>
-            <el-button type="text" @click="dg1=true">+</el-button>
+          <div v-for="(i,e) in modifs" :key="e" v-model="val" @click="getrow(e)">
+            <b @click="send(e)" v-model="i.Value">{{i.Caption}}</b>
+            <el-button type="text" @click="dg1=true,cus={}">+</el-button>
           </div>
           <el-dialog width="25%" title="新建自定义项" :visible.sync="dg1">
             <div class="info">
               <el-form label-width="100px">
                 <el-form-item label="标题">
-                  <el-input v-model="cus.title"></el-input>
+                  <el-input v-model="cus.Caption"></el-input>
                 </el-form-item>
                 <el-form-item label="数据类型">
-                  <el-select v-model="cus.type">
-                    <el-option v-for="(i,e) in sels" :key="e" :label="i.label" :value="i.value"></el-option>
+                  <el-select v-model="cus.DataType">
+                    <el-option v-for="(i,e) in sels" :key="e" :label="i.Caption" :value="i.Value"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="显示顺序">
-                  <el-input v-model="cus.to"></el-input>
+                  <el-input v-model="cus.VisibleIndex"></el-input>
                 </el-form-item>
                 <el-form-item>
                   <div class="chekbxs">
-                    <el-checkbox v-model="cus.chek">是否为空</el-checkbox>
+                    <el-checkbox v-model="cus.IsEmpty">是否为空</el-checkbox>
                   </div>
                 </el-form-item>
               </el-form>
             </div>
             <span slot="footer" class="dialog-footer">
               <el-button @click="dg1= false">取 消</el-button>
-              <el-button type="primary" @click="dg1= false">确 定</el-button>
+              <el-button type="primary" @click="crete()">确 定</el-button>
             </span>
           </el-dialog>
         </el-col>
@@ -99,137 +99,74 @@
 </template>
 <script>
 import Header from "../assembly/Header";
+import api from "../../axios/api"
 export default {
+    name: "app",
+  inject: ["reload"],
   components: {
     Header
   },
   data() {
     return {
-      modifs: [
-        {
-          title: "1",
-          info: [
-            {
-              tle: "123",
-              datype: "字符",
-              dir: "",
-              mut: true,
-              ull: true,
-              ord: "1"
-            },
-            {
-              tle: "123",
-              datype: "字符",
-              dir: "",
-              mut: true,
-              ull: true,
-              ord: "1"
-            },
-            {
-              tle: "123",
-              datype: "字符",
-              dir: "",
-              mut: true,
-              ull: true,
-              ord: "1"
-            },
-            {
-              tle: "123",
-              datype: "字符",
-              dir: "",
-              mut: true,
-              ull: true,
-              ord: "1"
-            },
-            {
-              tle: "123",
-              datype: "字符",
-              dir: "",
-              mut: true,
-              ull: true,
-              ord: "1"
-            },
-            {
-              tle: "123",
-              datype: "字符",
-              dir: "",
-              mut: true,
-              ull: true,
-              ord: "1"
-            }
-          ]
-        },
-        {
-          title: "2",
-          info: [
-            {
-              tle: "124",
-              datype: "字符",
-              dir: "",
-              mut: true,
-              ull: false,
-              ord: "1"
-            }
-          ]
-        },
-        {
-          title: "3",
-          info: [
-            {
-              tle: "125",
-              datype: "字符",
-              dir: "",
-              mut: false,
-              ull: true,
-              ord: "3"
-            }
-          ]
-        },
-        {
-          title: "4",
-          info: [
-            {
-              tle: "1256",
-              datype: "字符",
-              dir: "",
-              mut: true,
-              ull: true,
-              ord: "7"
-            }
-          ]
-        },
-        {
-          title: "5",
-          info: [
-            {
-              tle: "129",
-              datype: "字符",
-              dir: "",
-              mut: true,
-              ull: true,
-              ord: "5"
-            }
-          ]
-        }
-      ],
+      val:-1,
+      modifs: [],
       shs: [],
-      sels: [
-        { value: "选项1", label: "字符" },
-        { value: "选项2", label: "日期" },
-        { value: "选项3", label: "数字" },
-        { value: "选项4", label: "整数" },
-        { value: "选项5", label: "词典" },
-        { value: "选项6", label: "是非" }
-      ],
+      sels: [],
       cus: {},
       dg1: false,
       cus1: {},
       dg2: false
     };
   },
+  created(){
+    this.$get(api.getUserDefinedTypes).then(res=>{
+      console.log(res)
+      if(res.data.State==200){
+        this.modifs=res.data.Data
+      }
+    });
+    this.$get(api.getUserDefinedDataType).then(res=>{
+      console.log(res)
+      if(res.data.State ==200){
+        this.sels=res.data.Data
+        console.log(this.sels)
+      }
+    })
+  },    
   methods: {
+    crete(){
+      this.dg1=false
+      console.log(this.cus)
+      let sth=this.cus
+      this.$post(api.addUserDefined,sth).then(res=>{
+        console.log(res)
+        if(res.data.State==200){
+          this.$message({
+            type: "success",
+            message: "创建成功"
+          });
+          this.reload()
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
+    },
+    getrow(e){
+      console.log(this.modifs[e].Value)
+      this.cus.DefinedType=this.modifs[e].value
+    },
     send(e) {
-      this.shs = this.modifs[e].info;
+      console.log(this.modifs[e].Value)
+      let type=this.modifs[e].Value
+      console.log(api.getUserDefinedItems+type)
+      this.$get(api.getUserDefinedItems+type).then(res=>{
+        console.log(res)
+        if(res.data.State==200){
+          this.shs=res.data.Data
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
     },
     get(row) {
       console.log(row);

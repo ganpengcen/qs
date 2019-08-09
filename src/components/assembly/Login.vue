@@ -39,9 +39,9 @@ import api from "../../axios/api";
     data() {
       return {
         loading: false,
-        Login1: "",
-        Login2: "",
-        Login3: "",
+        Login1: "1",
+        Login2: "xt",
+        Login3: "123456",
         state: 0,
         Pwd:'',
         MenuList: [],
