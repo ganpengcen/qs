@@ -12,9 +12,9 @@ axios.interceptors.request.use(
     console.log('AXIOStoken:',Token)
     config.data = JSON.stringify(config.data);
     config.headers = {
-      ['Content-Type']: 'application/json;charset=UTF-8',
-      ['token']:sessionStorage.Token,
-      ['accountid']:sessionStorage.AccountID
+      'Content-Type': 'application/json;charset=UTF-8',
+      'token':sessionStorage.Token,
+      'accountid':sessionStorage.AccountID
     }
     if(!Token) {
       router.push({

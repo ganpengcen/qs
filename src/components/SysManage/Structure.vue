@@ -7,28 +7,6 @@
           <div class="title">
             <span>组织架构</span>
             <el-button type="text" @click="dialog1 = true">+</el-button>
-            <el-dialog width="35%" :visible.sync="dialog1" title="新建组织架构">
-              <div class="info">
-                <el-form label-width="100px" v-model="newOrgnize">
-                  <el-form-item label="上级:">
-                    <el-input disabled v-model="newOrgnize.ParentID"></el-input>
-                  </el-form-item>
-                  <el-form-item label="名称:">
-                    <el-input v-model="newOrgnize.OrgName"></el-input>
-                  </el-form-item>
-                  <el-form-item label="负责人:">
-                    <el-input v-model="newOrgnize.Principal"></el-input>
-                  </el-form-item>
-                  <el-form-item label="电话:">
-                    <el-input v-model="newOrgnize.PrincipalTel"></el-input>
-                  </el-form-item>
-                </el-form>
-              </div>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialog1 = false">取 消</el-button>
-                <el-button type="primary" @click="submitOrgnize()">确 定</el-button>
-              </span>
-            </el-dialog>
           </div>
           <div>
             <el-tree
@@ -181,6 +159,28 @@
         </el-col>
       </el-row>
     </div>
+    <el-dialog width="35%" :visible.sync="dialog1" title="新建组织架构">
+      <div class="info">
+        <el-form label-width="100px" v-model="newOrgnize">
+          <el-form-item label="上级:">
+            <el-input disabled v-model="newOrgnize.ParentID"></el-input>
+          </el-form-item>
+          <el-form-item label="名称:">
+            <el-input v-model="newOrgnize.OrgName"></el-input>
+          </el-form-item>
+          <el-form-item label="负责人:">
+            <el-input v-model="newOrgnize.Principal"></el-input>
+          </el-form-item>
+          <el-form-item label="电话:">
+            <el-input v-model="newOrgnize.PrincipalTel"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+                <el-button @click="dialog1 = false">取 消</el-button>
+                <el-button type="primary" @click="submitOrgnize()">确 定</el-button>
+              </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -231,20 +231,7 @@ export default {
       },
       dg1: false,
       dialog1: false,
-      treedata: [
-        {
-          label: "1",
-          children: [
-            {
-              label: "1-1",
-              children: [{ label: "1-1-1" }, { label: "1-1-2" }]
-            },
-            { label: "1-2", children: [{ label: "1-2-1" }] },
-            { label: "1-3" },
-            { label: "1-4" }
-          ]
-        }
-      ],
+      treedata: [],
       tdab: [
         {
           name: "asdasda",
@@ -301,6 +288,15 @@ export default {
     };
   },
   methods: {
+    getOrg () {
+      this.$get(this.api.Org.getOrgChildren + '00000000-0000-0000-0000-000000000000').then(res=>{
+        if(res.data.State === 200){
+          console.log(res)
+          console.log('成功获取组织架构节点')
+          this.treedata = res.data.Data
+        }
+      })
+    },//获取组织架构子集
     submitOrgnize () {
       this.$post(this.api.addOrg,
         this.newOrgnize
@@ -341,6 +337,7 @@ export default {
 
   },
   created () {
+    this.getOrg()
   }
 };
 </script>

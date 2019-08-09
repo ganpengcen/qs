@@ -64,15 +64,15 @@ import api from "../../axios/api";
           "AccountCode": "1",
           "Login": "gpc",
           "Pwd": "123456"
-        }).then((data)=>{
-         if(data.status===200){
-           console.log(data)
-           sessionStorage.setItem('Token',data.data.Data.UserInfo.Token)
-           sessionStorage.setItem('AccountID',data.data.Data.AccountID)
+        }).then((res)=>{
+         if(res.data.State===200){
+           sessionStorage.setItem('Token',res.data.Data.UserInfo.Token)
+           sessionStorage.setItem('AccountID',res.data.Data.AccountID)
            that.$router.push({ path: '/Index' });
-        }
+        }else {
+           this.$message.error(res.data.Msg)
+         }
         })
-
         // if (this.Login == "" || this.Pwd == "") {
         //   this.$message({
         //     message: "参数不能为空",

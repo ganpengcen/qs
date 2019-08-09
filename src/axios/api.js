@@ -2,9 +2,12 @@
 const host = 'http://quickcq.com:8008/'
 export default {
   userSignin: host + 'api/auth/userSignin',
-  getEmployeePage: host + 'api/org/getEmployeePage',
-  addOrg: host + 'api/org/addOrg',
-  getEmployeeModel: host + 'api/org/getEmployeeModel/',
+  Org:{
+     getEmployeePage: host + 'api/org/getEmployeePage',
+     addOrg: host + 'api/org/addOrg',
+      getEmployeeModel: host + 'api/org/getEmployeeModel/',
+      getOrgChildren:host + 'api/org/getOrgChildren/',
+      },
   Dict: {
     addDict: host + 'api/dict/addDict',
     addDictType: host + 'api/dict/addDictType',
