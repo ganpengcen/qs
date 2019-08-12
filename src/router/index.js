@@ -33,6 +33,7 @@ const safety=resolve=>void(require(['../components/files/safety.vue'],resolve));
 const train=resolve=>void(require(['../components/files/train.vue'],resolve));
 const health=resolve=>void(require(['../components/health/health.vue'],resolve));
 const manage=resolve=>void(require(['../components/health/manage.vue'],resolve));
+const hw=resolve=>void(require(['../components/HelloWorld.vue'],resolve));
 
 
 export default new Router({
@@ -41,6 +42,11 @@ export default new Router({
       path: '/',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/hw',
+      name: 'hw',
+      component: hw
     },
     {
       /*******模板页面即包含头部 左侧菜单栏 主页面 底部 *********/

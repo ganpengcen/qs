@@ -55,7 +55,7 @@
         :cell-style="{'text-align':'center'}"
         height="calc(100% - 80px)"
       >
-        <el-table-column type="index" width="50" label="#" prop="num"></el-table-column>
+        <el-table-column type="index" width="50" label="#"></el-table-column>
         <el-table-column prop="uname" label="用户名" sortable></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="tel" label="电话"></el-table-column>
@@ -542,6 +542,9 @@ export default {
       ]
     };
   },
+  created(){
+    
+  },
   methods: {
     del() {
       this.$confirm("将要执行删除操作,是否继续?", "提示", {
@@ -689,8 +692,9 @@ export default {
 .el-pagination {
   text-align: right;
   background: #fff;
-  width: 96.1%;
+  /* width: 85%; */
   margin-left: 25px;
+  margin-right: 30px;
 }
 .tt .el-checkbox {
   margin-top: 0;
