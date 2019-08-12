@@ -17,7 +17,7 @@
               :expand-on-click-node="true"
             >
               <span class="custom-tree-node" slot-scope="{node,data}">
-                <span>{{node.label}}</span>
+                <span @click="getChild(data.ID)">{{data.OrgName}}</span>
                 <span>
                   <el-button size="mini" type="text" @click="dialog1 = true">+</el-button>
                   <el-button size="mini" type="text" @click="del()">-</el-button>
@@ -192,8 +192,9 @@ export default {
 
   data() {
     return {
+      parentID:'',
       newOrgnize:{
-        ParentID:sessionStorage.AccoundID,
+        ParentID: '',
         OrgName:'',
         Principal:'',
         PrincipalTel:''
@@ -288,12 +289,28 @@ export default {
     };
   },
   methods: {
+    getChild (ID) {
+      this.$get(this.api.Org.getOrgChildren + ID).then(res=>{
+        if(res.data.State === 200){
+          console.log('成功获取组织架构子节点')
+          console.log(res)
+        } else {
+          this.$message.error(res.data.Msg)
+        }
+      })
+    },  //获取节点子树
     getOrg () {
       this.$get(this.api.Org.getOrgChildren + '00000000-0000-0000-0000-000000000000').then(res=>{
         if(res.data.State === 200){
           console.log(res)
           console.log('成功获取组织架构节点')
+          console.log(res)
           this.treedata = res.data.Data
+          this.ParentID = res.data.Data[0].ParentID
+          console.log('id',this.parentID)
+          console.log(this.treedata)
+        } else {
+          this.$message.error(res.data.Msg)
         }
       })
     },//获取组织架构子集

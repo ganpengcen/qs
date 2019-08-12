@@ -38,3 +38,29 @@
 </style>
 </body>
 </html>
+signin() {
+let that = this
+this.$post(this.api.userSignin,{
+"AccountCode": "1",
+"Login": "gpc",
+"Pwd": "123456"
+}).then((res)=>{
+if(res.data.State===200){
+sessionStorage.setItem('Token',res.data.Data.UserInfo.Token)
+sessionStorage.setItem('AccountID',res.data.Data.AccountID)
+that.$router.push({ path: '/Index' });
+}else {
+this.$message.error(res.data.Msg)
+}
+})
+// if (this.Login == "" || this.Pwd == "") {
+//   this.$message({
+//     message: "参数不能为空",
+//     type: "warning"
+//   });
+//   return false;
+// }
+//
+
+// this.loading = true;
+}

@@ -83,6 +83,11 @@ export default new Router({
           component: Dictionary
         },
         {
+          path: '/point',
+          name: 'point',
+          component: point
+        },
+        {
           path: '/Custom',
           name: 'Custom',
           component: Custom
