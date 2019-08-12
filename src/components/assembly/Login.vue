@@ -39,32 +39,11 @@
     name: "Login",
     data() {
       return {
-<<<<<<< HEAD
         Login1: "",
         Login2: "",
         Login3: "",
         Pwd: ""
       };
-=======
-        loading: false,
-        Login1: "1",
-        Login2: "xt",
-        Login3: "123456",
-        state: 0,
-        Pwd:'',
-        MenuList: [],
-        value2:''
-      }
-    },
-    mounted() {
-      let me = this;
-      document.onkeydown = function(event) {
-        var e = event || window.event;
-        if(e && e.keyCode == 13) { //回车键的键值为13
-          me.signin()
-        }
-      };//  xf  xf123456
->>>>>>> 650dc010df0d4a24621f405e9e12fb0f3974b513
     },
 
     methods: {
@@ -72,7 +51,7 @@
         let that = this
         this.$post(this.api.userSignin,{
           "AccountCode": "1",
-          "Login": "gpc",
+          "Login": "xt",
           "Pwd": "123456"
         }).then((res)=>{
           if(res.data.State===200){

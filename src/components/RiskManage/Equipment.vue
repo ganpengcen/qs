@@ -281,7 +281,7 @@ export default {
   border-top: 2px solid #049eff;
   border-radius: 3px;
   overflow: auto;
-  height: calc(100vh - 210px);
+  height: calc(100vh - 225px);
 }
 .top > div {
   width: 50%;

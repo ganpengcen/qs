@@ -34,6 +34,7 @@ const train=resolve=>void(require(['../components/files/train.vue'],resolve));
 const health=resolve=>void(require(['../components/health/health.vue'],resolve));
 const manage=resolve=>void(require(['../components/health/manage.vue'],resolve));
 const hw=resolve=>void(require(['../components/HelloWorld.vue'],resolve));
+const pointManage=resolve=>void(require(['../components/RiskManage/pointManage.vue'],resolve));
 
 
 export default new Router({
@@ -188,7 +189,12 @@ export default new Router({
           path:'/manage',
           name:'manage',
           component:manage
-        }
+        },
+        {
+          path:'/pointManage',
+          name:'pointManage',
+          component:pointManage
+        },
       ]
 
     }

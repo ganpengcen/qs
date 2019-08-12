@@ -84,7 +84,7 @@
               border
               :cell-style="{'text-align':'center'}"
               :header-cell-style="{'text-align':'center'}"
-              height="calc(100vh - 435px)"
+              height="calc(100vh - 350px)"
               @row-click="getdata"
             >
               <el-table-column prop="name" label="姓名"></el-table-column>
@@ -373,7 +373,7 @@ export default {
   padding: 15px 0;
 }
 .el-col-5 {
-  height: calc(100vh - 300px);
+  height: calc(100vh - 230px);
   font-size: 17px;
   overflow: auto;
 }

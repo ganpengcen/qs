@@ -12,7 +12,7 @@ export default {
   delLogId: Host + 'api/log/delLogById/',//删除指定id的操作日志
 
   //词典
-  Dict:{
+  Dict: {
     addDict: Host + 'api/dict/addDict',	// 新建词典
     addDictType: Host + 'api/dict/addDictType',	// 新建词典类型
     delDict: Host + 'api/dict/delDict/',	// 删除词典
@@ -24,33 +24,7 @@ export default {
   },
 
   //组织架构
-  Org:{
-<<<<<<< HEAD
-    getEmployeePage: host + 'api/org/getEmployeePage',
-    addOrg: host + 'api/org/addOrg',
-    getEmployeeModel: host + 'api/org/getEmployeeModel/',
-    getOrgChildren:host + 'api/org/getOrgChildren/',
-    getParentItems: host + 'api/org/getParentItems/',
-    getChildrenItems: host + 'api/org/getChildrenItems/',
-    getEmployeeList: host + 'api/org/getEmployeeList/',
-    employeeQuit: host + 'api/org/employeeQuit',
-    deleteEmployee: host + 'api/org/deleteEmployee/',
-    editEmployee: host + 'api/org/editEmployee',
-    addEmployee:  host + 'api/org/addEmployee',
-    deleteOrg: host + 'api/org/deleteOrg/',
-    editOrg: host + 'api/org/editOrg',
-      },
-  Dict: {
-    addDict: host + 'api/dict/addDict',
-    addDictType: host + 'api/dict/addDictType',
-    delDict: host + 'api/dict/delDict/',
-    delDictType: host + 'api/dict/delDictType/',
-    editDict: host + 'api/dict/editDict',
-    getDictModel: host + 'api/dict/getDictModel/',
-    getDictsPage: host + 'api/dict/getDictsPage',
-    getDictTypeItems: host + 'api/dict/getDictTypeItems'
-  }
-=======
+  Org: {
     addOrg: Host + 'api/org/addOrg',//新建组织架构
     editOrg: Host + 'api/org/editOrg',//修改组织架构
     deleteOrg: Host + 'api/org/deleteOrg/',//删除组织架构
@@ -76,5 +50,15 @@ export default {
   getUserDefinedItems: Host + 'api/userDefined/getUserDefinedItems/', //根据自定义类型获取自定义项集合
   getUserDefinedList: Host + 'api/userDefined/getUserDefinedList', //根据自定义类型获取表单的自定义项
   getUserDefinedTypes: Host + 'api/userDefined/getUserDefinedTypes', //获取自定义项类型集合
->>>>>>> 650dc010df0d4a24621f405e9e12fb0f3974b513
+
+  //岗位管理
+  addPost: Host + 'api/post/addPost',//新建岗位
+  addPostEmployee: Host + 'api/post/addPostEmployee',//新建岗位人员
+  delPostEmployee: Host + 'api/post/delPostEmployee/',//删除岗位人员
+  editPost: Host + 'api/post/editPost',//修改岗位信息
+  getEmpByPostID: Host + 'api/post/getEmpByPostID/',//根据岗位ID获取人员选择器
+  getPostModel: Host + 'api/post/getPostModel/',//获取岗位模型
+  getPostsPage: Host + 'api/post/getPostsPage',//分页获取岗位列表
+  getPostItems: Host + 'api/post/getPostItems',//获取岗位集合
+  getEmployeesByPostID: Host + 'api/post/getEmployeesByPostID',//根据岗位ID分页获取人员列表
 }
