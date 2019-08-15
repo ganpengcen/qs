@@ -35,7 +35,7 @@
       </div>
       <div class="table-main">
         <div class="detail">
-          <el-table :data="Items" class="datalist" border height="calc(100vh - 355px)">
+          <el-table :data="Items" class="datalist" border height="calc(100vh - 343px)">
             <el-table-column prop="Number" label="编号"></el-table-column>
             <el-table-column prop="Name" label="名称"></el-table-column>
             <el-table-column prop="level" label="风险等级"></el-table-column>
@@ -290,8 +290,9 @@
   }
   .wrapper .table {
     height: calc(100% - 150px);
-    margin: 15px 25px 11px;
+    margin:10px 0 15px 25px;
     overflow: hidden;
+    width: calc(100% - 50px)
   }
   .wrapper .table .table-top {
     height: 40px;

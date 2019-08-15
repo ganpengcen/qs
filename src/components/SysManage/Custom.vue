@@ -48,7 +48,7 @@
             :data="shs"
             border
             :cell-style="{'text-align':'center'}"
-            height="calc(100vh - 250px)"
+            height="calc(100vh - 231px)"
             :header-cell-style="{'text-align':'center'}"
             @row-click="get"
           >
@@ -312,13 +312,13 @@ export default {
   overflow: auto;
 }
 .el-col {
-  max-height: 687px;
+  max-height: 710px;
 }
 .el-col-4 {
   background-color: #fff;
   text-align: center;
   overflow: auto;
-  height: calc(100vh - 250px);
+  height: calc(100vh - 232px);
   width: 18.22%;
 }
 .el-col-4 p,
@@ -335,7 +335,7 @@ export default {
 }
 .el-col-18 {
   margin-left: 25px;
-  width: 75w%;
+  width: 75%;
 }
 .place {
   height: 1px;

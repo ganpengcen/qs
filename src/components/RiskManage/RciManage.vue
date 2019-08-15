@@ -293,6 +293,7 @@ export default {
   border-top: 2px solid #409eff;
   border-radius: 5px;
   background: #fff;
+  margin: 0 0 15px 0
 }
 .top p {
   font-size: 20px;

@@ -293,10 +293,10 @@ export default {
   overflow: hidden;
 }
 .main {
-  margin: 25px;
+  margin: 15px 25px;
   width: calc(100% - 55px);
   overflow: hidden;
-  height: calc(100% - 170px);
+  height: calc(100% - 150px);
 }
 .el-dialog {
   text-align: left;

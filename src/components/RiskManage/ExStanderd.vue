@@ -158,7 +158,7 @@ export default {
   overflow: hidden;
   width: calc(100% - 50px);
   margin:0 0 7px 25px;
-  height: calc(100% - 133px)
+  height: calc(100% - 148px)
 }
 .top{
   margin-bottom: 15px;
@@ -169,9 +169,12 @@ export default {
 .el-button{
   margin: 10px 0 10px 15px;
 }
+.el-table{
+  margin-bottom: 15px;
+}
 .pge {
   width:calc(100% - 50px);
-  margin-left: 25px;
+  margin:15px 0 0 25px;
   height: 32px;
   text-align: right;
   background: #fff

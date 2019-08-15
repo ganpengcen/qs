@@ -6,14 +6,26 @@
     </div>
     <div class="main">
       <div class="tbs">
-        <el-tabs tab-position="left" closable @tab-click="getDictsPage" v-model="parentID" @tab-remove="removeTab">
+        <el-tabs
+          tab-position="left"
+          closable
+          @tab-click="getDictsPage"
+          v-model="parentID"
+          @tab-remove="removeTab"
+        >
           <el-tab-pane v-for="(i,e) in select" :key="e" :label="i.DictName" :name="i.ID">
-
-            <div style="height: 40px;background-color: white;margin-bottom: 10px;border-radius: 3px;padding: 10px 0px">
-              <el-button type="primary" @click="addPage=true" size="small" style="float: right;margin-right: 20px">新增项</el-button>
+            <div
+              style="height: 32px;background-color: white;margin-bottom: 15px;border-radius: 3px;padding: 10px 0px"
+            >
+              <el-button
+                type="primary"
+                @click="addPage=true"
+                size="small"
+                style="float: right;margin-right: 20px"
+              >新增项</el-button>
             </div>
 
-            <el-table :data="tableDetail" height="calc(100vh - 420px)" border>
+            <el-table :data="tableDetail" height="calc(100vh - 393px)" border>
               <el-table-column prop="DictName" label="名称"></el-table-column>
               <el-table-column prop="Memo" label="备注"></el-table-column>
               <el-table-column label="操作">
@@ -29,13 +41,12 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page.sync="page.index"
-                  :page-size="page.size"
+                :page-size="page.size"
                 :page-sizes="[3, 7, 30, 50]"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total.sync="page.total">
-              </el-pagination>
+                :total.sync="page.total"
+              ></el-pagination>
             </div>
-
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -53,10 +64,10 @@
           </el-form-item>
         </el-form>
       </div>
-              <span slot="footer" class="dialog-footer">
-                    <el-button @click="dg2= false" :underline="false">取 消</el-button>
-                    <el-button type="primary" @click="changeTable" :underline="false">确 定</el-button>
-                  </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dg2= false" :underline="false">取 消</el-button>
+        <el-button type="primary" @click="changeTable" :underline="false">确 定</el-button>
+      </span>
     </el-dialog>
     <el-dialog title="新建类型" :visible.sync="dg1">
       <el-form>
@@ -65,9 +76,9 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-          <el-button @click="dg1= false">取 消</el-button>
-          <el-button type="primary" @click="newDic">确 定</el-button>
-        </span>
+        <el-button @click="dg1= false">取 消</el-button>
+        <el-button type="primary" @click="newDic">确 定</el-button>
+      </span>
     </el-dialog>
     <el-dialog :visible.sync="addPage" title="新建项">
       <div style="background-color: white;padding: 20px;height: 350px">
@@ -83,9 +94,8 @@
       <span slot="footer">
         <el-button @click="addPage=false">取消</el-button>
         <el-button @click="addNewPage" type="primary">确认</el-button>
-       </span>
+      </span>
     </el-dialog>
-
   </div>
 </template>
 <script>
@@ -96,207 +106,214 @@ export default {
   },
   data() {
     return {
-      presentID:'',
-      newpage:{
-        DictName:'',
-        Memo:''
+      presentID: "",
+      newpage: {
+        DictName: "",
+        Memo: ""
       },
-      parentID:'',
-      addPage:false,
+      parentID: "",
+      addPage: false,
       dg1: false,
       dg2: false,
       tyname: "",
-      txra:'',
+      txra: "",
       select: [
         {
           DictName: "",
-          ID:'',
-          IsSYS:''
-        },
+          ID: "",
+          IsSYS: ""
+        }
       ],
-      tableDetail:[],
-      page:{
-        index:1,
-        size:3,
-        total:0
+      tableDetail: [],
+      page: {
+        index: 1,
+        size: 3,
+        total: 0
       },
-      index: ''
+      index: ""
     };
   },
   methods: {
-    dg2show (ID) {
-      this.presentID = ID
-      this.dg2 = true
+    dg2show(ID) {
+      this.presentID = ID;
+      this.dg2 = true;
     },
-    changeTable () {
-     let  param = {
-        "ID": this.presentID,
-        "ParentID": this.parentID,
-        "DictName": this.newpage.DictName,
-        "Memo": this.newpage.Memo,
-        "MinValue": 5.1,
-        "MaxValue": 6.1
-      }
-      this.$post(this.api.Dict.editDict,param).then(res => {
-        if(res.data.State === 200) {
-          this.getDictsPage()
-          this.dg2 = false
-        }
-      })
-    }, //修改词典项
-    deleteTable (ID) {
-      this.$confirm('将永久删除该词点，是否继续?','提示',{
-        comfirmButtonText: '确认',
-        cancelButtonText:'取消',
-        type:'warning'
-      }).then(()=>{
-        this.$get(this.api.Dict.delDict + ID).then(res =>{
-          if(res.data.State === 200) {
-            this.getDictsPage()
-            this.$message.success('删除成功')
-          } else {
-            this.$message.error(res.data.Msg)
-          }
-        })
-      }).catch(()=>{
-        this.$message.info('已取消')
-      })
-    },  //删除词典项
-    removeTabApi () {
-      this.$get(this.api.Dict.delDictType + this.parentID).then((res)=>{
-        console.log(res)
+    changeTable() {
+      let param = {
+        ID: this.presentID,
+        ParentID: this.parentID,
+        DictName: this.newpage.DictName,
+        Memo: this.newpage.Memo,
+        MinValue: 5.1,
+        MaxValue: 6.1
+      };
+      this.$post(this.api.Dict.editDict, param).then(res => {
         if (res.data.State === 200) {
-          this.getDict()
-          this.$message.success('删除成功')
-        } else {
-          this.$message.error(res.data.Msg)
+          this.getDictsPage();
+          this.dg2 = false;
         }
+      });
+    }, //修改词典项
+    deleteTable(ID) {
+      this.$confirm("将永久删除该词点，是否继续?", "提示", {
+        comfirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning"
       })
+        .then(() => {
+          this.$get(this.api.Dict.delDict + ID).then(res => {
+            if (res.data.State === 200) {
+              this.getDictsPage();
+              this.$message.success("删除成功");
+            } else {
+              this.$message.error(res.data.Msg);
+            }
+          });
+        })
+        .catch(() => {
+          this.$message.info("已取消");
+        });
+    }, //删除词典项
+    removeTabApi() {
+      this.$get(this.api.Dict.delDictType + this.parentID).then(res => {
+        console.log(res);
+        if (res.data.State === 200) {
+          this.getDict();
+          this.$message.success("删除成功");
+        } else {
+          this.$message.error(res.data.Msg);
+        }
+      });
     },
-    removeTab () {
-      this.$confirm('将永久删除该词点，是否继续?','提示',{
-        comfirmButtonText: '确认',
-        cancelButtonText:'取消',
-        type:'warning'
-      }).then(()=>{
-        this.removeTabApi()
-      }).catch(()=>{
-        this.$message.info('已取消')
+    removeTab() {
+      this.$confirm("将永久删除该词点，是否继续?", "提示", {
+        comfirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning"
       })
-    },  //删除词典类型
-    newDic(){
+        .then(() => {
+          this.removeTabApi();
+        })
+        .catch(() => {
+          this.$message.info("已取消");
+        });
+    }, //删除词典类型
+    newDic() {
       var param = {
-        DictName:this.tyname
-      }
-      this.$post(this.api.Dict.addDictType,param).then((data)=> {
-        if(data.data.State === 200) {
-          if (data.data.Msg === '') {
+        DictName: this.tyname
+      };
+      this.$post(this.api.Dict.addDictType, param).then(data => {
+        if (data.data.State === 200) {
+          if (data.data.Msg === "") {
             this.select.push({
               title: this.tyname,
               table: []
-            })
-            this.dg1 = false
-            console.log(data)
-            this.tyname = ''
-          } else if (data.data.Msg.indexOf('已存在') !== (-1)) {
+            });
+            this.dg1 = false;
+            console.log(data);
+            this.tyname = "";
+          } else if (data.data.Msg.indexOf("已存在") !== -1) {
             this.$notify({
-              title: '标题名称',
-              message: '该类型已存在,请从新输入'
-            })
-            this.tyname = ''
+              title: "标题名称",
+              message: "该类型已存在,请从新输入"
+            });
+            this.tyname = "";
           }
-        } else this.message('失败')
-    })
-    },  //新建词典类型
-    getDictsPage () {
-      let param ={
-        "PageSize": this.page.size,
-        "PageIndex":this.page.index - 1,
-        "KeyWord": "",
-        "Query": this.parentID,
-        "OrderString": "",
-        "ToExcel": true
-      }
-      console.log(param)
-      this.$post(this.api.Dict.getDictsPage,param).then((res)=>{
-        console.log('获取表格信息')
-        this.tableDetail = res.data.Data.Data
-        this.page.total = res.data.Data.Items
-        console.log('tableDetail',res)
-      })
-    },  //根据id获取表格信息
-    addNewPage () {
-      console.log('父节点id:',this.parentID)
-      let param =
-      {
-        "ParentID": this.parentID,
-        "DictName": this.newpage.DictName,
-        "Memo": this.newpage.Memo,
-        "MinValue": 4.1,
-        "MaxValue": 5.1
-      }
-      this.$post(this.api.Dict.addDict,param).then(data=>{
-       if(data.data.State === 200) {
-         console.log('保存成功：',data)
-         this.tableDetail.push({
-           DictName:this.newpage.DictName,
-            Memo:this.newpage.Memo,
-         })
-           this.newpage.DictName = '',
-           this.newpage.Memo = '',
-           this.addPage = false
-       }
-       else if(data.data.State===1000){
-         this.$message({
-           message:data.data.Msg,
-           type:'error'
-         })
-       };
-      })
-    },  //添加表格信息
-    handleSizeChange(val) {   //修改分页条数
-      this.page.size = val
-      console.log('分页数:',this.page.size)
-      this.getDictsPage()
-    },  //分页数目改变
-    handleCurrentChange(val) {   //当前展示页
-      this.page.index = val
-      this.getDictsPage()
-    },  //当前页改变
-    getDict () {
-      this.$get(this.api.Dict.getDictTypeItems).then((res)=>{
-        if(res.data.State === 200) {
-          this.select = res.data.Data
+        } else this.message("失败");
+      });
+    }, //新建词典类型
+    getDictsPage() {
+      let param = {
+        PageSize: this.page.size,
+        PageIndex: this.page.index - 1,
+        KeyWord: "",
+        Query: this.parentID,
+        OrderString: "",
+        ToExcel: true
+      };
+      console.log(param);
+      this.$post(this.api.Dict.getDictsPage, param).then(res => {
+        console.log("获取表格信息");
+        this.tableDetail = res.data.Data.Data;
+        this.page.total = res.data.Data.Items;
+        console.log("tableDetail", res);
+      });
+    }, //根据id获取表格信息
+    addNewPage() {
+      console.log("父节点id:", this.parentID);
+      let param = {
+        ParentID: this.parentID,
+        DictName: this.newpage.DictName,
+        Memo: this.newpage.Memo,
+        MinValue: 4.1,
+        MaxValue: 5.1
+      };
+      this.$post(this.api.Dict.addDict, param).then(data => {
+        if (data.data.State === 200) {
+          console.log("保存成功：", data);
+          this.tableDetail.push({
+            DictName: this.newpage.DictName,
+            Memo: this.newpage.Memo
+          });
+          (this.newpage.DictName = ""),
+            (this.newpage.Memo = ""),
+            (this.addPage = false);
+        } else if (data.data.State === 1000) {
+          this.$message({
+            message: data.data.Msg,
+            type: "error"
+          });
+        }
+      });
+    }, //添加表格信息
+    handleSizeChange(val) {
+      //修改分页条数
+      this.page.size = val;
+      console.log("分页数:", this.page.size);
+      this.getDictsPage();
+    }, //分页数目改变
+    handleCurrentChange(val) {
+      //当前展示页
+      this.page.index = val;
+      this.getDictsPage();
+    }, //当前页改变
+    getDict() {
+      this.$get(this.api.Dict.getDictTypeItems).then(res => {
+        if (res.data.State === 200) {
+          this.select = res.data.Data;
           try {
-            this.parentID = res.data.Data[0].ID
-            this.getDictsPage()
-          }catch (err){
-            console.log(err)
+            this.parentID = res.data.Data[0].ID;
+            this.getDictsPage();
+          } catch (err) {
+            console.log(err);
           }
         } else {
-          this.$message('失败')
+          this.$message("失败");
         }
-      })
+      });
     }
   },
-  created () {
-    this.getDict()
-  }  //获取词典类型
-
+  created() {
+    this.getDict();
+  } //获取词典类型
 };
 </script>
 <style scoped>
-.info{
+.info {
   background: #fff;
-  padding: 15px
+  padding: 15px;
 }
 .el-tabs {
-  width: 96%;
-  margin: 15px 0 0 25px;
-  height: calc(100vh - 300px)
+  width: calc(100% - 30px);
+  margin: 15px 0 0 0;
+  height: calc(100vh - 279px);
 }
-.el-input,.el-textarea{
-  width: 70%
+.el-input,
+.el-textarea {
+  width: 70%;
+}
+.el-table {
+  margin-bottom: 15px;
 }
 .main {
   overflow: auto;
@@ -311,13 +328,16 @@ export default {
   height: 1px;
   display: block;
 }
-  .table-footer .el-pagination{
+.table-footer .el-pagination {
   text-align: right !important;
 }
- .table-footer{
-   margin-top: 15px;
-  height: 35px;
+.table-footer {
+  margin-top: 15px;
+  height: 31px;
   line-height: 35px;
   background-color: white;
+}
+div >>> .el-tabs__header {
+  background-color: #fff;
 }
 </style>

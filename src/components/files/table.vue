@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="table-main">
-          <el-table :data="Items" class="datalist" border  height="calc(100vh - 380px)">
+          <el-table :data="Items" class="datalist" border  height="calc(100vh - 350px)">
             <el-table-column  label="名称" prop="Code">
             </el-table-column>
             <el-table-column prop="Code" label="字号">
@@ -340,20 +340,19 @@ export default {
     overflow: hidden;
   }
   .wrapper .table{
-    height: calc(100vh - 270px);
+    height: calc(100vh - 225px);
     padding-left: 20px;
-    padding-top: 20px;
-    margin-top: 10px;
   }
   .wrapper .table  .table-top{
     height: 40px;
     line-height: 40px;
     padding: 10px 0px 10px 15px;
     background-color: white;
+    margin: 0 0 15px 0;
     border-radius: 5px;
   }
   .wrapper .table .table-main{
-    margin-top: 5px;
+    margin-bottom: 15px
   }
   .wrapper  .table-foot{
     margin-top: 10px;

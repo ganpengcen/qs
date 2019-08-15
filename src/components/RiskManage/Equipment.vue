@@ -243,7 +243,7 @@ export default {
 .main {
   margin-left: 25px;
   overflow: hidden;
-  height: calc(100% - 85px);
+  height: calc(100% - 103px);
 }
 .el-table{
   overflow: auto
@@ -265,7 +265,7 @@ export default {
   clear: both;
 }
 .top {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   background: #fff;
 }
 .ad {

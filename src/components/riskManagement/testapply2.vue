@@ -6,8 +6,8 @@
         <el-button type="primary" @click="newtext=true">新建</el-button>
       </div>
       <div class="table-main">
-          <el-table :data="Items" class="datalist" border height="calc(100vh - 355px)">
-            <el-table-column  label="作业编号" prop="Code">
+          <el-table :data="Items" class="datalist" border height="calc(100vh - 341px)">
+            <el-table-column label="作业编号" type="index">
             </el-table-column>
             <el-table-column prop="Code" label="作业名称">
             </el-table-column>
@@ -51,7 +51,7 @@
                     </li>
                   </ul>
                   <div slot="reference">
-                    <el-button type="primary" style="width: 100px;" size="small">操作</el-button>
+                    <el-button type="primary" style="width: 85px;" size="small">操作</el-button>
                   </div>
                 </el-popover>
               </template>
@@ -459,16 +459,17 @@
     overflow: hidden;
   }
   .wrapper .table{
-    height: calc(100% - 150px);
-    margin: 15px 25px 11px;
+    height: calc(100% - 155px);
+    margin:0 0 15px 25px ;
     overflow: hidden;
+    width: calc(100% - 50px)
   }
   .wrapper .table .table-top{
     height: 40px;
     background-color: white;
     border-radius: 5px;
     padding: 10px 0 10px 20px;
-    margin: 0 2px 5px 2px;
+    margin: 0 0 15px 0;
   }
   .wrapper .table-footer{
     margin: 15px 25px 11px;

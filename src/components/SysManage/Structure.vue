@@ -364,7 +364,7 @@ export default {
   height: 100%;
 }
 .main {
-  margin-left: 25px;
+  margin:0 0 15px 25px;
   overflow: auto;
   height: calc(100% - 85px);
 }
@@ -432,7 +432,7 @@ export default {
 }
 .tb {
   height: calc(100% - 15px);
-  margin-top: 15px;
+  margin: 15px 0;
   overflow: hidden;
 }
 .el-table {
