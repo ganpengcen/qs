@@ -39,23 +39,12 @@
     name: "Login",
     data() {
       return {
-<<<<<<< HEAD
         Login1: "",
         Login2: "",
         Login3: "",
         Pwd: ""
-      };
-=======
-        loading: false,
-        Login1: "1",
-        Login2: "xt",
-        Login3: "123456",
-        state: 0,
-        Pwd:'',
-        MenuList: [],
-        value2:''
       }
-    },
+      },
     mounted() {
       let me = this;
       document.onkeydown = function(event) {
@@ -64,7 +53,6 @@
           me.signin()
         }
       };//  xf  xf123456
->>>>>>> 650dc010df0d4a24621f405e9e12fb0f3974b513
     },
 
     methods: {

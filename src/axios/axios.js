@@ -9,7 +9,6 @@ axios.defaults.baseURL = '';
 axios.interceptors.request.use(
   config => {
     const Token = sessionStorage.Token;
-    console.log('AXIOStoken:',Token)
     config.data = JSON.stringify(config.data);
     config.headers = {
       'Content-Type': 'application/json;charset=UTF-8',

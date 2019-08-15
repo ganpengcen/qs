@@ -10,67 +10,26 @@
           </div>
           <div>
             <el-tree
-              @node-click="get"
               :data="treedata"
               accordion
-              :props="defaultProps"
+              :props="dprops"
+              :load="loadNode"
+              lazy
               :expand-on-click-node="true"
             >
               <span class="custom-tree-node" slot-scope="{node,data}">
-                <span @click="getChild(data.ID)">{{data.OrgName}}</span>
+                <span>{{data.OrgName}}</span>
                 <span>
-                  <el-button size="mini" type="text" @click="dialog1 = true">+</el-button>
+                  <el-button size="mini" type="text" @click="addDialog(data.ID)">+</el-button>
                   <el-button size="mini" type="text" @click="del()">-</el-button>
-                  <el-button size="mini" type="text" @click="digl=true">新建人员</el-button>
+                  <el-button size="mini" type="text" @click="addPersonDig(data.ID)">新建人员</el-button>
                 </span>
               </span>
             </el-tree>
-            <el-dialog title="新建人员" width="1000px" :visible.sync="digl">
-              <div class="info">
-                <el-form label-width="80px" :inline="true">
-                  <el-form-item label="姓名:">
-                    <el-input v-model="rowinf.name"></el-input>
-                  </el-form-item>
-                  <el-form-item label="工号:">
-                    <el-input v-model="rowinf.gnum"></el-input>
-                  </el-form-item>
-                  <el-form-item label="组织架构:">
-                    <el-cascader v-model="rowinf.stru" :options="treedata"></el-cascader>
-                  </el-form-item>
-                  <el-form-item label="性别:">
-                    <el-input v-model="rowinf.sex"></el-input>
-                  </el-form-item>
-                  <el-form-item label="电话:">
-                    <el-input v-model="rowinf.tel"></el-input>
-                  </el-form-item>
-                  <el-checkbox v-model="rowinf.leader">Leader</el-checkbox>
-                  <el-checkbox v-model="rowinf.level">接受平级</el-checkbox>
-                  <el-checkbox v-model="rowinf.user">新建用户</el-checkbox>
-                  <el-divider></el-divider>
-                  <el-form-item label="22:">
-                    <el-input v-model="rowinf.nl"></el-input>
-                  </el-form-item>
-                  <el-form-item label="设备">
-                    <el-input v-model="rowinf.device"></el-input>
-                  </el-form-item>
-                  <el-form-item label="日期">
-                    <el-date-picker v-model="rowinf.date" type="date"></el-date-picker>
-                  </el-form-item>
-                  <el-form-item label="词典">
-                    <el-select v-model="rowinfo.cd">
-                      <el-option v-for="(i,e) in picker" :key="e" :value="i.label" :label="i.value"></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-form>
-              </div>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="digl= false">取 消</el-button>
-                <el-button type="primary" @click="digl = false">确 定</el-button>
-              </span>
-            </el-dialog>
           </div>
         </el-col>
         <el-col :span="18">
+
           <div class="tp">
             <div class="top">
               <span>关键字</span>
@@ -78,6 +37,7 @@
               <el-button type="primary" size="small">搜索</el-button>
             </div>
           </div>
+
           <div class="tb">
             <el-table
               :data="tdab"
@@ -85,7 +45,6 @@
               :cell-style="{'text-align':'center'}"
               :header-cell-style="{'text-align':'center'}"
               height="calc(100vh - 435px)"
-              @row-click="getdata"
             >
               <el-table-column prop="name" label="姓名"></el-table-column>
               <el-table-column prop="sex" label="性别"></el-table-column>
@@ -102,63 +61,26 @@
               </el-table-column>
               <el-table-column label="操作">
                 <el-button type="text" @click="dg1=true">修改</el-button>
-                <el-dialog title="修改人员" width="1000px" :visible.sync="dg1">
-                  <div class="info">
-                    <el-form label-width="80px" :inline="true">
-                      <el-form-item label="姓名:">
-                        <el-input v-model="rowinfo.name"></el-input>
-                      </el-form-item>
-                      <el-form-item label="工号:">
-                        <el-input v-model="rowinfo.gnum"></el-input>
-                      </el-form-item>
-                      <el-form-item label="组织架构:">
-                        <el-cascader v-model="rowinfo.stru" :options="treedata"></el-cascader>
-                      </el-form-item>
-                      <el-form-item label="性别:">
-                        <el-input v-model="rowinfo.sex"></el-input>
-                      </el-form-item>
-                      <el-form-item label="电话:">
-                        <el-input v-model="rowinfo.tel"></el-input>
-                      </el-form-item>
-                      <el-checkbox v-model="rowinfo.leader">Leader</el-checkbox>
-                      <el-checkbox v-model="rowinfo.level">接受平级</el-checkbox>
-                      <el-divider></el-divider>
-                      <el-form-item label="22:">
-                        <el-input v-model="rowinfo.nl"></el-input>
-                      </el-form-item>
-                      <el-form-item label="设备">
-                        <el-input v-model="rowinfo.device"></el-input>
-                      </el-form-item>
-                      <el-form-item label="日期">
-                        <el-date-picker v-model="rowinfo.date" type="date"></el-date-picker>
-                      </el-form-item>
-                      <el-form-item label="词典">
-                        <el-select v-model="rowinf.cd">
-                          <el-option
-                            v-for="(i,e) in picker"
-                            :key="e"
-                            :value="i.label"
-                            :label="i.value"
-                          ></el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-form>
-                  </div>
-                  <span slot="footer" class="dialog-footer">
-                    <el-button @click="dg1= false">取 消</el-button>
-                    <el-button type="primary" @click="dg1 = false">确 定</el-button>
-                  </span>
-                </el-dialog>
                 <el-button type="text">删除</el-button>
               </el-table-column>
             </el-table>
           </div>
+
           <div class="pge">
-            <el-pagination layout="prev,pager,next" :total="tdab.length" :page-size="7"></el-pagination>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="page.index"
+              :page-size="page.size"
+              :page-sizes="[3, 7, 30, 50]"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total.sync="page.total">
+            </el-pagination>
           </div>
         </el-col>
       </el-row>
     </div>
+
     <el-dialog width="35%" :visible.sync="dialog1" title="新建组织架构">
       <div class="info">
         <el-form label-width="100px" v-model="newOrgnize">
@@ -181,6 +103,116 @@
                 <el-button type="primary" @click="submitOrgnize()">确 定</el-button>
               </span>
     </el-dialog>
+
+    <el-dialog width="35%" :visible.sync="dialog2" title="新建子组织架构">
+      <div class="info">
+        <el-form label-width="100px" v-model="newOrgnize">
+          <el-form-item label="上级:">
+            <el-input disabled v-model="newOrgnize.ParentID"></el-input>
+          </el-form-item>
+          <el-form-item label="名称:">
+            <el-input v-model="newOrgnize.OrgName"></el-input>
+          </el-form-item>
+          <el-form-item label="负责人:">
+            <el-input v-model="newOrgnize.Principal"></el-input>
+          </el-form-item>
+          <el-form-item label="电话:">
+            <el-input v-model="newOrgnize.PrincipalTel"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+                <el-button @click="dialog2 = false">取 消</el-button>
+                <el-button type="primary" @click="addOrgChild()">确 定</el-button>
+              </span>
+    </el-dialog>
+
+    <el-dialog title="新建人员" width="1000px" :visible.sync="dig3">
+      <div class="info">
+        <el-form label-width="80px" :inline="true" v-model="rowinf">
+          <el-form-item label="姓名:">
+            <el-input v-model="rowinf.CNName"></el-input>
+          </el-form-item>
+          <el-form-item label="工号:">
+            <el-input v-model="rowinf.Jobno"></el-input>
+          </el-form-item>
+          <el-form-item label="组织架构:">
+            <el-cascader></el-cascader>
+          </el-form-item>
+          <el-form-item label="性别:">
+            <el-input v-model="rowinf.Gender"></el-input>
+          </el-form-item>
+          <el-form-item label="电话:">
+            <el-input v-model="rowinf.Tel"></el-input>
+          </el-form-item>
+          <el-checkbox v-model="rowinf.IsLeader">Leader</el-checkbox>
+          <el-checkbox v-model="rowinf.IsLevel">接受平级</el-checkbox>
+          <el-checkbox v-model="rowinf.IsCreate">新建用户</el-checkbox>
+          <el-divider></el-divider>
+        </el-form>
+        <el-form>
+          <el-form-item v-for="(item,index) in UserDefine" label="item.Caption">
+            <el-input  v-if="item.DefinedType===1" v-model="item.defineData"></el-input>
+            <el-select>
+              <el-option v-for="(a,b) in item.Dic"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+
+      <span slot="footer" class="dialog-footer">
+                <el-button @click="dig3= false">取 消</el-button>
+                <el-button type="primary" @click="addPersonSub">确 定</el-button>
+              </span>
+    </el-dialog>
+
+    <el-dialog title="修改人员" width="1000px" :visible.sync="dg1">
+      <div class="info">
+        <el-form label-width="80px" :inline="true">
+          <el-form-item label="姓名:">
+            <el-input v-model="rowinfo.name"></el-input>
+          </el-form-item>
+          <el-form-item label="工号:">
+            <el-input v-model="rowinfo.gnum"></el-input>
+          </el-form-item>
+          <el-form-item label="组织架构:">
+            <el-cascader v-model="rowinfo.stru" :options="treedata"></el-cascader>
+          </el-form-item>
+          <el-form-item label="性别:">
+            <el-input v-model="rowinfo.sex"></el-input>
+          </el-form-item>
+          <el-form-item label="电话:">
+            <el-input v-model="rowinfo.tel"></el-input>
+          </el-form-item>
+          <el-checkbox v-model="rowinfo.leader">Leader</el-checkbox>
+          <el-checkbox v-model="rowinfo.level">接受平级</el-checkbox>
+          <el-divider></el-divider>
+          <el-form-item label="22:">
+            <el-input v-model="rowinfo.nl"></el-input>
+          </el-form-item>
+          <el-form-item label="设备">
+            <el-input v-model="rowinfo.device"></el-input>
+          </el-form-item>
+          <el-form-item label="日期">
+            <el-date-picker v-model="rowinfo.date" type="date"></el-date-picker>
+          </el-form-item>
+          <el-form-item label="词典">
+            <el-select v-model="rowinf.cd">
+              <el-option
+                v-for="(i,e) in picker"
+                :key="e"
+                :value="i.label"
+                :label="i.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+                    <el-button @click="dg1= false">取 消</el-button>
+                    <el-button type="primary" @click="dg1 = false">确 定</el-button>
+                  </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -192,7 +224,18 @@ export default {
 
   data() {
     return {
+      UserDefine:[],
+      page:{
+        index:1,
+        size:3,
+        total:0
+      },
+      dprops: {
+        label: 'OrgName',
+      },
+      dg1: false,
       parentID:'',
+      orgData: [],
       newOrgnize:{
         ParentID: '',
         OrgName:'',
@@ -206,16 +249,16 @@ export default {
         { label: "选项3", value: "TesC" }
       ],
       rowinfo: {
-        name: "asadas",
-        gnum: "64565556566",
-        leader: false,
-        level: true,
-        sex: "男",
-        stru: "1-1-2",
-        tel: "4564564464",
-        date: "2019-7-11",
-        cd: "TesA",
-        device: 1
+        CNName: '',
+        Gender: '',
+        IsLeader: '',
+        IsLevel: '',
+        Jobno: '',
+        HeadIMG: '',
+        UserDefineds: [],
+        Tel: '',
+        IsCreate: '',
+        RoleIDs: []
       },
       rowinf: {
         name: "asadas",
@@ -230,128 +273,200 @@ export default {
         cd: "TesA",
         device: 1
       },
-      dg1: false,
+      dig3: false,
       dialog1: false,
+      dialog2: false,
       treedata: [],
-      tdab: [
-        {
-          name: "asdasda",
-          sex: "male",
-          account: "asdasda1111",
-          leader: true,
-          level: true
-        },
-        {
-          name: "asdasda",
-          sex: "male",
-          account: "asdasda1111",
-          leader: true,
-          level: true
-        },
-        {
-          name: "asdasda",
-          sex: "male",
-          account: "asdasda1111",
-          leader: true,
-          level: true
-        },
-        {
-          name: "asdasda",
-          sex: "male",
-          account: "asdasda1111",
-          leader: true,
-          level: true
-        },
-        {
-          name: "asdasda",
-          sex: "male",
-          account: "asdasda1111",
-          leader: true,
-          level: true
-        },
-        {
-          name: "asdasda",
-          sex: "male",
-          account: "asdasda1111",
-          leader: true,
-          level: true
-        },
-        {
-          name: "asdasda",
-          sex: "male",
-          account: "asdasda1111",
-          leader: true,
-          level: true
-        }
-      ],
-      defaultProps: { children: "children", label: "label" },
+      tdab: [],
+      children: [],
       las: "无上级"
     };
   },
   methods: {
-    getChild (ID) {
-      this.$get(this.api.Org.getOrgChildren + ID).then(res=>{
+    handleSizeChange(val) {   //修改分页条数
+      this.page.size = val
+      console.log('分页数:',this.page.size)
+      this.getDictsPage()
+    },  //分页数目改变
+    handleCurrentChange(val) {   //当前展示页
+      this.page.index = val
+      this.getDictsPage()
+    },  //当前页改变
+    loadNode(node, resolve) {
+        console.log(node)
+      this.parentID = node.data.ID
+        this.$get(this.api.Org.getOrgChildren + node.data.ID).then(res => {
+          if (res.data.State === 200) {
+//            console.log('成功获取组织架构子节点')
+//            console.log(res)
+            resolve(res.data.Data);
+           this.getTableData(node.data.ID)
+            console.log(this.treedata)
+            }
+        })
+    },   //加载节点
+    getTableData(ID) {
+      console.log('进入加载')
+      let param = {
+        "PageSize": 1,
+        "PageIndex": 2,
+        "KeyWord": "",
+        "Query": ID,
+        "OrderString": "",
+        "ToExcel": true
+      }
+      this.$post(this.api.Org.getEmployeePage,param).then((res)=>{
+        console.log('获取表格数据')
         if(res.data.State === 200){
-          console.log('成功获取组织架构子节点')
           console.log(res)
+          this.tdab = res.data.Data.Data
         } else {
           this.$message.error(res.data.Msg)
         }
       })
-    },  //获取节点子树
+    },  //获取人员信息
+    addPersonDig (id){
+      this.getUserDefuine()
+    },   //新建人员弹框
+    getUserDefuine () {
+      this.$get(this.api.UserDefined.getUserDefinedItems + '3').then(res=>{
+        if(res.data.State === 200) {
+          console.log('用户自定义详情',res.data)
+          this.UserDefine = res.data.Data
+          this.UserDefine.forEach(item=>{
+            if(item.DataType === 5){
+              let param = {
+                "PageSize": 5,
+                "PageIndex": 0,
+                "KeyWord": "",
+                "Query": "",
+                "OrderString": item.DictID,
+                "ToExcel": true
+              }
+              this.$post(this.api.getDictsPage, param).then(res=>{
+                if(res.data.state === 200) {
+                    this.$set(item, 'dic',res.data.Data.Data)
+                   console.log('词典详情',res.data.Data.Data)
+                   console.log('自定义详情',this.UserDefine)
+                } else {
+                  this.$message({
+                    type:'error',
+                    message:res.data.Msg
+                  })
+                }
+              })
+            }
+          })
+          this.dig3 = true
+        }
+      })
+    }, //获取用户自定义项
+    addPersonSub() {
+      let param = {
+        "CNName": this.rowinf.CNName,
+        "Gender":  this.rowinf.Gender,
+        "IsLeader": this.rowinf.IsLeader,
+        "IsLevel": this.rowinf.IsLevel,
+        "Jobno":  this.rowinf.Jobno,
+        "HeadIMG": this.rowinf.HeadIMG,
+        "OrgId": this.ID,
+        "UserDefineds": [],
+        "Tel": this.rowinf.tel,
+        "IsCreate": this.rowinf.IsCreate,
+        "RoleIDs": [
+          "b928ef27-36da-431e-a450-87f442651705",
+          "29463d66-475a-44d1-9604-d4fa50e70cd3"
+        ]
+      }
+      console.log('id',this.ID)
+      let param2 ={
+        "CNName": "sample string 1",
+        "Gender": "sample string 2",
+        "IsLeader": true,
+        "IsLevel": true,
+        "Jobno": "sample string 5",
+        "HeadIMG": "sample string 6",
+        "OrgId": this.ID,
+        "UserDefineds": [
+          {
+            "DefinedID": this.ID,
+            "DefinedValue": {
+              nl:'2'
+            }
+          }
+        ],
+        "Tel": "123123",
+        "IsCreate": true,
+        "RoleIDs": [
+          "e407e1cb-0e51-4a3a-91ce-d153f90f05ec",
+          "43de8ea7-6ab5-459c-aaf7-54c15a61f814"
+        ]
+      }
+      this.$post(this.api.Org.addEmployee, param2).then(res => {
+        console.log(res)
+        if(res.data.State === 200){
+          console.log('子节点添加成功')
+          this.dig3 = false,
+          this.newOrgnize.OrgName = '',
+          this.newOrgnize.Principal = '',
+          this.newOrgnize.PrincipalTel = ''
+        }else {
+          this.$message.warning(res.data.Msg)
+        }
+      })
+    },  //新建人员
+    addDialog (id) {
+      this.parentID = id,
+      this.dialog2 = true
+    },   //弹框
+    submitOrgnize () {
+      let param = {
+        "ParentID": "00000000-0000-0000-0000-000000000000",
+        "OrgName": this.newOrgnize.OrgName,
+        "Principal": this.newOrgnize.Principal,
+        "PrincipalTel":this.newOrgnize.PrincipalTel,
+      }
+      this.$post(this.api.Org.addOrg, param).then(res => {
+        console.log(res)
+        if(res.data.State === 200){
+          this.dialog1 = false
+          this.newOrgnize.OrgName = '',
+          this.newOrgnize.Principal = '',
+          this.newOrgnize.PrincipalTel = ''
+          this.getOrg()
+        }
+      })
+    }, //新建组织架构
     getOrg () {
       this.$get(this.api.Org.getOrgChildren + '00000000-0000-0000-0000-000000000000').then(res=>{
         if(res.data.State === 200){
           console.log(res)
           console.log('成功获取组织架构节点')
-          console.log(res)
           this.treedata = res.data.Data
-          this.ParentID = res.data.Data[0].ParentID
-          console.log('id',this.parentID)
           console.log(this.treedata)
         } else {
           this.$message.error(res.data.Msg)
         }
       })
     },//获取组织架构子集
-    submitOrgnize () {
-      this.$post(this.api.addOrg,
-        this.newOrgnize
-      ).then((data)=>{
-        this.dialog1 = false
-        console.log(data)
+    addOrgChild(id) {
+      let param = {
+        "ParentID": this.parentID,
+        "OrgName": this.newOrgnize.OrgName,
+        "Principal": this.newOrgnize.Principal,
+        "PrincipalTel":this.newOrgnize.PrincipalTel,
+      }
+      this.$post(this.api.Org.addOrg, param).then(res => {
+        console.log(res)
+        if(res.data.State === 200){
+          console.log('子节点添加成功')
+          this.dialog2 = false
+          this.newOrgnize.OrgName = '',
+          this.newOrgnize.Principal = '',
+          this.newOrgnize.PrincipalTel = ''
+        }
       })
-      this.$get(this.api.getEmployeeModel+sessionStorage.AccountID).then(data=>{
-        console.log(data)
-      })
-    },
-    get(data) {
-      console.log(data.label);
-      this.las = data.label;
-    },
-    del() {
-      this.$confirm("将要执行删除操作,是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
-    getdata(row) {
-      console.log(row);
-    }
-
+    },  //添加子节点
   },
   created () {
     this.getOrg()
