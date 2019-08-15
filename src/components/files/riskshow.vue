@@ -2,7 +2,7 @@
   <div class="wrapper">
     <Header title="档案管理" text="风险公示"></Header>
     <div class="table">
-        <el-tabs :tab-position="left" style="min-height: 200px;overflow: hidden;">
+        <el-tabs :tab-position="left" style="overflow: hidden;">
           <el-tab-pane :label="item" v-for="(item, index) in title" :key="index">
             <Table :lable="item" @deletcontent="deletcontent"></Table>
           </el-tab-pane>
@@ -213,7 +213,14 @@
     overflow: hidden;
   }
   .wrapper .table {
-    padding-left: 20px;
-    margin: 15px 25px 11px;
+    margin:0 0 0 25px;
+    width: calc(100% - 50px);
+    height: calc(100% - 55px)
+  }
+  .el-tabs{
+    height:calc(100% - 50px) 
+  }
+  div>>>.el-tabs__header{
+    background: #fff
   }
 </style>

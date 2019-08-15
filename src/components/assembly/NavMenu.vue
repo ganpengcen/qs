@@ -48,7 +48,7 @@
         <el-menu-item index="/ExStanderd">执行标准</el-menu-item>
         <el-menu-item index="/RciManage">风控项管理</el-menu-item>
         <el-menu-item index="/RcConfig">风控项配置</el-menu-item>
-        <el-menu-item index="point">风险点管理</el-menu-item>
+        <el-menu-item index="/pointManage">风险点管理</el-menu-item>
       </el-submenu>
       <el-submenu index="5">
         <template slot="title"><i class="el-icon-bell"></i><span>隐患排查</span></template>

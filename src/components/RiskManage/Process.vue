@@ -221,9 +221,9 @@ export default {
   overflow: hidden;
 }
 .main {
-  width: 96.8%;
-  height: calc(100% - 140px);
-  margin:10px 0 10px 25px;
+  width: calc(100% - 50px);
+  height: calc(100% - 153px);
+  margin:10px 0 15px 25px;
   overflow: hidden;
 }
 .el-textarea {
@@ -275,7 +275,7 @@ export default {
   margin-right: 15px;
 }
 .pge {
-  width: 96.8%;
+  width: calc(100% - 50px);
   margin-left: 25px;
   height: 35px;
   text-align: right;

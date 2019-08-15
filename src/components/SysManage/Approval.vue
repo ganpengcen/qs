@@ -2,7 +2,7 @@
   <div class="content">
     <Header title="系统管理" text="审批流程"></Header>
     <div class="dialog-wrapper" style="background-color: white;padding: 10px;display: flex;">
-      <div class="dialog-left" style="line-height: 30px;flex: 0 1 200px;overflow: auto;height: calc(100vh - 240px);padding-left: 10px">
+      <div class="dialog-left" style="line-height: 30px;flex: 0 1 200px;overflow: auto;height: calc(100vh - 255px);padding-left: 10px">
         <div class="left-top" style="display: flex;">
           <span style=" flex:1;width: 50%;text-align: center;border-radius: 3px"  :class="{'point':true}">流程</span>
         </div>
@@ -21,7 +21,7 @@
           </el-select>
         </div>
       </div>
-      <div class="dialog-right" style="flex: 1;overflow: auto;height: calc(100vh - 240px)" v-if="branch">
+      <div class="dialog-right" style="flex: 1;overflow: auto;height: calc(100vh - 255px)" v-if="branch">
         <div v-for="(item,index1) in branch" :key="index1" style="margin-bottom: 10px">
           <div class="top" @click="fold(index1)" ref="topFolder">
             <span style="margin-right: 10px">业务类型:{{item.type}}</span>

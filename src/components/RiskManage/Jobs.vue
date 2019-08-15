@@ -288,9 +288,9 @@ export default {
   height: 237px;
 }
 .main {
-  width: 96.8%;
-  height: calc(100% - 130px);
-  margin:10px 0 10px 25px;
+  width: calc(100% - 50px);
+  height: calc(100% - 155px);
+  margin:15px 0 15px 25px;
   overflow: hidden;
 }
 .el-col-4 .el-button {
@@ -333,9 +333,9 @@ export default {
   width: 100%;
 }
 .pge {
-  width: 96.8%;
+  width: calc(100% - 50px);
   margin-left: 25px;
-  height: 35px;
+  height: 31px;
   text-align: right;
   background: #fff;
 }

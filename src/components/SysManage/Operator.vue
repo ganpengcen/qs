@@ -53,7 +53,7 @@
         :data="tdata"
         :header-cell-style="{'text-align':'center'}"
         :cell-style="{'text-align':'center'}"
-        height="calc(100% - 80px)"
+        height="calc(100% - 95px)"
       >
         <el-table-column type="index" width="50" label="#"></el-table-column>
         <el-table-column prop="uname" label="用户名" sortable></el-table-column>
@@ -597,6 +597,9 @@ export default {
 .cheks .el-checkbox:last-child{
   margin:0 0 5px 15px
 }
+.el-table{
+  margin-bottom: 15px
+}
 .mange {
   margin: 20px;
   border: 1px solid #999;
@@ -665,7 +668,7 @@ export default {
   border-radius: 3px;
   width: calc(100% - 55px);
   margin-left: 25px;
-  height: calc(100% - 125px);
+  height: calc(100% - 140px);
   overflow: auto;
 }
 .el-input {
@@ -692,9 +695,7 @@ export default {
 .el-pagination {
   text-align: right;
   background: #fff;
-  /* width: 85%; */
-  margin-left: 25px;
-  margin-right: 30px;
+  margin:0 30px 15px 25px;
 }
 .tt .el-checkbox {
   margin-top: 0;

@@ -44,7 +44,12 @@
               border
               :cell-style="{'text-align':'center'}"
               :header-cell-style="{'text-align':'center'}"
+<<<<<<< HEAD
               height="calc(100vh - 435px)"
+=======
+              height="calc(100vh - 350px)"
+              @row-click="getdata"
+>>>>>>> 17888d97eed5d58c858d85a3b1ed76838b20f591
             >
               <el-table-column prop="name" label="姓名"></el-table-column>
               <el-table-column prop="sex" label="性别"></el-table-column>
@@ -479,7 +484,7 @@ export default {
   height: 100%;
 }
 .main {
-  margin-left: 25px;
+  margin:0 0 15px 25px;
   overflow: auto;
   height: calc(100% - 85px);
 }
@@ -488,7 +493,7 @@ export default {
   padding: 15px 0;
 }
 .el-col-5 {
-  height: calc(100vh - 300px);
+  height: calc(100vh - 230px);
   font-size: 17px;
   overflow: auto;
 }
@@ -547,7 +552,7 @@ export default {
 }
 .tb {
   height: calc(100% - 15px);
-  margin-top: 15px;
+  margin: 15px 0;
   overflow: hidden;
 }
 .el-table {

@@ -9,7 +9,7 @@
           </div>
           <div v-for="(i,e) in modifs" :key="e" v-model="val" @click="getrow(e)">
             <b @click="send(e)" v-model="i.Value">{{i.Caption}}</b>
-            <el-button type="text" @click="dg1=true,cus={}">+</el-button>
+            <el-button type="text" @click="dg1=true">+</el-button>
           </div>
           <el-dialog width="25%" title="新建自定义项" :visible.sync="dg1">
             <div class="info">
@@ -20,6 +20,11 @@
                 <el-form-item label="数据类型">
                   <el-select v-model="cus.DataType">
                     <el-option v-for="(i,e) in sels" :key="e" :label="i.Caption" :value="i.Value"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="词典" v-if="cus.DataType==5">
+                  <el-select v-model="cus.DictID">
+                    <el-option v-for="(i,e) in dict" :key="e" :label="i.DictName" :value="i.ID"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="显示顺序">
@@ -34,7 +39,7 @@
             </div>
             <span slot="footer" class="dialog-footer">
               <el-button @click="dg1= false">取 消</el-button>
-              <el-button type="primary" @click="crete()">确 定</el-button>
+              <el-button type="primary" @click="crete(),cus={}">确 定</el-button>
             </span>
           </el-dialog>
         </el-col>
@@ -43,52 +48,64 @@
             :data="shs"
             border
             :cell-style="{'text-align':'center'}"
-            height="calc(100vh - 370px)"
+            height="calc(100vh - 231px)"
             :header-cell-style="{'text-align':'center'}"
             @row-click="get"
           >
-            <el-table-column prop="tle" label="标题"></el-table-column>
-            <el-table-column prop="datype" label="数据类型"></el-table-column>
-            <el-table-column prop="dir" label="词典"></el-table-column>
+            <el-table-column prop="Caption" label="标题"></el-table-column>
+            <el-table-column prop="DataType" label="数据类型"></el-table-column>
+            <el-table-column prop="DictName" label="词典"></el-table-column>
             <el-table-column label="是否多选">
               <template slot-scope="scope">
-                <el-checkbox disabled v-model="scope.row.mut"></el-checkbox>
+                <el-checkbox disabled v-model="scope.row.IsMulti"></el-checkbox>
               </template>
             </el-table-column>
             <el-table-column label="是否为空">
               <template slot-scope="scope">
-                <el-checkbox disabled v-model="scope.row.ull"></el-checkbox>
+                <el-checkbox disabled v-model="scope.row.IsEmpty"></el-checkbox>
               </template>
             </el-table-column>
+            <el-table-column prop="VisibleIndex" label="显示顺序"></el-table-column>
             <el-table-column label="操作">
               <el-button type="text" @click="dg2=true">修改</el-button>
               <el-dialog width="30%" title="修改自定义项" :visible.sync="dg2">
                 <div class="info">
                   <el-form label-width="100px">
                     <el-form-item label="标题">
-                      <el-input v-model="cus1.tle"></el-input>
+                      <el-input v-model="cus1.Caption"></el-input>
                     </el-form-item>
                     <el-form-item label="数据类型">
-                      <el-select v-model="cus1.datype">
-                        <el-option v-for="(i,e) in sels" :key="e" :label="i.label" :value="i.value"></el-option>
+                      <el-select v-model="cus1.DataType">
+                        <el-option
+                          v-for="(i,e) in sels"
+                          :key="e"
+                          :label="i.Caption"
+                          :value="i.Value"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="词典" v-if="cus1.DataType=='词典'||cus1.DataType==5">
+                      <el-select v-model="cus1.DictID">
+                        <el-option v-for="(i,e) in dict" :key="e" :label="i.DictName" :value="i.ID"></el-option>
                       </el-select>
                     </el-form-item>
                     <el-form-item label="显示顺序">
-                      <el-input v-model="cus1.ord"></el-input>
+                      <el-input v-model="cus1.VisibleIndex"></el-input>
                     </el-form-item>
                     <el-form-item>
                       <div class="chekbxs">
-                        <el-checkbox v-model="cus1.ull">是否为空</el-checkbox>
+                        <el-checkbox v-model="cus1.IsEmpty">是否为空</el-checkbox>
+                        <el-checkbox v-model="cus1.IsMulti">是否多选</el-checkbox>
                       </div>
                     </el-form-item>
                   </el-form>
                 </div>
                 <span slot="footer" class="dialog-footer">
                   <el-button @click="dg2= false">取 消</el-button>
-                  <el-button type="primary" @click="dg2= false">确 定</el-button>
+                  <el-button type="primary" @click="mdf()">确 定</el-button>
                 </span>
               </el-dialog>
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="delcos()">删除</el-button>
             </el-table-column>
           </el-table>
         </el-col>
@@ -99,16 +116,17 @@
 </template>
 <script>
 import Header from "../assembly/Header";
-import api from "../../axios/api"
+import api from "../../axios/api";
 export default {
-    name: "app",
+  name: "app",
   inject: ["reload"],
   components: {
     Header
   },
   data() {
     return {
-      val:-1,
+      dict: [],
+      val: -1,
       modifs: [],
       shs: [],
       sels: [],
@@ -118,59 +136,148 @@ export default {
       dg2: false
     };
   },
-  created(){
-    this.$get(api.getUserDefinedTypes).then(res=>{
-      console.log(res)
-      if(res.data.State==200){
-        this.modifs=res.data.Data
+  created() {
+    this.$get(api.getUserDefinedTypes).then(res => {
+      console.log(res);
+      if (res.data.State == 200) {
+        this.modifs = res.data.Data;
       }
     });
-    this.$get(api.getUserDefinedDataType).then(res=>{
-      console.log(res)
-      if(res.data.State ==200){
-        this.sels=res.data.Data
-        console.log(this.sels)
+    this.$get(api.getUserDefinedDataType).then(res => {
+      console.log(res);
+      if (res.data.State == 200) {
+        this.sels = res.data.Data;
+        console.log(this.sels);
+      } else if (res.data.State == 1000) {
+        this.$message.error(res.data.Msg);
       }
-    })
-  },    
-  methods: {
-    crete(){
-      this.dg1=false
-      console.log(this.cus)
-      let sth=this.cus
-      this.$post(api.addUserDefined,sth).then(res=>{
-        console.log(res)
-        if(res.data.State==200){
-          this.$message({
-            type: "success",
-            message: "创建成功"
-          });
-          this.reload()
+    });
+    this.$get(api.Dict.getDictTypeItems).then(res => {
+      console.log(res);
+      if (res.data.State == 200) {
+        this.dict = res.data.Data;
+      }
+    });
+    this.$get(api.getUserDefinedItems + "1")
+      .then(res => {
+        console.log(res);
+        if (res.data.State == 200) {
+          this.shs = res.data.Data;
         }
-      }).catch(err=>{
-        console.log(err)
       })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  methods: {
+    crete() {
+      this.dg1 = false;
+      if (this.cus.DataType != 5) {
+        this.cus.DictID = "00000000-0000-0000-0000-000000000000";
+      }
+      this.cus.IsMulti = false;
+      if (!this.cus.IsEmpty) {
+        this.cus.IsEmpty = false;
+      }
+      console.log(this.cus);
+      let sth = this.cus;
+      this.$post(api.addUserDefined, sth)
+        .then(res => {
+          console.log(res);
+          if (res.data.State == 200) {
+            this.$message({
+              type: "success",
+              message: "创建成功"
+            });
+            this.reload();
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    getrow(e){
-      console.log(this.modifs[e].Value)
-      this.cus.DefinedType=this.modifs[e].value
+    mdf() {
+      this.dg2 = false;
+      if (this.cus1.DataType != 5) {
+        this.cus1.DictID = "00000000-0000-0000-0000-000000000000";
+      }
+      if (!this.cus1.IsEmpty) {
+        this.cus1.IsEmpty = false;
+      }
+      if (!this.cus1.IsMulti) {
+        this.cus1.IsMulti = false;
+      }
+      let mdfs = this.cus1;
+      console.log(mdfs);
+      this.$post(api.editUserDefined, mdfs)
+        .then(res => {
+          console.log(res);
+          if (res.data.State == 200 && res.data.Data == true) {
+            this.$message.success("修改成功");
+            this.reload();
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getrow(e) {
+      console.log(this.modifs[e].Value);
+      let dft = this.modifs[e].Value;
+      this.cus.DefinedType = dft;
+      console.log(this.cus.DefinedType);
     },
     send(e) {
-      console.log(this.modifs[e].Value)
-      let type=this.modifs[e].Value
-      console.log(api.getUserDefinedItems+type)
-      this.$get(api.getUserDefinedItems+type).then(res=>{
-        console.log(res)
-        if(res.data.State==200){
-          this.shs=res.data.Data
-        }
-      }).catch(err=>{
-        console.log(err)
-      })
+      console.log(this.modifs[e].Value);
+      let type = this.modifs[e].Value;
+      console.log(api.getUserDefinedItems + type);
+      this.$get(api.getUserDefinedItems + type)
+        .then(res => {
+          console.log(res);
+          if (res.data.State == 200) {
+            this.shs = res.data.Data;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     get(row) {
       console.log(row);
       this.cus1 = row;
+    },
+    delcos() {
+      this.$confirm("确定要删除该条记录吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          console.log(this.cus1.ID);
+          let url = api.delUserDefined + this.cus1.ID;
+          this.$get(url)
+            .then(res => {
+              console.log(res)
+              if (res.data.State == 200 && res.data.Data == true) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功"
+                });
+                this.reload();
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+
+          
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   }
 };
@@ -184,6 +291,7 @@ export default {
   margin-left: 25px;
   overflow: auto;
   height: calc(100% - 60px);
+  width: calc(100% + 19px);
 }
 .chekbxs {
   width: 100%;
@@ -204,13 +312,14 @@ export default {
   overflow: auto;
 }
 .el-col {
-  max-height: 500px;
+  max-height: 710px;
 }
 .el-col-4 {
   background-color: #fff;
   text-align: center;
   overflow: auto;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 232px);
+  width: 18.22%;
 }
 .el-col-4 p,
 .el-col-5 b {
@@ -226,7 +335,7 @@ export default {
 }
 .el-col-18 {
   margin-left: 25px;
-  width: 79.3%;
+  width: 75%;
 }
 .place {
   height: 1px;

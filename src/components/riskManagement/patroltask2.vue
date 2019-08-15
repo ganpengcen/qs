@@ -291,16 +291,17 @@
     overflow: hidden;
   }
   .wrapper .table{
-    height: calc(100% - 150px);
-    margin: 15px 25px 11px;
-    overflow: hidden
+    height: calc(100% - 155px);
+    margin: 0 0 15px 25px;
+    overflow: hidden;
+    width: calc(100% - 50px)
   }
   .wrapper .table .table-top{
     height: 40px;
     background-color: white;
     border-radius: 5px;
     padding: 10px 0 10px 20px;
-    margin: 0 2px 5px 2px;
+    margin: 0 0 15px 0;
   }
   .wrapper .table-foot{
     margin: 15px 25px 11px;

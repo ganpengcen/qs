@@ -39,7 +39,7 @@
       <el-table
         @row-click="view"
         :data="tableData"
-        height="calc(100% - 88px)"
+        height="calc(100% - 78px)"
         border
         :header-cell-style="{'text-align':'center'}"
         :cell-style="{'text-align':'center'}"
@@ -286,17 +286,17 @@ export default {
   text-align: right;
   margin: 15px 25px 0 25px;
   background: #fff;
-  /* width: 96%; */
+  width: calc(100% - 65px);
 }
 .content {
   height: 100%;
   overflow: hidden;
 }
 .main {
-  margin: 25px;
+  margin: 15px 25px;
   width: calc(100% - 55px);
   overflow: hidden;
-  height: calc(100% - 170px);
+  height: calc(100% - 150px);
 }
 .el-dialog {
   text-align: left;

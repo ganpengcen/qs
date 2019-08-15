@@ -103,18 +103,4 @@ body {
 .el-dialog {
   overflow-y: hidden;
 }
- .wrapper ::-webkit-scrollbar{
-     width: 6px;
-   height: 6px;
-  }
- .wrapper ::-webkit-scrollbar-track {
-     -webkit-box-shadow: inset 0 0 5px rgba(223,225,111,0.2);
-     border-radius: 0;
-     background:lightcyan;
-  }
- .wrapper ::-webkit-scrollbar-thumb {
-     border-radius: 5px;
-     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-     background: red;
-  }
 </style>
