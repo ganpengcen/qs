@@ -1,58 +1,90 @@
 <template>
-  <div class="hello">
-    <el-tabs v-model="editableTabsValue" type="card" tab-position="left" closable>
-  <el-tab-pane
-    v-for="(item, index) in select"
-    :key="index"
-    :label="item.title"
-    :name="item.name"
-  >
-    {{item.content}}
-  </el-tab-pane>
-    </el-tabs>
+<div>
+  <div>
+    <el-button
+      size="small"
+      @click="addTab(editableTabsValue)"
+    >
+      add tab
+    </el-button>
   </div>
+  <el-tabs tab-position="left" v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
+    <el-tab-pane
+      v-for="(item, index) in editableTabs"
+      :key="item.name"
+      :label="item.title"
+      :name="item.name"
+    >
+      {{item.content}}
+    </el-tab-pane>
+  </el-tabs>
+</div>
 </template>
 
 <script>
 export default {
-  data(){
+  data() {
     return {
-      editableTabsValue: "1",
-      tabIndex: 1,
-      select: [
-        { title: "1", name: "1", content: "1" },
-        { title: "2", name: "2", content: "2" },
-        { title: "3", name: "3", content: "3" },
-        { title: "4", name: "4", content: "4" },
-        { title: "5", name: "5", content: "5" },
-        { title: "6", name: "6", content: "6" },
-        { title: "7", name: "7", content: "7" },
-        { title: "8", name: "8", content: "8" },
-        { title: "9", name: "9", content: "9" },
-        { title: "10", name: "10", content: "10" },
-        { title: "11", name: "11", content: "11" },
-        { title: "12", name: "12", content: "12" },
-        { title: "13", name: "13", content: "13" },
-        { title: "14", name: "14", content: "14" },
-        { title: "15", name: "15", content: "15" },
-        { title: "16", name: "16", content: "16" },
-        { title: "17", name: "17", content: "17" },
-        { title: "18", name: "18", content: "18" },
-        { title: "19", name: "19", content: "19" },
-        { title: "20", name: "20", content: "20" },
-        { title: "21", name: "21", content: "21" },
-        { title: "22", name: "22", content: "22" },
-        { title: "23", name: "23", content: "23" },
-        { title: "24", name: "24", content: "24" }
-      ]
-    }
+      editableTabsValue: '2',
+        editableTabs: [
+          {title: 'Tab 1',name: '1',content: 'Tab 1 content'},
+          {title: 'Tab 2',name: '2',content: 'Tab 2 content'},
+          {title: 'Tab 3',name: '3',content: 'Tab 3 content'},
+          {title: 'Tab 4',name: '4',content: 'Tab 4 content'},
+          {title: 'Tab 5',name: '5',content: 'Tab 5 content'},
+          {title: 'Tab 6',name: '6',content: 'Tab 6 content'},
+          {title: 'Tab 7',name: '7',content: 'Tab 7 content'},
+          {title: 'Tab 8',name: '8',content: 'Tab 8 content'},
+          {title: 'Tab 9',name: '9',content: 'Tab 9 content'},
+          {title: 'Tab 10',name: '10',content: 'Tab 10 content'},
+          {title: 'Tab 11',name: '11',content: 'Tab 11 content'},
+          {title: 'Tab 12',name: '12',content: 'Tab 12 content'},
+          {title: 'Tab 13',name: '13',content: 'Tab 13 content'},
+          {title: 'Tab 14',name: '14',content: 'Tab 14 content'},
+          {title: 'Tab 15',name: '15',content: 'Tab 15 content'},
+          {title: 'Tab 16',name: '16',content: 'Tab 16 content'},
+          {title: 'Tab 17',name: '17',content: 'Tab 17 content'},
+          {title: 'Tab 18',name: '18',content: 'Tab 18 content'},
+          {title: 'Tab 19',name: '19',content: 'Tab 19 content'},
+          {title: 'Tab 20',name: '20',content: 'Tab 20 content'},
+        ],
+        tabIndex: 2
+    };
+  },
+  methods: {
+      addTab(targetName) {
+        let newTabName = ++this.tabIndex + '';
+        this.editableTabs.push({
+          title: 'New Tab',
+          name: newTabName,
+          content: 'New Tab content'
+        });
+        this.editableTabsValue = newTabName;
+      },
+      removeTab(targetName) {
+        let tabs = this.editableTabs;
+        let activeName = this.editableTabsValue;
+        if (activeName === targetName) {
+          tabs.forEach((tab, index) => {
+            if (tab.name === targetName) {
+              let nextTab = tabs[index + 1] || tabs[index - 1];
+              if (nextTab) {
+                activeName = nextTab.name;
+              }
+            }
+          });
+        }
+        
+        this.editableTabsValue = activeName;
+        this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+      }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.el-tabs{
+.el-tabs {
   height: 500px;
 }
 h3 {
