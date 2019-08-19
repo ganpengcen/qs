@@ -34,29 +34,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD
   import api from "../../axios/api";
-  export default {
-    name: "Login",
-    data() {
-      return {
-        Login1: "",
-        Login2: "",
-        Login3: "",
-        Pwd: ""
-      }
-      },
-    mounted() {
-      let me = this;
-      document.onkeydown = function(event) {
-        var e = event || window.event;
-        if(e && e.keyCode == 13) { //回车键的键值为13
-          me.signin()
-        }
-      };//  xf  xf123456
-    },
-=======
-import api from "../../axios/api";
 export default {
   name: "Login",
   data() {
@@ -67,14 +45,13 @@ export default {
       Pwd: ""
     };
   },
->>>>>>> 17888d97eed5d58c858d85a3b1ed76838b20f591
 
   methods: {
     signin() {
       let that = this;
       this.$post(this.api.userSignin, {
         AccountCode: "1",
-        Login: "xt",
+        Login: "15",
         Pwd: "123456"
       }).then(res => {
         if (res.data.State === 200) {

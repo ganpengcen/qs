@@ -1,71 +1,6 @@
 <template>
   <div class="content">
     <Header title="风险管理" text="作业流程"></Header>
-    
-    <el-dialog width="40%" :visible.sync="dg1" title="新建作业">
-      <div class="info">
-        <el-form :inline="true" label-width="75px">
-          <el-form-item label="作业编号">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="名称">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="作业岗位">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="流程回退">
-            <el-checkbox></el-checkbox>
-          </el-form-item>
-          <el-form-item label="作业描述">
-            <el-input type="textarea" :rows="3"></el-input>
-          </el-form-item>
-          <el-divider></el-divider>
-          <el-form-item label="日期">
-            <el-date-picker></el-date-picker>
-          </el-form-item>
-          <el-form-item label="流程哇">
-            <el-input></el-input>
-          </el-form-item>
-        </el-form>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dg1 = false">取 消</el-button>
-        <el-button type="primary" @click="dg1= false">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog width="40%" :visible.sync="dg2" title="新建作业">
-      <div class="info">
-        <el-form :inline="true" label-width="75px">
-          <el-form-item label="作业编号">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="名称">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="作业岗位">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="流程回退">
-            <el-checkbox></el-checkbox>
-          </el-form-item>
-          <el-form-item label="作业描述">
-            <el-input type="textarea" :rows="3"></el-input>
-          </el-form-item>
-          <el-divider></el-divider>
-          <el-form-item label="日期">
-            <el-date-picker></el-date-picker>
-          </el-form-item>
-          <el-form-item label="流程哇">
-            <el-input></el-input>
-          </el-form-item>
-        </el-form>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dg2 = false">取 消</el-button>
-        <el-button type="primary" @click="dg2= false">确 定</el-button>
-      </span>
-    </el-dialog>
     <div class="main">
       <div class="top">
       <el-row>
@@ -109,6 +44,66 @@
     <div class="pge">
       <el-pagination :page-size="5" :total="processTable.length" layout="prev,pager,next"></el-pagination>
     </div>
+
+    <el-dialog width="40%" :visible.sync="dg1" title="新建作业">
+      <div class="info">
+        <el-form :inline="true" label-width="75px">
+          <el-form-item label="作业编号">
+            <el-input v-model="tetxFlow.Code"></el-input>
+          </el-form-item>
+          <el-form-item label="名称">
+            <el-input v-model="tetxFlow.Name"></el-input>
+          </el-form-item>
+          <el-form-item label="作业岗位">
+            <el-input v-model="tetxFlow.PostID"></el-input>
+          </el-form-item>
+          <el-form-item label="流程回退">
+            <el-checkbox v-model="tetxFlow.IsBackReturn"></el-checkbox>
+          </el-form-item>
+          <el-form-item label="作业描述">
+            <el-input type="textarea" :rows="3" v-model="tetxFlow.Memo"></el-input>
+          </el-form-item>
+        </el-form>
+          <el-divider></el-divider>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dg1 = false">取 消</el-button>
+        <el-button type="primary" @click="addTextFlow">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog width="40%" :visible.sync="dg2" title="新建作业">
+      <div class="info">
+        <el-form :inline="true" label-width="75px">
+          <el-form-item label="作业编号">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="名称">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="作业岗位">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="流程回退">
+            <el-checkbox></el-checkbox>
+          </el-form-item>
+          <el-form-item label="作业描述">
+            <el-input type="textarea" :rows="3"></el-input>
+          </el-form-item>
+          <el-divider></el-divider>
+          <el-form-item label="日期">
+            <el-date-picker></el-date-picker>
+          </el-form-item>
+          <el-form-item label="流程哇">
+            <el-input></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dg2 = false">取 消</el-button>
+        <el-button type="primary" @click="dg2= false">确 定</el-button>
+      </span>
+    </el-dialog>
     <el-dialog width="65%" title="流程节点" :visible.sync="dg3">
       <div class="info">
         <div class="ttl">
@@ -152,6 +147,23 @@ export default {
   },
   data() {
     return {
+      tetxFlow :{
+        Code: "",
+        Name: "",
+        IsBackReturn: false,
+        PostID: "",
+        Memo: "",
+        UserDefineds: [
+          {
+            DefinedID: "",
+            DefinedValue: {}
+          },
+          {
+            DefinedID: "",
+            DefinedValue: {}
+          }
+        ]
+      },
       nord: "",
       nname: "",
       njb: "",
@@ -175,6 +187,9 @@ export default {
     };
   },
   methods: {
+    addTextFlow() {
+
+    }, //新建作业流程
     del() {
       this.$confirm("将要执行删除操作,是否继续?", "提示", {
         confirmButtonText: "确定",

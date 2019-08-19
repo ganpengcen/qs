@@ -35,7 +35,6 @@ export default {
     getUserDefiedType:Host + 'api/userDefined/getUserDefinedTypes', //获取自定义项类型集合
   },
   //组织架构
-<<<<<<< HEAD
   Org:{
     getEmployeePage: host + 'api/org/getEmployeePage',
     addOrg: host + 'api/org/addOrg',
@@ -51,7 +50,20 @@ export default {
     deleteOrg: host + 'api/org/deleteOrg/',
     editOrg: host + 'api/org/editOrg',
       },
+  //作业流程
+  TextFlow:{
+    addOpreation: Host + 'api/opreation/addOpreation',  //新建作业流程
+    delOpreation: Host + ' api/opreation/delOpreation/',  //删除作业流程
+    editOpreation:  Host + 'api/opreation/editOpreation',  //修改作业流程
+    addOpreationFlow: Host + 'api/opreation/addOpreationFlow',  //新建操作流程
+    delOpreationFlow: Host + 'api/opreation/delOpreationFlow/',  //删除操作流程
+    getOpreationModel: Host + 'api/opreation/getOpreationModel/',  //获取作业模型
+    getOpreationsPage: Host + ' api/opreation/getOpreationsPage',  //分页获取作业列表
+    getOpreationFlowList: Host + 'api/opreation/getOpreationFlowList/',  //根据作业id获取作业流程节点列表
+    getOpreationItems: Host + 'api/opreation/getOpreationItems',  //获取作业集合
+  },
 
+  getRoleSelector:Host + 'api/auth/getRoleSelector',
   Dict: {
     addDict: host + 'api/dict/addDict',
     addDictType: host + 'api/dict/addDictType',
@@ -61,23 +73,6 @@ export default {
     getDictModel: host + 'api/dict/getDictModel/',
     getDictsPage: host + 'api/dict/getDictsPage',
     getDictTypeItems: host + 'api/dict/getDictTypeItems'
-  }
-=======
-  Org: {
-    addOrg: Host + 'api/org/addOrg',//新建组织架构
-    editOrg: Host + 'api/org/editOrg',//修改组织架构
-    deleteOrg: Host + 'api/org/deleteOrg/',//删除组织架构
-    addEmployee: Host + 'api/org/addEmployee',//新建组织人员
-    editEmployee: Host + 'api/org/editEmployee',//修改人员信息
-    deleteEmployee: Host + 'api/org/deleteEmployee/',//删除人员
-    employeeQuit: Host + 'api/org/employeeQuit',//员工离职
-    getEmployeeModel: Host + 'api/org/getEmployeeModel/',//获取人员模型
-    getEmployeePage: Host + 'api/org/getEmployeePage',//根据组织id分页获取人员列表
-    getEmployeeList: Host + 'api/org/getEmployeeList/',//根据组织id获取人员集合
-    getOrgChildren: Host + 'api/org/getOrgChildren/',//获取组织架构子集
-    getChildrenItems: Host + 'api/org/getChildrenItems/',//获取组织架构子集id
-    getParentItems: Host + 'api/org/getParentItems/',//获取组织架构父集
-    getTree: Host + 'api/org/getTree/',//获取组织架构树
   },
 
   //自定义项
@@ -100,5 +95,4 @@ export default {
   getPostsPage: Host + 'api/post/getPostsPage',//分页获取岗位列表
   getPostItems: Host + 'api/post/getPostItems',//获取岗位集合
   getEmployeesByPostID: Host + 'api/post/getEmployeesByPostID',//根据岗位ID分页获取人员列表
->>>>>>> 17888d97eed5d58c858d85a3b1ed76838b20f591
 }
