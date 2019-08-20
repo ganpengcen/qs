@@ -51,7 +51,7 @@ export default {
       let that = this;
       this.$post(this.api.userSignin, {
         AccountCode: "1",
-        Login: "15",
+        Login: "g",
         Pwd: "123456"
       }).then(res => {
         if (res.data.State === 200) {

@@ -1,0 +1,15 @@
+"{"CNName":"zzz",
+"Gender":"man",
+"IsLeader":true,
+"IsLevel":true,
+"Jobno":"zzz",
+"HeadIMG":"",
+"OrgId":"15bc3e52-7ab9-44bb-9428-d2ddef34dc65",
+"UserDefineds":
+[{"DefinedValue":
+["250db19e-76cd-4ff7-b527-0bd4806ef1d8","a0f85cc7-4994-4953-9310-fd41a658dbb9"],
+"DefinedID":"dae80b21-ecfb-462e-849b-69dda97fda7e"},
+{"DefinedValue":"z","DefinedID":"6958618c-4c53-4ba9-ae7a-e2b3cb5ead40"}],
+"Tel":"z",
+"IsCreate":true,
+"RoleIDs":["8fe368b7-152d-4e61-b630-1c1bf3adb122"]}"

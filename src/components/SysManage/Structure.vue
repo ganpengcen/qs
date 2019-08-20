@@ -483,7 +483,7 @@ export default {
             if(item.DataType == '词典'){
               console.log('词典')
               let param = {
-                "PageSize": 5,
+                "PageSize": 15,
                 "PageIndex": 0,
                 "KeyWord": "",
                 "Query":item.DictID ,

@@ -190,6 +190,7 @@ export default {
       }
       this.$post(this.api.Dict.addDictType,param).then((data)=> {
         if(data.data.State === 200) {
+          this.getDict()
           if (data.data.Msg === '') {
             this.select.push({
               title: this.tyname,
@@ -199,13 +200,13 @@ export default {
             console.log(data)
             this.tyname = ''
           } else if (data.data.Msg.indexOf('已存在') !== (-1)) {
-            this.$notify({
+            this.$message({
               title: '标题名称',
               message: '该类型已存在,请从新输入'
             })
             this.tyname = ''
           }
-        } else this.message('失败')
+        } else this.$message('失败')
     })
     },  //新建词典类型
     getDictsPage () {
@@ -299,7 +300,7 @@ export default {
   width: 70%
 }
 .el-table{
-  margin-bottom:15px; 
+  margin-bottom:15px;
 }
 .main {
   overflow: auto;
