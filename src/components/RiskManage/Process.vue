@@ -38,7 +38,7 @@
           <div slot-scope="scope">
             <el-button type="text" @click="changeFlow(scope.row.ID)">修改</el-button>
             <el-button type="text" @click="delOpreation(scope.row.ID)">删除</el-button>
-            <el-button type="text" @click="dg3=true">流程</el-button>
+            <el-button type="text" @click="OpreationFlow(scope.row)">流程</el-button>
           </div>
         </el-table-column>
       </el-table>
@@ -67,7 +67,7 @@
           </el-form-item>
           <el-form-item label="作业岗位">
             <el-select v-model="tetxFlow.PostID">
-              <el-option :label="item.PostName" :value="item.PostID" v-for="item,index in post" :key="index"></el-option>
+              <el-option :label="item.PostID" :value="item.PostID" v-for="item,index in post" :key="index"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="流程回退">
@@ -110,7 +110,7 @@
           </el-form-item>
           <el-form-item label="作业岗位">
             <el-select v-model="tetxFlow.PostID">
-              <el-option :label="item.PostName" :value="item.PostID" v-for="(item,index) in post" :key="item.ID"></el-option>
+              <el-option :label="item.PostName  " :value="item.PostID" v-for="(item,index) in post" :key="item.ID"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="流程回退">
@@ -125,8 +125,8 @@
           <el-form labelWidth="75px" :inline="true">
             <el-form-item v-for="(item, index) in userDefine" :label="item.Caption" :key="index">
               <el-input v-if="item.DataType ==='字符'" v-model="item.value" style="width: 220px"></el-input>
-              <el-select v-model="item.arr" v-if="item.DataType === '词典'" :multiple="true" :collapse-tags="true">
-                <el-option v-for="(a, b) in item.Dictarr" :key="b" :value="a.ID" :label="a.Name"></el-option>
+              <el-select v-model="item.ItemValue" v-if="item.DataType === '词典'" :multiple="true" :collapse-tags="true">
+                <el-option v-for="(a, b) in item.DictSelection" :key="b" :value="a.ID" :label="a.DictName"></el-option>
               </el-select>
               <el-checkbox v-model="item.checked" v-if="item.DataType === '是非'"></el-checkbox>
               <el-input v-if="item.DataType ==='整数'" v-model="item.value" style="width: 220px"></el-input>
@@ -142,35 +142,39 @@
       </span>
     </el-dialog>
 
-    <el-dialog width="65%" title="流程节点" :visible.sync="dg3">
+    <el-dialog width="65%" title="流程节点" :visible.sync="dg3" style="overflow: auto">
       <div class="info">
         <div class="ttl">
-          <span>作业编号:{{info.numb}}</span>
-          <span>作业名称:{{info.pname}}</span>
-          <el-checkbox v-model="info.bck" disabled>流程回退</el-checkbox>
+          <span>作业编号:{{FlowDetail.Code}}</span>
+          <span>作业名称:{{FlowDetail.Name}}</span>
+          <el-checkbox v-model="FlowDetail.IsBackReturn" disabled>流程回退</el-checkbox>
         </div>
-        <el-form label-width="75px" :inline="true">
+        <el-form label-width="75px" :inline="true" v-model="point">
           <el-form-item label="节点顺序">
-            <el-input v-model="nord"></el-input>
+            <el-input v-model="point.PointIndex"></el-input>
           </el-form-item>
           <el-form-item label="节点名称">
-            <el-input v-model="nname"></el-input>
+            <el-input v-model="point.PointName"></el-input>
           </el-form-item>
           <el-form-item label="节点岗位">
-            <el-input v-model="njb"></el-input>
+            <el-select v-model="point.PostID">
+              <el-option v-for="item,index in post" :key="item.PostID" :label="item.PostName" :value="item.PostID"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="节点描述">
-            <el-input type="textarea" :rows="3" v-model="ndes"></el-input>
+            <el-input type="textarea" :rows="3" v-model="point.PointMemo"></el-input>
           </el-form-item>
-          <el-button type="primary" @click="add()">增加</el-button>
+          <el-button type="primary" @click="addOpreationFlow">增加</el-button>
         </el-form>
-        <el-table :data="dgtb" border :cell-style="{'padding':'0'}">
-          <el-table-column label="节点顺序" prop="nord"></el-table-column>
-          <el-table-column label="节点名称" prop="nname"></el-table-column>
-          <el-table-column label="节点岗位" prop="njb"></el-table-column>
-          <el-table-column label="描述" prop="ndes"></el-table-column>
+        <el-table :data="TableFlowDetail" border :cell-style="{'padding':'0'}">
+          <el-table-column label="节点顺序" prop="PointIndex"></el-table-column>
+          <el-table-column label="节点名称" prop="PointName"></el-table-column>
+          <el-table-column label="节点岗位" prop="PostName"></el-table-column>
+          <el-table-column label="描述" prop="PointMemo"></el-table-column>
           <el-table-column label="操作">
-            <el-button type="text" @click="del()">删除</el-button>
+            <div slot-scope="scope">
+             <el-button type="text" @click="delOpreationFlow(scope.row.ID)">删除</el-button>
+            </div>
           </el-table-column>
         </el-table>
       </div>
@@ -205,6 +209,14 @@ export default {
       },
       key:'',
       ID: '',
+      point:{
+        PointName:'',
+        PostID:'',
+        PointIndex:'',
+        PointMemo:'',
+      },
+      FlowDetail:{},
+      TableFlowDetail:[],
 
       dg1: false,
       nord: "",
@@ -257,10 +269,10 @@ export default {
       this.userDefine = []
       this.tetxFlow = {
         Code: "",
-          Name: "",
-          IsBackReturn: false,
-          PostID: "",
-          Memo: ""
+        Name: "",
+        IsBackReturn: false,
+        PostID: "",
+        Memo: ""
       }
       this.$get(this.api.UserDefined.getUserDefinedItems + '4').then(res=>{
         if(res.data.State === 200){
@@ -279,6 +291,11 @@ export default {
             }
           })
          this.userDefine = res.data.Data
+        }else{
+          this.$message({
+            type:'error',
+            message:res.data.Msg
+          })
         }
       })
     },  //获取用户自定义项
@@ -330,7 +347,7 @@ export default {
         "Code":this.tetxFlow.Code ,
         "Name": this.tetxFlow.Name,
         "IsBackReturn": this.tetxFlow.IsBackReturn,
-        "PostID": "250db19e-76cd-4ff7-b527-0bd4806ef1d8",
+        "PostID": this.tetxFlow.PostID,
         "Memo": this.tetxFlow.Memo,
         "UserDefineds": userData
       }
@@ -403,6 +420,12 @@ export default {
     },  //获取作业模型
     submitChange() {
       let user = []
+      this.userDefine.forEach(i=>{
+        user.push({
+          DefinedID:i.ID,
+          DefinedValue:i.ItemValue
+        })
+      })
       let param = {
         "ID": this.ID,
         "Code":this.tetxFlow.Code ,
@@ -412,7 +435,40 @@ export default {
         "Memo": this.tetxFlow.Memo,
         "UserDefineds": user
       }
+      console.log('修改参数:',param)
     }, //提交修改
+    OpreationFlow(detail) {
+      this.FlowDetail = detail
+      this.getPostSelector()
+      this.getPostSelector()
+      this.getOpreationFlowList()
+      this.dg3 = true
+    },//作业流程窗口
+    addOpreationFlow() {
+      let param = {
+        "OpreationID": this.FlowDetail.ID,
+        "PointName": this.point.PointName,
+        "PostID": this.point.PostID,
+        "PointIndex": this.point.PointIndex,
+        "PointMemo": this.point.PointMemo,
+      }
+      console.log('新建作业流程节点:',param)
+      this.$post(this.api.TextFlow.addOpreationFlow,param).then(res=>{
+        console.log('新建作业流程返回值')
+        if(res.data.State === 200){
+          this.getOpreationFlowList()
+          this.$message({
+            type:'success',
+            message:'新建成功'
+          })
+        } else {
+          this.$message({
+            type:'error',
+            message:res.data.Msg
+          })
+        }
+      })
+    }, //新建作业流程
     delOpreation(ID) {
       this.$confirm("将要执行删除操作,是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -437,6 +493,45 @@ export default {
           });
         });
     },  //删除作业流程
+    getOpreationFlowList() {
+      this.$get(this.api.TextFlow.getOpreationFlowList+this.FlowDetail.ID).then(res=>{
+        console.log('根据id获取作业流程返回值:',res)
+        if(res.data.State === 200){
+          this.TableFlowDetail = res.data.Data
+        } else{
+          this.$message({
+            type:'error',
+            message:res.data.Msg
+          })
+        }
+      })
+    },// 根据id获取流程
+    delOpreationFlow(ID) {
+      this.$confirm('将要执行删除操作是否继续','提示',{
+        confirmButtonText:'确认',
+        cancelButtonText:'取消'
+      }).then(b=>{
+        this.$get(this.api.TextFlow.delOpreationFlow+ID).then(res=>{
+          if(res.data.State === 200){
+            this.getOpreationFlowList()
+            this.$message({
+              type:'success',
+              message:'删除成功'
+            })
+          }else {
+            this.$message({
+              type:'error',
+              message:res.data.Msg
+            })
+          }
+        })
+      }).catch(res=>{
+        this.$message({
+          type:'info',
+          message:'取消'
+        })
+      })
+    },//删除操作流程
 
     inf(row) {
       console.log(row);

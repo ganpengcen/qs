@@ -101,5 +101,6 @@ export default {
   getPostSelector: Host + 'api/post/getPostSelector',//获取岗位集合
   getEmployeesByPostID: Host + 'api/post/getEmployeesByPostID',//根据岗位ID分页获取人员列表
 
-  getfiles:Host+'api/attachfile/getfiles/' //获取用户上传文件
+  getfiles:Host+'api/attachfile/getfiles/', //获取用户上传文件
+  delFile: Host + 'api/attachFile/delFile/' //删除文件
 }

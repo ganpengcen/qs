@@ -34,7 +34,7 @@
           <div slot-scope="scope">
             <el-button type="text" @click="changePost(scope.row.ID)">修改</el-button>
             <el-button type="text"  @click="delPost(scope.row.ID)">删除</el-button>
-            <el-button type="text" @click="management(scope.row.ID)">人员管理</el-button>
+            <el-button type="text" @click="management(scope.row.ID,scope.row.Name)">人员管理</el-button>
           </div>
         </el-table-column>
       </el-table>
@@ -70,8 +70,8 @@
             <!--</el-select>-->
           <!--</el-form-item>-->
           <el-form-item label="责任人">
-            <el-select v-model="job.Principal">
-              <el-option v-for="item, index in job.selector" :label="item.Name" :value="item.ID" :key="index"></el-option>
+            <el-select v-model="job.principal">
+              <el-option v-for="item, index in job.selector" :label="item.Name" :value="item.ID" :key="item.ID"></el-option>
             </el-select>
           </el-form-item>
 
@@ -192,7 +192,7 @@
                <el-input v-model="job2.Principal" disabled></el-input>
               </el-form-item>
               <el-form-item label="责任人电话">
-                <el-input disabled v-model="job2.PrincipalTel"></el-input>
+                <el-input disabled v-model="personPrincipal"></el-input>
               </el-form-item>
             </el-form>
             <el-form labelWidth="100px" size="small">
@@ -217,11 +217,11 @@
               <div style="flex: 1">
             <el-form class="depar" :inline="true" >
               <el-form-item label="组织架构">
-                <el-cascader :props="prp" :options="options" style="width:140px" v-model="job.Org" clearable @change="handleChange"></el-cascader>
+                <el-cascader :props="prp" :options="options" style="width:140px" v-model="job.Org" clearable @change="handleChangePerson"></el-cascader>
               </el-form-item>
               <el-form-item label="责任人">
-                <el-select v-model="job.Principal" multiple :collapse-tags="true" style="width: 140px;margin-left: 15px">
-                  <el-option v-for="item, index in job.selector" :label="item.Name" :value="item.ID" :key="index" style="width: 160px"></el-option>
+                <el-select v-model="Principal2" multiple :collapse-tags="true" style="width: 140px;margin-left: 15px">
+                  <el-option v-for="(item, index) in job2.selector" :label="item.Name" :value="item.ID" :key="index" style="width: 160px"></el-option>
                 </el-select>
               </el-form-item>
             </el-form>
@@ -258,6 +258,7 @@
   </div>
 </template>
 <script>
+  // 文件上传
 import Header from "../assembly/Header";
 const GUID ='00000000-0000-0000-0000-000000000000'
 let treeP = []
@@ -267,14 +268,21 @@ export default {
   },
   data() {
     return {
-      Principal:'',
+      Principal2:[],
+      personPrincipal:'',
       fileList:[],
       upFileList:[],
-      job2:{},
+      job2:{
+      Code: '',
+        Name: '',
+        principal: '',
+        Org:'',
+        MainTasks:'',
+    },
       job:{
         Code: '',
         Name: '',
-        Principal: '',
+        principal: '',
         Org:'',
         MainTasks:'',
       },
@@ -284,6 +292,8 @@ export default {
         "AccountID":sessionStorage.AccountID,
       },
       dg1: false,
+      dg2:false,
+      dg3:false,
       options: [],
       treedata:[],
       prp:{
@@ -306,79 +316,7 @@ export default {
       key:'',
       tabledata:[],
       ID:'',
-      personID:'',
-
-      depart:'',
-      sec:'',
-      dg2: false,
-      dg3: false,
-      tbd: [
-        {
-          nmb: "1",
-          name: "ajskad",
-          respos: "asdasda",
-          respostel: "56541113331"
-        },
-        {
-          nmb: "1",
-          name: "ajskad",
-          respos: "asdasda",
-          respostel: "56541113331"
-        },
-        {
-          nmb: "1",
-          name: "ajskad",
-          respos: "asdasda",
-          respostel: "56541113331"
-        },
-        {
-          nmb: "1",
-          name: "ajskad",
-          respos: "asdasda",
-          respostel: "56541113331"
-        },
-        {
-          nmb: "1",
-          name: "ajskad",
-          respos: "asdasda",
-          respostel: "56541113331"
-        },
-        {
-          nmb: "1",
-          name: "ajskad",
-          respos: "asdasda",
-          respostel: "56541113331"
-        },
-        {
-          nmb: "1",
-          name: "ajskad",
-          respos: "asdasda",
-          respostel: "56541113331"
-        },
-        {
-          nmb: "1",
-          name: "ajskad",
-          respos: "asdasda",
-          respostel: "56541113331"
-        },
-        {
-          nmb: "1",
-          name: "ajskad",
-          respos: "asdasda",
-          respostel: "56541113331"
-        },
-      ],
-      info:{},
-      deptb:[
-        {name:'asdas',dept:'1-1-2'},
-        {name:'asdas',dept:'1-1-2'},
-      ],
-      props: {
-        lazy:true,
-        lazyLoad (node, resolve) {
-          resolve(treeP)
-        }
-      }
+      postID:'',
     };
   },
   methods:{
@@ -414,7 +352,7 @@ export default {
       let param = {
         "Code": this.job.Code,
         "Name": this.job.Name,
-        "Principal":this.job.Principal ,
+        "Principal":this.job.principal ,
         "Org": this.job.Org[this.job.Org.length-1],
         "MainTasks":this.job.MainTasks,
        "UserDefineds":userData,
@@ -429,6 +367,11 @@ export default {
           this.$message({
             type:'sucsess',
             message:'新建成功'
+          })
+        }else{
+          this.$message({
+            type:'error',
+            message:res.data.Msg
           })
         }
       })
@@ -475,7 +418,6 @@ export default {
     handleChange(value) {
       let da = ''
      console.log('value',value)
-      this.job.Principal = ''
       if(value) {
         if (value.length > 0) {
           da = value[value.length - 1]
@@ -491,6 +433,25 @@ export default {
         }
       }
     },//树节点改变
+    handleChangePerson(value){
+      console.log('数据二点')
+      let da = ''
+      console.log('value',value)
+      if(value) {
+        if (value.length > 0) {
+          da = value[value.length - 1]
+          this.$get(this.api.Org.getEmployeeSelector + da).then(res => {
+            if (res.data.State === 200) {
+              console.log('节点改变:', res)
+              this.$set(this.job2, 'selector', res.data.Data)
+//            this.selectOption = res.data.Data
+            }
+          })
+        } else {
+          return false;
+        }
+      }
+    },//人员树节点改变
     getEmployeesByPostID() {
       let param = {
         "PageSize": this.page.size,
@@ -523,18 +484,16 @@ export default {
       this.page.index = val
       this.getEmployeesByPostID(this.ID)
     },  //当前页改变
-
     handleSizeChangepersonPage(val) {   //修改分页条数
       this.personPage.size = val
       console.log('分页数改变')
       console.log('分页数:',this.page.size)
-      this.getPersonPage(this.personID)
+      this.getPersonPage(this.personID,this.postName)
     },  //分页数目改变
     handleCurrentChangepersonPage(val) {   //当前展示页
       this.personPage.index = val
       this.getPersonPage(this.personID)
     },  //当前页改变
-
     delPerson(ID){
       this.$confirm('将永久删除该消息是否确认','提示',{
         confirmButtonText:'确认',
@@ -628,13 +587,20 @@ export default {
       })
     },  //提交修改
     getPostModel(ID) {
+      console.log(ID)
       this.$get(this.api.getPostModel + ID).then(res=>{
         console.log('获取岗位模型：',res)
         if(res.data.State === 200) {
-          this.job2 = res.data.Data
+          this.job = res.data.Data
           let data = []
           let org = res.data.Data.Org
           console.log('org',res.data.Data.Org)
+          this.$get(this.api.Org.getEmployeeSelector + org).then(res=>{
+            if(res.data.State === 200){
+              console.log('责任人反回值:',res)
+              this.$set(this.job, 'selector',res.data.Data)
+            }
+          })
           this.$get(this.api.Org.getParentItems + org).then(res=>{
             if(res.data.State === 200){
               res.data.Data.forEach(item=>{
@@ -698,25 +664,24 @@ export default {
         }
       })
     },  //获取文件
-    management (ID) {
-      this.personID = ID
+
+    management (ID,name) {
+      this.postID = ID
+      this.Principal2 = []
+      this.job = {}
+      this.dg3 = true
+      this.personPrincipal = name
+      this.job2 = {}
       this.getTree()
-      this.dg3 =true
       this.getUserDefinedList(ID)
-      this.getPersonPage(ID)
+      this.getPersonPage()
       this.$get(this.api.getPostModel + ID).then(res=>{
         console.log('获取岗位模型：',res)
         if(res.data.State === 200) {
           this.job2 = res.data.Data
           let data = []
+          let p=[]
           let org = res.data.Data.Org
-          console.log('org',res.data.Data.Org)
-          this.$get(this.api.Org.getEmployeeSelector + org).then(res=>{
-            if(res.data.State === 200){
-              console.log('责任人反回值:',res)
-              this.$set(this.job, 'selector',res.data.Data)
-            }
-          })
           this.$get(this.api.Org.getParentItems + org).then(res=>{
             if(res.data.State === 200){
               res.data.Data.forEach(item=>{
@@ -726,34 +691,43 @@ export default {
             console.log('data',data)
           })
           data.push(res.data.Data.Org)
-          this.job.Org = data
-          console.log('data2',this.job.Org)
+          this.job2.Org = data
+          console.log('data2',this.job2.Org)
         }
       })
     }, //人员管理窗口
+
     addPerson() {
       let param = {
-        "PostID": this.ID,
-        "EmployeeID": this.job.Principal
+        "PostID": this.postID,
+        "EmployeeID": this.Principal2
       }
+     console.log('id集合',param)
         this.$post(this.api.addPostEmployee,param).then(res=>{
           if(res.data.State === 200) {
+            this.getPersonPage()
             this.$message({
               type:'success',
               message:'新建成功'
             })
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.Msg
+            })
           }
         })
     },  //新增人员
-    getPersonPage(ID) {
+    getPersonPage() {
       let param ={
         "PageSize": this.personPage.size,
         "PageIndex": this.personPage.index - 1,
         "KeyWord": "",
-        "Query": "",
+        "Query": this.postID,
         "OrderString": "",
         "ToExcel": false
       }
+      console.log('获取人员参数',param)
       this.$post(this.api.getEmployeesByPostID,param).then(res=>{
         console.log('获取人员返回值:',res)
         if(res.data.State === 200) {
@@ -790,8 +764,10 @@ export default {
       }
     },  //文件上传
     handleRemove(file, fileList) {
-      console.log(file.ID)
-      this.$get(api.delfile+file.ID).then(res=>{
+      console.log('file',file)
+      console.log('fileilise',fileList)
+      this.$get(this.api.delFile+file.ID).then(res=>{
+        console.log('删除文件返回值:',res)
         if(res.data.state === 200){
           console.log('删除成功')
           let len = this.upFileList.length-1
@@ -802,7 +778,7 @@ export default {
         } else {
           this.$message({
             type:'error',
-            message:res.data.Msg
+            message:res.data.msg
           })
         }
       })

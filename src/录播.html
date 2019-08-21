@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>transition</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="wrapper">
+  <div id="content" class="app">
+      <img src="../static/img/1.png" alt="" width="400px" height="400px">
+      <img src="../static/img/2.png" alt="" width="400px" height="400px">
+      <img src="../static/img/1.png" alt="" width="400px" height="400px">
+      <img src="../static/img/2.png" alt="" width="400px" height="400px">
+      <img src="../static/img/1.png" alt="" width="400px" height="400px">
+  </div>
+</div>
+<style>
+  *{
+    padding: 0px;
+    margin: 0px;
+  }
+  .app img{
+    display: block;
+    float: left;
+  }
+</style>
+<script>
+window.onload = function () {
+  let oBtn = document.getElementById('content')
+  console.log(oBtn.offsetLeft )
+  let timer = setInterval(function () {
+    oBtn.offsetLeft = oBtn.offsetLeft-400
+    console.log(oBtn.offsetLeft )
+  },1000)
+}
+</script>
+</body>
+</html>
