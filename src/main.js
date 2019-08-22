@@ -8,14 +8,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '../static/css/my.css'
 import '../static/cssreset.css'
-import qs from 'qs'
 import QuillEditor from 'vue-quill-editor'
 Vue.use(QuillEditor)
-import  axios from  'axios';
-import {
-  post,
-  get,
-} from './axios/axios'
+import {post,get} from './axios/axios'
 
 import api from './axios/api'
 Vue.prototype.api = api

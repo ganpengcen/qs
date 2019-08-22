@@ -102,5 +102,19 @@ export default {
   getEmployeesByPostID: Host + 'api/post/getEmployeesByPostID',//根据岗位ID分页获取人员列表
 
   getfiles:Host+'api/attachfile/getfiles/', //获取用户上传文件
-  delFile: Host + 'api/attachFile/delFile/' //删除文件
+  delFile: Host + 'api/attachFile/delFile/', //删除文件
+
+    //设备
+  addFacilitySort:Host + 'addFacilitySort',// 新建设备类型
+  delFacilitySort:Host + 'delFacilitySort/', //删除设备类型
+  addFacility:Host+ 'addFacility',// 新建设备设施
+  editFacility:Host+'editFacility',//修改设备设施
+  delFacility:Host+'delFacility/',//删除设备设施
+  getFacilityModel:Host + 'getFacilityModel/', //获取设备设施模型
+  getFacilitiesPage:Host+'getFacilitiesPage',//根据类别ID分页分页获取列表
+  getFacilitySelector:Host+'getFacilitySelector',//获取所有设备设施
+  getSortTree:Host+'getSortTree/', //获取设备类别树
+  getFacilitiesSorts:Host+ 'getFacilitiesSorts/',//获取设备设类被树节点
+  etSortParents:Host+'etSortParents/',//获取设备类别父级
+  getSortChildrenIds:Host+'getSortChildrenIds/',//获取设备类别子集ID集合
 }

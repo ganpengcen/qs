@@ -365,7 +365,7 @@ export default {
           this.dg1 = false
           this.getEmployeesByPostID()
           this.$message({
-            type:'sucsess',
+            type:'success',
             message:'新建成功'
           })
         }else{
@@ -504,7 +504,7 @@ export default {
           if(res.data.State===200){
             this.getPersonPage(this.personID)
             this.$message({
-              type:'suceess',
+              type:'success',
               message:'删除成功'
             })
           }else {
@@ -531,7 +531,7 @@ export default {
           if(res.data.State===200){
             this.getEmployeesByPostID()
             this.$message({
-              type:'suceess',
+              type:'success',
               message:'删除成功'
             })
           }else {
@@ -595,12 +595,6 @@ export default {
           let data = []
           let org = res.data.Data.Org
           console.log('org',res.data.Data.Org)
-          this.$get(this.api.Org.getEmployeeSelector + org).then(res=>{
-            if(res.data.State === 200){
-              console.log('责任人反回值:',res)
-              this.$set(this.job, 'selector',res.data.Data)
-            }
-          })
           this.$get(this.api.Org.getParentItems + org).then(res=>{
             if(res.data.State === 200){
               res.data.Data.forEach(item=>{
@@ -664,7 +658,6 @@ export default {
         }
       })
     },  //获取文件
-
     management (ID,name) {
       this.postID = ID
       this.Principal2 = []
@@ -696,7 +689,6 @@ export default {
         }
       })
     }, //人员管理窗口
-
     addPerson() {
       let param = {
         "PostID": this.postID,
@@ -786,7 +778,6 @@ export default {
     beforeRemove(file,filelist){
       console.log(filelist)
     },
-    getFileDetail () {}, //获取用户上传文件详情
     handlePreview(file) {
       console.log(file);
     },
