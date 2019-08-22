@@ -33,6 +33,7 @@
                 <el-form-item>
                   <div class="chekbxs">
                     <el-checkbox v-model="cus.IsEmpty">是否为空</el-checkbox>
+                    <el-checkbox v-if="cus.DataType==5" v-model="cus.IsMulti">是否多选</el-checkbox>
                   </div>
                 </el-form-item>
               </el-form>
@@ -95,7 +96,7 @@
                     <el-form-item>
                       <div class="chekbxs">
                         <el-checkbox v-model="cus1.IsEmpty">是否为空</el-checkbox>
-                        <el-checkbox v-model="cus1.IsMulti">是否多选</el-checkbox>
+                        <el-checkbox v-if="cus1.DataType=='词典'||cus1.DataType==5" v-model="cus1.IsMulti">是否多选</el-checkbox>
                       </div>
                     </el-form-item>
                   </el-form>

@@ -6,11 +6,28 @@
     </div>
     <div class="main">
       <div class="tbs">
-        <el-tabs tab-position="left" closable @tab-click="getDictsPage" v-model="parentID" @tab-remove="removeTab">
-          <el-tab-pane v-for="(i,e) in select" :key="e" :label="i.DictName" :name="i.ID">
-
-            <div style="height: 32px;background-color: white;margin-bottom: 15px;border-radius: 3px;padding: 10px 0px">
-              <el-button type="primary" @click="addPage=true" size="small" style="float: right;margin-right: 20px">新增项</el-button>
+        <el-tabs
+          tab-position="left"
+          closable
+          @tab-click="getDictsPage"
+          v-model="parentID"
+          @tab-remove="removeTab"
+        >
+          <el-tab-pane
+            v-for="(item,index) in select"
+            :key="index"
+            :label="item.DictName"
+            :name="item.ID"
+          >
+            <div
+              style="height: 32px;background-color: white;margin-bottom: 15px;border-radius: 3px;padding: 10px 0px"
+            >
+              <el-button
+                type="primary"
+                @click="addPage=true"
+                size="small"
+                style="float: right;margin-right: 20px"
+              >新增项</el-button>
             </div>
 
             <el-table :data="tableDetail" height="calc(100vh - 393px)" border>
@@ -29,13 +46,12 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page.sync="page.index"
-                  :page-size="page.size"
+                :page-size="page.size"
                 :page-sizes="[3, 7, 30, 50]"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total.sync="page.total">
-              </el-pagination>
+                :total.sync="page.total"
+              ></el-pagination>
             </div>
-
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -53,10 +69,10 @@
           </el-form-item>
         </el-form>
       </div>
-              <span slot="footer" class="dialog-footer">
-                    <el-button @click="dg2= false" :underline="false">取 消</el-button>
-                    <el-button type="primary" @click="changeTable" :underline="false">确 定</el-button>
-                  </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dg2= false" :underline="false">取 消</el-button>
+        <el-button type="primary" @click="changeTable" :underline="false">确 定</el-button>
+      </span>
     </el-dialog>
     <el-dialog title="新建类型" :visible.sync="dg1">
       <el-form>
@@ -65,9 +81,9 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-          <el-button @click="dg1= false">取 消</el-button>
-          <el-button type="primary" @click="newDic">确 定</el-button>
-        </span>
+        <el-button @click="dg1= false">取 消</el-button>
+        <el-button type="primary" @click="newDic">确 定</el-button>
+      </span>
     </el-dialog>
     <el-dialog :visible.sync="addPage" title="新建项">
       <div style="background-color: white;padding: 20px;height: 350px">
@@ -83,9 +99,8 @@
       <span slot="footer">
         <el-button @click="addPage=false">取消</el-button>
         <el-button @click="addNewPage" type="primary">确认</el-button>
-       </span>
+      </span>
     </el-dialog>
-
   </div>
 </template>
 <script>
@@ -96,95 +111,99 @@ export default {
   },
   data() {
     return {
-      presentID:'',
-      newpage:{
-        DictName:'',
-        Memo:''
+      presentID: "",
+      newpage: {
+        DictName: "",
+        Memo: ""
       },
-      parentID:'',
-      addPage:false,
+      parentID: "",
+      addPage: false,
       dg1: false,
       dg2: false,
       tyname: "",
-      txra:'',
+      txra: "",
       select: [
         {
           DictName: "",
-          ID:'',
-          IsSYS:''
-        },
+          ID: "",
+          IsSYS: ""
+        }
       ],
-      tableDetail:[],
-      page:{
-        index:1,
-        size:3,
-        total:0
+      tableDetail: [],
+      page: {
+        index: 1,
+        size: 3,
+        total: 0
       },
-      index: ''
+      index: ""
     };
   },
   methods: {
-    dg2show (ID) {
-      this.presentID = ID
-      this.dg2 = true
+    dg2show(ID) {
+      this.presentID = ID;
+      this.dg2 = true;
     },
-    changeTable () {
-     let  param = {
-        "ID": this.presentID,
-        "ParentID": this.parentID,
-        "DictName": this.newpage.DictName,
-        "Memo": this.newpage.Memo,
-        "MinValue": 5.1,
-        "MaxValue": 6.1
-      }
-      this.$post(this.api.Dict.editDict,param).then(res => {
-        if(res.data.State === 200) {
-          this.getDictsPage()
-          this.dg2 = false
-        }
-      })
-    }, //修改词典项
-    deleteTable (ID) {
-      this.$confirm('将永久删除该词点，是否继续?','提示',{
-        comfirmButtonText: '确认',
-        cancelButtonText:'取消',
-        type:'warning'
-      }).then(()=>{
-        this.$get(this.api.Dict.delDict + ID).then(res =>{
-          if(res.data.State === 200) {
-            this.getDictsPage()
-            this.$message.success('删除成功')
-          } else {
-            this.$message.error(res.data.Msg)
-          }
-        })
-      }).catch(()=>{
-        this.$message.info('已取消')
-      })
-    },  //删除词典项
-    removeTabApi () {
-      this.$get(this.api.Dict.delDictType + this.parentID).then((res)=>{
-        console.log(res)
+    changeTable() {
+      let param = {
+        ID: this.presentID,
+        ParentID: this.parentID,
+        DictName: this.newpage.DictName,
+        Memo: this.newpage.Memo,
+        MinValue: 5.1,
+        MaxValue: 6.1
+      };
+      this.$post(this.api.Dict.editDict, param).then(res => {
         if (res.data.State === 200) {
-          this.getDict()
-          this.$message.success('删除成功')
-        } else {
-          this.$message.error(res.data.Msg)
+          this.getDictsPage();
+          this.dg2 = false;
         }
+      });
+    }, //修改词典项
+    deleteTable(ID) {
+      this.$confirm("将永久删除该词点，是否继续?", "提示", {
+        comfirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning"
       })
+        .then(() => {
+          this.$get(this.api.Dict.delDict + ID).then(res => {
+            if (res.data.State === 200) {
+              this.getDictsPage();
+              this.$message.success("删除成功");
+            } else {
+              this.$message.error(res.data.Msg);
+            }
+          });
+        })
+        .catch(() => {
+          this.$message.info("已取消");
+        });
+    }, //删除词典项
+    removeTabApi() {
+      this.$get(this.api.Dict.delDictType + this.parentID).then(res => {
+        console.log(res);
+        if (res.data.State === 200) {
+          this.getDict();
+          this.$message.success("删除成功");
+        } else {
+          this.$message.error(res.data.Msg);
+        }
+      });
     },
-    removeTab () {
-      this.$confirm('将永久删除该词点，是否继续?','提示',{
-        comfirmButtonText: '确认',
-        cancelButtonText:'取消',
-        type:'warning'
-      }).then(()=>{
-        this.removeTabApi()
-      }).catch(()=>{
-        this.$message.info('已取消')
+    removeTab() {
+      this.$confirm("将永久删除该词典，是否继续?", "提示", {
+        comfirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning"
       })
-    },  //删除词典类型
-    newDic(){
+        .then(() => {
+          this.removeTabApi();
+        })
+        .catch(() => {
+          this.$message.info("已取消");
+        });
+    }, //删除词典类型
+    newDic() {
       var param = {
         DictName:this.tyname
       }
@@ -269,35 +288,38 @@ export default {
         if(res.data.State === 200) {
           this.select = res.data.Data
           try {
-            this.parentID = res.data.Data[0].ID
-            this.getDictsPage()
-          }catch (err){
-            console.log(err)
+            this.parentID = res.data.Data[0].ID;
+            this.getDictsPage();
+          } catch (err) {
+            console.log(err);
           }
         } else {
-          this.$message('失败')
+          this.$message("失败");
         }
-      })
+      });
     }
   },
-  created () {
-    this.getDict()
-  }  //获取词典类型
-
+  created() {
+    this.getDict();
+  } //获取词典类型
 };
 </script>
 <style scoped>
-.info{
+.adbt{
+  margin-left: 25px
+}
+.info {
   background: #fff;
-  padding: 15px
+  padding: 15px;
 }
 .el-tabs {
   width: calc(100% - 30px);
   margin: 15px 0 0 0;
-  height: calc(100vh - 279px)
+  height: calc(100vh - 279px);
 }
-.el-input,.el-textarea{
-  width: 70%
+.el-input,
+.el-textarea {
+  width: 70%;
 }
 .el-table{
   margin-bottom:15px;
@@ -315,16 +337,16 @@ export default {
   height: 1px;
   display: block;
 }
-  .table-footer .el-pagination{
+.table-footer .el-pagination {
   text-align: right !important;
 }
- .table-footer{
-   margin-top: 15px;
+.table-footer {
+  margin-top: 15px;
   height: 31px;
   line-height: 35px;
   background-color: white;
 }
-div>>>.el-tabs__header{
-  background-color: #fff
+div >>> .el-tabs__header {
+  background-color: #fff;
 }
 </style>
