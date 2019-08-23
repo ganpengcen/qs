@@ -254,45 +254,6 @@ export default {
       upFileList:[],
       userDefine:[],
       detail:{},
-
-      selec:'',
-      las:'无上级',
-      les:'无上级',
-      tbla: [
-        { label: "设备编号", pp: "num" },
-        { label: "名称", pp: "nm" },
-        { label: "设备类别", pp: "dty" },
-        { label: "使用单位", pp: "unit" }
-      ],
-      treedata: [
-        {
-          label: "1",
-          children: [
-            {
-              label: "1-1",
-              children: [{ label: "1-1-1" }, { label: "1-1-2" }]
-            },
-            { label: "1-2", children: [{ label: "1-2-1" }] },
-            { label: "1-3" },
-            { label: "1-4" }
-          ]
-        }
-      ],
-      tdab: [
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-        {num: "asdasda",nm: "male",dty: "asdasda1111",unit: "asdla"},
-      ]
-
     };
   },
   methods:{

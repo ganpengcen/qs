@@ -117,4 +117,38 @@ export default {
   getFacilitiesSorts:Host+ 'getFacilitiesSorts/',//获取设备设类被树节点
   etSortParents:Host+'etSortParents/',//获取设备类别父级
   getSortChildrenIds:Host+'getSortChildrenIds/',//获取设备类别子集ID集合
+//执行标准
+  addSafetyStandard:Host+'api/safetyStandard/addSafetyStandard',//新建安全标准
+  delSafetyStandard:Host+ 'api/safetyStandard/delSafetyStandard/',//删除安全标准
+  editSafetyStandard:Host+'api/safetyStandard/editSafetyStandard',//修改安全标准
+  getSafetyStandardModel:Host+'api/safetyStandard/getSafetyStandardModel/',//获取安全标准模型
+  getSafetyStandardsPage:Host+'api/safetyStandard/getSafetyStandardsPage',//分页获取安全标准列表
+  getSafetyStandardSelector:Host+'api/safetyStandard/getSafetyStandardSelector/',// 获取安全标准选择器
+
+  //风控项
+  addDanger:Host+'addDanger',//新建风控项
+  addDangerSort:Host+'addDangerSort',//新建风控项类别
+  delDanger:Host+'delDanger/',//删除风控项
+  delDangerSort:Host+'delDangerSort/',//删除风控项类别
+  editDanger:Host+'editDanger',//修改风控项
+  getDangerModel:Host+'getDangerModel/',//获取风控项模型
+  getDangerListL:Host+'getDangerList/',//根据风控项类别ID获取风控项列表
+  getChildrenIdItems:Host+'getChildrenIdItems/',//获取子集ID集合
+  getDangerSorts:Host+'getDangerSorts/',//获取风控项类别树节点,
+  getDangerSortTree:Host+'getDangerSortTree/',//获取风控项类别树
+  getParentsItems:Host+'getParentsItems/',//获取风控项父级集合,
+  getDangerLevelSelector:Host+'getDangerLevelSelector',// 获取风险等级选择器
+  getDangerSelector:Host+'getDangerSelector/',//根据风控项类别获取风控项选择器
+
+  //风险点管理
+  addDangerPoint:Host+'api/dangerPoint/addDangerPoint',//新建风险点
+  addDangerPointRelation:Host+'api/dangerPoint/addDangerPointRelation',//新建风险点配置关系
+  delDangerPoint:Host+'api/dangerPoint/delDangerPoint/',//删除风险点
+  delDangerPointRelation:Host+'api/dangerPoint/delDangerPointRelation/',//删除风险点配置关系
+  editDangerPoint:Host+'api/dangerPoint/editDangerPoint',//修改风险点信息
+  getDangerPointModel:Host+'api/dangerPoint/getDangerPointModel/',//获取风险点模型
+  getDangerPointsPage:Host+'api/dangerPoint/getDangerPointsPage',//分页获取风险点列表
+  getDangerPointRelationsPage:Host+'api/dangerPoint/getDangerPointRelationsPage',//根据风险点Id枫叶获取配置关系
+  getDangerPointSelector:Host+'api/dangerPoint/getDangerPointSelector',//获取风险点选择器
+  getSubjectSelector:Host+'api/dangerPoint/getSubjectSelector',//根据风险点ID和主体类型获取主体选择器
 }

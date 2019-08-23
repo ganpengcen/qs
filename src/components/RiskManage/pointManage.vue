@@ -153,7 +153,7 @@
         </div>
         <div slot="footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="Riskpoint">确 定</el-button>
+          <el-button type="primary">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -166,118 +166,158 @@
     components: {
       Header
     },
+    data() {
+      return {
+        fileList:[],
+        upFileList:[],
+        newDangerPoint: {
+          "Name": '',
+          "Memo": '',
+          "DangerLevel": '',
+          "WXYSDictIDs": [],
+          "ControlMeasure": '',
+          "EmergencyMeasure": '',
+          "Principal": '',
+          "FileNews": [],
+          "OrgID": '',
+          "WarningSign": '',
+          "DangerPointImg": '',
+          "Consequence": '',
+          "Location": ''
+        },
+
+
+          form: {
+            DangerSortID: "",
+            Consequence: "",
+            EmergencyMeasure: "",
+            Notes: "",
+            ManagementMeasure: "",
+            ChargePerson: "",
+            risklevel: "",
+            OrganzingFrame: " ",
+            riskreason: ""
+          },
+          editorOption: {
+            modules: {
+              toolbar: [
+                ["bold", "italic", "underline", "strike"], // toggled buttons
+                ["blockquote", "code-block"]
+              ]
+            }
+          },
+          formInline: {
+            user: "",
+            region: ""
+          },
+          currentPage4: 4,
+          dialogFormVisible: false,
+          Items: [
+            {
+              Number: 123,
+              Name: 123,
+              Operation: 123,
+              Remarks: 123,
+              Level: 123
+            },
+            {
+              Number: 123,
+              Name: 123,
+              Operation: 123,
+              Remarks: 123,
+              Level: 123
+            },
+            {
+              Number: 123,
+              Name: 123,
+              Operation: 123,
+              Remarks: 123,
+              Level: 123
+            },
+            {
+              Number: 123,
+              Name: 123,
+              Operation: 123,
+              Remarks: 123,
+              Level: 123
+            },
+            {
+              Number: 123,
+              Name: 123,
+              Operation: 123,
+              Remarks: 123,
+              Level: 123
+            },
+            {
+              Number: 123,
+              Name: 123,
+              Operation: 123,
+              Remarks: 123,
+              Level: 123
+            },
+            {
+              Number: 123,
+              Name: 123,
+              Operation: 123,
+              Remarks: 123,
+              Level: 123
+            },
+            {
+              Number: 123,
+              Name: 123,
+              Operation: 123,
+              Remarks: 123,
+              Level: 123
+            }
+          ],
+          stopcontent: false,
+          index: 1 //当前页面编号
+
+      }
+
+    },
     methods: {
+      addDangerPoint(){
+        let parram = {
+          "Name": "sample string 1",
+          "Memo": "sample string 2",
+          "DangerLevel": "2acb943c-ecfb-4930-bf37-331bc859a5d9",
+          "WXYSDictIDs": [
+            "ffba62cd-95a3-4f1e-a010-4352fbaac573",
+            "37232df3-9ae3-4cc3-8346-d896848a530d"
+          ],
+          "ControlMeasure": "sample string 4",
+          "EmergencyMeasure": "sample string 5",
+          "Principal": "858e650d-1384-4d8e-9ea9-45e2c81dbbaa",
+          "FileNews": [
+            {
+              "FileTitle": "sample string 1",
+              "FileUrl": "sample string 2",
+              "FileType": "sample string 3"
+            },
+            {
+              "FileTitle": "sample string 1",
+              "FileUrl": "sample string 2",
+              "FileType": "sample string 3"
+            }
+          ],
+          "OrgID": "aa7346e7-d7ba-40f9-8fe2-1f94defa5b6a",
+          "WarningSign": "sample string 8",
+          "DangerPointImg": "sample string 9",
+          "Consequence": "sample string 10",
+          "Location": "sample string 11"
+        }
+      },//新建风险点
+
+
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       },
-      Riskpoint() {
-        let pramas = {
-          DictName: this.form.DangerSortID,
-        };
-        this.$post(api.Riskpoint, pramas).then(res => {
-          console.log(res);
-        });
-      },
-      getarry(){
-        this.$get (api.getarry).then(res => {
-          console.log(res);
-        });
-      }
     },
     mounted(){
-      this.getarry();
-    },
-    data() {
-      return {
-        form: {
-          DangerSortID: "",
-          Consequence: "",
-          EmergencyMeasure: "",
-          Notes: "",
-          ManagementMeasure: "",
-          ChargePerson: "",
-          risklevel: "",
-          OrganzingFrame: " ",
-          riskreason: ""
-        },
-        editorOption: {
-          modules: {
-            toolbar: [
-              ["bold", "italic", "underline", "strike"], // toggled buttons
-              ["blockquote", "code-block"]
-            ]
-          }
-        },
-        formInline: {
-          user: "",
-          region: ""
-        },
-        currentPage4: 4,
-        dialogFormVisible: false,
-        Items: [
-          {
-            Number: 123,
-            Name: 123,
-            Operation: 123,
-            Remarks: 123,
-            Level: 123
-          },
-          {
-            Number: 123,
-            Name: 123,
-            Operation: 123,
-            Remarks: 123,
-            Level: 123
-          },
-          {
-            Number: 123,
-            Name: 123,
-            Operation: 123,
-            Remarks: 123,
-            Level: 123
-          },
-          {
-            Number: 123,
-            Name: 123,
-            Operation: 123,
-            Remarks: 123,
-            Level: 123
-          },
-          {
-            Number: 123,
-            Name: 123,
-            Operation: 123,
-            Remarks: 123,
-            Level: 123
-          },
-          {
-            Number: 123,
-            Name: 123,
-            Operation: 123,
-            Remarks: 123,
-            Level: 123
-          },
-          {
-            Number: 123,
-            Name: 123,
-            Operation: 123,
-            Remarks: 123,
-            Level: 123
-          },
-          {
-            Number: 123,
-            Name: 123,
-            Operation: 123,
-            Remarks: 123,
-            Level: 123
-          }
-        ],
-        stopcontent: false,
-        index: 1 //当前页面编号
-      };
     }
   };
 </script>

@@ -44,7 +44,7 @@ export default new Router({
       name: 'Login',
       component: Login
     },
-    
+
     {
       /*******模板页面即包含头部 左侧菜单栏 主页面 底部 *********/
       path: '/Index',
