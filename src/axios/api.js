@@ -167,6 +167,21 @@ export default {
   editDocMeeting:Host+'editDocMeeting',//修改安全会议
   getDocMeetingModel:Host+'getDocMeetingModel/',//获取安全会议模型
 
+//资质管理
+  addDocCertificate:Host+'api/certificate/addDocCertificate',//新建资质
+  delDocCertificate:Host+'api/certificate/delDocCertificate/',//删除资质
+  getDocCertificateModel:Host+'api/certificate/getDocCertificateModel/',//获取资质模型
+  getDocCertificatePage:Host+'api/certificate/getDocCertificatePage',//分页获取资质名称
+  DocCertificate:Host+'api/DocCertificate',//修改资质模型
+
+
+  //培训管理
+  addDocTraining:Host+'api/training/addDocTraining',//新建培训
+  delTraining:Host+'api/training/delTraining/',//删除培训
+  editTraining:Host+'api/training/editTraining',//删除培训
+  getTrainingModel:Host+'api/training/getTrainingModel/',//获取培训模型
+  getTrainingsPage:Host+'api/training/getTrainingsPage',//分页获取培训列表
+  getTrainingEmpsPage:Host+'api/training/getTrainingEmpsPage',//根据培训ID分页获取培训人员列表
 
 
 }
