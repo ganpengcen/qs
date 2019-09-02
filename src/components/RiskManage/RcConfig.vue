@@ -11,11 +11,11 @@
                 <el-button type="primary">搜索</el-button>
                 <ul>
                   <li
-                    v-for="(i,e) in list"
-                    :key="e"
+                    v-for="(i,e) in textflow"
+                    :key="i.ID"
                     :class="active==e?'active':''"
-                    @click="getI(e)"
-                  >{{i.opt}}</li>
+                    @click="getI(i,e)"
+                  >{{i.Name}}</li>
                 </ul>
               </div>
             </el-tab-pane>
@@ -25,11 +25,11 @@
                 <el-button type="primary">搜索</el-button>
                 <ul>
                   <li
-                    v-for="(i,e) in list"
-                    :key="e"
+                    v-for="(i,e) in postSelector"
+                    :key="i.PostID"
                     :class="active1==e?'active':''"
-                    @click="getIx(e)"
-                  >{{i.opt}}</li>
+                    @click="getIx(i,e)"
+                  >{{i.PostName}}</li>
                 </ul>
               </div>
             </el-tab-pane>
@@ -39,11 +39,11 @@
                 <el-button type="primary">搜索</el-button>
                 <ul>
                   <li
-                    v-for="(i,e) in list"
-                    :key="e"
+                    v-for="(i,e) in FacilitySelector"
+                    :key="i.ID"
                     :class="active2==e?'active':''"
-                    @click="getIy(e)"
-                  >{{i.opt}}</li>
+                    @click="getIy(i,e)"
+                  >{{i.Name}}</li>
                 </ul>
               </div>
             </el-tab-pane>
@@ -53,31 +53,44 @@
           <div class="top">
             <div class="srh">
               <span>风控项类别</span>
-              <el-cascader v-model="chose" :options="options"></el-cascader>
+                <el-cascader :options="SortTree"  v-model="StandardType" :props="prp" @change="change"></el-cascader>
               <span>风控项</span>
-              <el-cascader></el-cascader>
-              <el-button type="primary">增加</el-button>
+              <el-select v-model="Standard" multiple>
+                <el-option v-for="i,b in Standardselector" :key="i.ID" :label="i.Name" :value="i.ID"></el-option>
+              </el-select>
+              <el-button type="primary" @click="addDangerRelation">增加</el-button>
             </div>
           </div>
           <div class="tb">
-          <el-table height="calc(100vh - 320px)" :data="cfigdata" border :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
-            <el-table-column label="风控项编号" prop="fknum"></el-table-column>
-            <el-table-column label="名称" prop="fkname"></el-table-column>
-            <el-table-column label="类别" prop="fktype"></el-table-column>
+          <el-table height="calc(100vh - 350px)" :data="table" border :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
+            <el-table-column label="风控项编号" prop="Code"></el-table-column>
+            <el-table-column label="名称" prop="Name"></el-table-column>
+            <el-table-column label="类别" prop="DangerSortName"></el-table-column>
             <el-table-column label="操作">
-              <el-button type="text" @click="del()">删除</el-button>
+              <div slot-scope="scope">
+               <el-button type="text" @click="del(scope.row.ID)">删除</el-button>
+              </div>
             </el-table-column>
           </el-table></div>
-          <div>
-            <el-pagination :total="cfigdata.length" :page-size="5" layout="prev,pager,next"></el-pagination>
+          <div class="pge">
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="page.index"
+              :page-size="page.size"
+              :page-sizes="[3, 7, 30, 50]"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total.sync="page.total">
+            </el-pagination>
           </div>
         </el-col>
       </el-row>
     </div>
-    
+
   </div>
 </template>
 <script>
+  const GUID ='00000000-0000-0000-0000-000000000000'
 import Header from "../assembly/Header";
 export default {
   components: {
@@ -85,6 +98,24 @@ export default {
   },
   data() {
     return {
+      textflow:[],
+      postSelector:[],
+      FacilitySelector:[],
+      SortTree:[],
+      prp: { children: "Children", label: "SortName",checkStrictly: true,value:"ID"},
+      Standard:[],
+      StandardType:[],
+      riskSelector:[],
+      Standardselector:[],
+      page:{
+        index:1,
+        size:3,
+        total:0
+      },
+      parentID:'',
+      table:[],
+
+
       list: [
         { opt: "1" },
         { opt: "2" },
@@ -372,33 +403,155 @@ export default {
         {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
         {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
         {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
-        {fknum:'1',fkname:'askdjas',fktype:'asjhdas'},        
-      ]
-    };
-  },
+{fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
+{fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
+{fknum:'1',fkname:'askdjas',fktype:'asjhdas'},
+]
+};
+},
   methods: {
-    getI(e) {
+    getOpreationItems(){
+      this.$get(this.api.TextFlow.getOpreationItems).then(res=>{
+        console.log(';获取作业流程返回值：',res)
+        if(res.data.State === 200){
+          this.textflow = res.data.Data
+        }
+      })
+    }, //获取作业流程
+    getPostSelector(){
+      this.$get(this.api.getPostSelector).then(res=>{
+        console.log(';获取岗位返回值：',res)
+        if(res.data.State === 200){
+          this.postSelector = res.data.Data
+        }
+      })
+    },//获取岗位
+    getFacilitySelector(){
+      this.$get(this.api.getFacilitySelector).then(res=>{
+        console.log(';获取设备设施返回值：',res)
+        if(res.data.State === 200){
+          this.FacilitySelector = res.data.Data
+        }
+      })
+    }, //获取设备设施
+    getDangerSortTree(ID){
+      this.$get(this.api.getDangerSortTree+ID).then(res=>{
+        console.log('风险类bie树',res)
+        if(res.data.State === 200){
+          this.SortTree = res.data.Data
+        } else {
+          ths.$message({
+            type:'error',
+            message:res.data.Msg
+          })
+        }
+      })
+    },
+    change(value) {
+      let da = ''
+      console.log('value',value)
+      if(value) {
+        if (value.length > 0) {
+          da = value[value.length - 1]
+          this.$get(this.api.getDangerListL + da).then(res => {
+            if (res.data.State === 200) {
+              console.log('节点改变:', res)
+              this.Standardselector = res.data.Data
+            }
+          })
+        } else {
+          return false;
+        }
+      }
+    }, //树节点改变
+    addDangerRelation(){
+      let param ={
+        "SubjectID": this.parentID,
+        "DangerIDs":this.Standard
+      }
+      console.log('新建参数:',param)
+      this.$post(this.api.addDangerRelation,param).then(res=>{
+        console.log('新建返回值',res)
+        if(res.data.State === 200){
+          this.StandardType = ''
+          this.Standard = []
+          this.getDangerRelationsPage(this.parentID)
+          this.$message({
+            type:'success',
+            message:'添加成功'
+          })
+        }else{
+          this.$message({
+            type:'error',
+            message:res.data.Msg
+          })
+        }
+      })
+    }, //新建
+    getDangerRelationsPage(ID){
+      let param = {
+        "PageSize": this.page.size,
+          "PageIndex": this.page.index-1,
+          "KeyWord": "",
+          "Query": ID,
+          "OrderString": "",
+          "ToExcel": false
+      }
+      console.log('分页参数:',param)
+  this.$post(this.api.getDangerRelationsPage,param).then(res=>{
+    console.log('分页返回值:',res)
+    if(res.data.State === 200){
+      this.page.total = res.data.Data.Items
+      this.table = res.data.Data.Data
+    }
+  })
+    },// 分页获取列表
+    handleSizeChange(val) {   //修改分页条数
+      this.page.size = val
+      console.log('分页数改变')
+      console.log('分页数:',this.page.size)
+      this.getDangerRelationsPage(this.parentID)
+    },  //分页数目改变
+    handleCurrentChange(val) {   //当前展示页
+      this.page.index = val
+      this.getDangerRelationsPage(this.parentID)
+    },  //当前页改变
+    getI(i,e) {
       this.active = e;
+      this.parentID=i.ID
+      this.getDangerRelationsPage(i.ID)
     },
-    getIx(e) {
+    getIx(i,e) {
       this.active1 = e;
+      this.parentID = i.ID
+      this.getDangerRelationsPage(i.ID)
     },
-    getIy(e) {
+    getIy(i,e) {
       this.active2 = e;
+      this.parentID = i.ID
+      this.getDangerRelationsPage(i.ID)
     },
-    del() {
+    del(ID) {
       this.$confirm("将要执行删除操作,是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功"
-          });
+        this.$get(this.api.delDangerRelation+ID).then(res=>{
+          if(res.data.State === 200) {
+            this.getDangerRelationsPage(this.parentID)
+            this.$message({
+              type: "success",
+              message: "删除成功"
+            })
+          } else{
+            this.$message({
+              type:'error',
+              messgae:res.data.Msg
+            })
+            }
+          })
         })
         .catch(() => {
           this.$message({
@@ -407,6 +560,12 @@ export default {
           });
         });
     },
+  },
+  created(){
+    this.getOpreationItems()
+    this.getPostSelector()
+    this.getFacilitySelector()
+    this.getDangerSortTree(GUID)
   }
 };
 </script>
@@ -427,7 +586,7 @@ export default {
 .el-col-5 {
   overflow: auto;
   height: calc(100vh - 270px);
-  
+
 }
 .el-table{
   overflow: auto
@@ -445,7 +604,7 @@ export default {
 .el-col-18{
   margin-left: 20px;
   width: calc(80% - 31px);
-  
+
 }
 .sech ul {
   padding-left: 0;
@@ -466,7 +625,7 @@ export default {
 }
 .el-table{
   margin-top: 15px;
-  margin-bottom: 45px
+  margin-bottom: 5px
 }
 .el-tabs{
   box-shadow: none;
@@ -475,5 +634,10 @@ export default {
 .el-pagination{
   height: 25px;
   text-align: right
+}
+.pge {
+  height: 31px;
+  text-align: right;
+  background: #fff;
 }
 </style>

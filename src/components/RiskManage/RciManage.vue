@@ -39,7 +39,7 @@
             height="calc(100vh - 300px)"
             @row-click="inf"
           >
-            <el-table-column label="编号" prop="Code"></el-table-column>
+            <el-table-column label="编号" prop="ID"></el-table-column>
             <el-table-column label="名称" prop="Name"></el-table-column>
             <el-table-column label="类别" prop="DangerSortName"></el-table-column>
             <el-table-column label="操作">
@@ -157,15 +157,17 @@
                 <el-option v-for="i,b in standerSelector" :label="i.Name" :value="i.ID" :key="i.ID"></el-option>
               </el-select>
             </el-form-item>
-            <el-button type="primary" @click="addStander">增加</el-button>
+            <el-button type="primary" @click="addDangerSafetyStandard">增加</el-button>
           </el-form>
           <el-table border :data="standtable">
-            <el-table-column label="编号" prop="rtnum"></el-table-column>
-            <el-table-column label="名称" prop="rname"></el-table-column>
-            <el-table-column label="类别" prop="rtype"></el-table-column>
-            <el-table-column label="管控措施" prop="mesure"></el-table-column>
+            <el-table-column label="编号" prop="Code"></el-table-column>
+            <el-table-column label="名称" prop="Name"></el-table-column>
+            <el-table-column label="类别" prop="DangerSort"></el-table-column>
+            <el-table-column label="管控措施" prop="Controls"></el-table-column>
             <el-table-column label="操作">
-              <el-button type="text" @click="del()">删除</el-button>
+              <div slot-scope="scope">
+                <el-button type="text" @click="del(scope.row.ID)">删除</el-button>
+              </div>
             </el-table-column>
           </el-table>
         </div>
@@ -215,11 +217,14 @@ export default {
     },
       items:[],
       DangerLevelSelector:[],
+      standerSelector:[],
       itemtable:[],
       changeDetail:{},
       cd:{},
       pID:{},
       standerDetail:{},
+      standtable: [],
+
 
       sele: "",
       num: "",
@@ -254,12 +259,6 @@ export default {
       ],
       info: {},
       newif: [],
-      standtable: [
-        { rtnum: "1", rname: "asklada", rtype: "askjaas", mesure: "1as4das" },
-        { rtnum: "1", rname: "asklada", rtype: "askjaas", mesure: "1as4das" },
-        { rtnum: "1", rname: "asklada", rtype: "askjaas", mesure: "1as4das" },
-        { rtnum: "1", rname: "asklada", rtype: "askjaas", mesure: "1as4das" }
-      ]
     };
   },
   methods: {
@@ -511,9 +510,9 @@ export default {
     })
     },//获取风控项模型
     del(ID){
-        this.$get(this.api.delDanger+ID).then(res=>{
+        this.$get(this.api.delDangerSafetyStandard+ID).then(res=>{
           if(res.data.State == 200){
-            this.getDangerList(this.pID)
+            this.getSafetyStandardItems(this.standerDetail.ID)
             this.$message({
               type:'success',
               message:'删除成功'
@@ -529,6 +528,7 @@ export default {
     stander(data){
       this.standerDetail = data
       this.getSafetyStandardSelector(this.parentID)
+      this.getSafetyStandardItems(data.ID)
       this.dg4 = true
     }, //安全标准窗口
     getSafetyStandardSelector(ID){
@@ -539,10 +539,42 @@ export default {
         }
       })
     }, //获取安全标准选择器
-    addStander(){
+    getSafetyStandardItems(ID){
+      this.$get(this.api.getSafetyStandardItems+ID).then(res=>{
+        console.log('安全标准返回值:',res)
+        if(res.data.State === 200){
+          this.standtable = res.data.Data
+        } else{
+          this.$message({
+            type:'error',
+            message:res.data.Msg
+          })
+        }
+      })
 
+    },//根据风控项获取安全标准
+    addDangerSafetyStandard(){
+      let param ={
+        "DangerID":this.standerDetail.ID,
+        "SafetyStandardID":  this.standtable.select,
+      }
+      console.log('增加参数', param)
+      this.$post(this.api.addDangerSafetyStandard,param).then(res=>{
+        console.log('添加返回值|:',res)
+        if(res.data.State===200){
+          this.getSafetyStandardItems(this.standerDetail.ID)
+          this.$message({
+            type:'success',
+            message:'添加成功'
+          })
+        } else{
+          this.$message({
+            type:'error',
+            message:res.data.Msg
+          })
+        }
+      })
     },//添加执行标准
-
     inf(row) {
       console.log(row);
       this.info = row;

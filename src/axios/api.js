@@ -139,6 +139,10 @@ export default {
   getParentsItems:Host+'getParentsItems/',//获取风控项父级集合,
   getDangerLevelSelector:Host+'getDangerLevelSelector',// 获取风险等级选择器
   getDangerSelector:Host+'getDangerSelector/',//根据风控项类别获取风控项选择器
+  getSafetyStandardSelector:Host+'api/safetyStandard/getSafetyStandardSelector/',//根据风控项类别获取标准选择器
+  getSafetyStandardItems:Host+'getSafetyStandardItems/',//根据风控项ID获取安全标准
+  addDangerSafetyStandard:Host+'addDangerSafetyStandard',//风控项新添加安全标准
+  delDangerSafetyStandard:Host+'delDangerSafetyStandard/',//删除安全标准
 
   //风险点管理
   addDangerPoint:Host+'api/dangerPoint/addDangerPoint',//新建风险点
@@ -151,4 +155,18 @@ export default {
   getDangerPointRelationsPage:Host+'api/dangerPoint/getDangerPointRelationsPage',//根据风险点Id枫叶获取配置关系
   getDangerPointSelector:Host+'api/dangerPoint/getDangerPointSelector',//获取风险点选择器
   getSubjectSelector:Host+'api/dangerPoint/getSubjectSelector',//根据风险点ID和主体类型获取主体选择器
+
+  addDangerRelation:Host + 'api/dangerSet/addDangerRelation',//新建风控项配置关系
+  delDangerRelation:Host+'api/dangerSet/delDangerRelation/',//删除风控项配置关系
+  getDangerRelationsPage:Host+'api/dangerSet/getDangerRelationsPage',//根据主题ID分页获取风控项配置列表
+
+  //安全会议
+  addDocMeeting:Host+'addDocMeeting',//新建安全会议
+  getDocMeetingsQuery:Host+'getDocMeetingsQuery',//分页获取安全会议
+  delDocMeeting:Host+'delDocMeeting/',//删除安全会议
+  editDocMeeting:Host+'editDocMeeting',//修改安全会议
+  getDocMeetingModel:Host+'getDocMeetingModel/',//获取安全会议模型
+
+
+
 }

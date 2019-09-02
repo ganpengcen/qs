@@ -417,20 +417,20 @@ export default {
 },//获取组织架构树
     handleChange(value) {
       let da = ''
-     console.log('value',value)
-      if(value) {
-        if (value.length > 0) {
-          da = value[value.length - 1]
-          this.$get(this.api.Org.getEmployeeSelector + da).then(res => {
-            if (res.data.State === 200) {
-              console.log('节点改变:', res)
-              this.$set(this.job, 'selector', res.data.Data)
+        console.log('value',value)
+        if(value) {
+          if (value.length > 0) {
+            da = value[value.length - 1]
+            this.$get(this.api.Org.getEmployeeSelector + da).then(res => {
+              if (res.data.State === 200) {
+                console.log('节点改变:', res)
+                this.$set(this.job, 'selector', res.data.Data)
 //            this.selectOption = res.data.Data
-            }
-          })
-        } else {
-          return false;
-        }
+              }
+            })
+          } else {
+            return false;
+          }
       }
     },//树节点改变
     handleChangePerson(value){

@@ -49,22 +49,22 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page.sync="page.index"
+        :page-size="page.size"
+        :page-sizes="[3, 7, 30, 50]"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
-      ></el-pagination>
+        :total.sync="page.total">
+      </el-pagination>
     </div>
     <div>
-      <el-dialog title="新建风险点" :visible.sync="dialogFormVisible" width="680px">
-        <div class="content">
+      <el-dialog title="新建风险点" :visible.sync="dialogFormVisible" width="680px" >
+        <div class="content" style="padding: 15px">
           <el-form :inline="true" :model="formInline">
             <el-form-item label="名称：" style="margin:0px 20px 20px 30px">
-              <el-input v-model="form.DangerSortID" autocomplete="off" style="width:180px"></el-input>
+              <el-input v-model="newDangerPoint.Name" autocomplete="off" style="width:180px"></el-input>
             </el-form-item>
             <el-form-item label="危险因素：" style="margin:0px 0px 20px 0px">
-              <el-select v-model="form.riskreason" placeholder="请选择活动区域" style="width:180px">
+              <el-select v-model="newDangerPoint.WXYSDictIDs" placeholder="请选择活动区域" style="width:180px">
                 <el-option
                   v-for="item in Items"
                   :key="item.value"
@@ -73,20 +73,20 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="组织构架：" style="margin:0px 20px 20px 0px">
-              <el-select v-model="form.OrganzingFrame" placeholder="请选择活动区域" style="width:180px">
+            <el-form-item label="组织构架：" style="margin:0px 20px 20px 0px" >
+              <el-select v-model="newDangerPoint.OrgID" placeholder="请选择活动区域" style="width:180px">
                 <el-option label="2-1-1" value="211"></el-option>
                 <el-option label="2-1-2" value="222"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="责任人：" style="margin:0px 20px 20px 16px">
-              <el-select v-model="form.ChargePerson" placeholder="请选择活动区域" style="width:180px">
+              <el-select v-model="newDangerPoint.Principal" placeholder="请选择活动区域" style="width:180px">
                 <el-option label="2-2-1" value="221"></el-option>
                 <el-option label="2-2-2" value="222"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="风险等级：" style="margin:0px 20px 20px 0px">
-              <el-select v-model="form.risklevel" placeholder="请选择活动区域" style="width:180px">
+              <el-select v-model="newDangerPoint.DangerLevel" placeholder="请选择活动区域" style="width:180px">
                 <el-option label="3-1-1" value="311"></el-option>
                 <el-option label="3-1-2" value="312"></el-option>
               </el-select>
@@ -98,7 +98,7 @@
             <el-form-item label="管控措施：" style="margin:0px 30px 20px 0px">
               <el-input
                 type="textarea"
-                v-model="form.ManagementMeasure"
+                v-model="newDangerPoint.ControlMeasure"
                 autocomplete="off"
                 style="width:300px"
               ></el-input>
@@ -106,18 +106,18 @@
             <el-form-item label="应急措施：" style="margin:0px 30px 20px 0px">
               <el-input
                 type="textarea"
-                v-model="form.EmergencyMeasure"
+                v-model="newDangerPoint.EmergencyMeasure"
                 autocomplete="off"
                 style="width:300px"
               ></el-input>
             </el-form-item>
             <el-form-item label="备注：" style="margin:0px 30px 20px 30px">
-              <el-input type="textarea" v-model="form.Notes" autocomplete="off" style="width:300px"></el-input>
+              <el-input type="textarea" v-model="newDangerPoint.Memo" autocomplete="off" style="width:300px"></el-input>
             </el-form-item>
             <el-form-item label="后果：" style="margin:0px 30px 20px 30px">
               <el-input
                 type="textarea"
-                v-model="form.Consequence"
+                v-model="newDangerPoint.Consequence"
                 autocomplete="off"
                 style="width:300px"
               ></el-input>
@@ -125,7 +125,7 @@
           </el-form>
           <div class="upp">
             <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="http://quickcq.com:8008/api/attachFile/uploadFile"
               list-type="picture-card"
             >
               <i class="el-icon-plus"></i>
@@ -168,6 +168,12 @@
     },
     data() {
       return {
+        page:{
+          index:1,
+          size:3,
+          total:0
+        },
+
         fileList:[],
         upFileList:[],
         newDangerPoint: {
@@ -185,8 +191,6 @@
           "Consequence": '',
           "Location": ''
         },
-
-
           form: {
             DangerSortID: "",
             Consequence: "",
@@ -279,43 +283,33 @@
     methods: {
       addDangerPoint(){
         let parram = {
-          "Name": "sample string 1",
-          "Memo": "sample string 2",
-          "DangerLevel": "2acb943c-ecfb-4930-bf37-331bc859a5d9",
-          "WXYSDictIDs": [
-            "ffba62cd-95a3-4f1e-a010-4352fbaac573",
-            "37232df3-9ae3-4cc3-8346-d896848a530d"
-          ],
-          "ControlMeasure": "sample string 4",
-          "EmergencyMeasure": "sample string 5",
-          "Principal": "858e650d-1384-4d8e-9ea9-45e2c81dbbaa",
-          "FileNews": [
-            {
-              "FileTitle": "sample string 1",
-              "FileUrl": "sample string 2",
-              "FileType": "sample string 3"
-            },
-            {
-              "FileTitle": "sample string 1",
-              "FileUrl": "sample string 2",
-              "FileType": "sample string 3"
-            }
-          ],
-          "OrgID": "aa7346e7-d7ba-40f9-8fe2-1f94defa5b6a",
-          "WarningSign": "sample string 8",
-          "DangerPointImg": "sample string 9",
-          "Consequence": "sample string 10",
-          "Location": "sample string 11"
+          "Name": this.newDangerPoint.Name,
+          "Memo": this.newDangerPoint.Memo,
+          "DangerLevel": this.newDangerPoint.DangerLevel,
+          "WXYSDictIDs": this.newDangerPoint.WXYSDictIDs,
+          "ControlMeasure": this.newDangerPoint.ControlMeasure,
+          "EmergencyMeasure": this.newDangerPoint.EmergencyMeasure,
+          "Principal": this.newDangerPoint.Principal,
+          "FileNews": this.newDangerPoint.FileNews,
+          "OrgID": this.newDangerPoint.OrgID,
+          "WarningSign":this.newDangerPoint.WarningSign,
+          "DangerPointImg": this.newDangerPoint.DangerPointImg,
+          "Consequence": this.newDangerPoint.Consequence,
+          "Location": this.newDangerPoint.Location,
         }
       },//新建风险点
 
 
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
+      handleSizeChange(val) {   //修改分页条数
+        this.page.size = val
+        console.log('分页数改变')
+        console.log('分页数:',this.page.size)
+        this.getDangerRelationsPage(this.parentID)
+      },  //分页数目改变
+      handleCurrentChange(val) {   //当前展示页
+        this.page.index = val
+        this.getDangerRelationsPage(this.parentID)
+      },  //当前页改变
     },
     mounted(){
     }
