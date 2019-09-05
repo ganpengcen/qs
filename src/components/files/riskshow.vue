@@ -2,9 +2,9 @@
   <div class="wrapper">
     <Header title="档案管理" text="风险公示"></Header>
     <div class="table">
-        <el-tabs :tab-position="left" style="overflow: hidden;">
-          <el-tab-pane :label="item" v-for="(item, index) in title" :key="index">
-            <Table :lable="item" @deletcontent="deletcontent"></Table>
+        <el-tabs :tab-position="left" style="overflow: hidden;" @tab-click="tabClik">
+          <el-tab-pane :label="item.Name" v-for="(item, index) in title" :key="index">
+            <Table :lable="item.Name" ref="tabs" :ID="item.ID"></Table>
           </el-tab-pane>
         </el-tabs>
     </div>
@@ -25,21 +25,6 @@
   import Table from '../../components/files/table.vue'
   import Header from '../../components/assembly/Header.vue'
   export default {
-    components: {
-      Table,
-      Header
-    },
-    methods: {
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
-      deletcontent () {
-        this.deletlist = true
-      }
-    },
     data () {
       return {
         deletlist:false,
@@ -48,160 +33,37 @@
         currentPage2: 5,
         currentPage3: 5,
         currentPage4: 4,
-        Items: [
-          {
-            'Code': 123,
-            'Name': 123,
-            'StartTime': 123,
-            'EndTime': 123,
-            'Rate': 123,
-            'Person': 123,
-            'PrincipalEmployeeName': 123,
-            'StateName': 123,
-            'detail': [
-              {
-                'type': 1,
-                'name': 12,
-                'item': 123,
-                'rank': 1234
-              }
-            ]
-          },
-          {
-            'Code': 123,
-            'Name': 123,
-            'StartTime': 123,
-            'EndTime': 123,
-            'Rate': 123,
-            'Person': 123,
-            'PrincipalEmployeeName': 123,
-            'StateName': 123,
-            'detail': [
-              {
-                'type': 1,
-                'name': 12,
-                'item': 123,
-                'rank': 1234
-              }
-            ]
-          },
-          {
-            'Code': 123,
-            'Name': 123,
-            'StartTime': 123,
-            'EndTime': 123,
-            'Rate': 123,
-            'Person': 123,
-            'PrincipalEmployeeName': 123,
-            'StateName': 123,
-            'detail': [
-              {
-                'type': 1,
-                'name': 12,
-                'item': 123,
-                'rank': 1234
-              }
-            ]
-          },
-          {
-            'Code': 123,
-            'Name': 123,
-            'StartTime': 123,
-            'EndTime': 123,
-            'Rate': 123,
-            'Person': 123,
-            'PrincipalEmployeeName': 123,
-            'StateName': 123,
-            'detail': [
-              {
-                'type': 1,
-                'name': 12,
-                'item': 123,
-                'rank': 1234
-              }
-            ]
-          },
-          {
-            'Code': 123,
-            'Name': 123,
-            'StartTime': 123,
-            'EndTime': 123,
-            'Rate': 123,
-            'Person': 123,
-            'PrincipalEmployeeName': 123,
-            'StateName': 123,
-            'detail': [
-              {
-                'type': 1,
-                'name': 12,
-                'item': 123,
-                'rank': 1234
-              }
-            ]
-          },
-          {
-            'Code': 123,
-            'Name': 123,
-            'StartTime': 123,
-            'EndTime': 123,
-            'Rate': 123,
-            'Person': 123,
-            'PrincipalEmployeeName': 123,
-            'StateName': 123,
-            'detail': [
-              {
-                'type': 1,
-                'name': 12,
-                'item': 123,
-                'rank': 1234
-              }
-            ]
-          },
-          {
-            'Code': 123,
-            'Name': 123,
-            'StartTime': 123,
-            'EndTime': 123,
-            'Rate': 123,
-            'Person': 123,
-            'PrincipalEmployeeName': 123,
-            'StateName': 123,
-            'detail': [
-              {
-                'type': 1,
-                'name': 12,
-                'item': 123,
-                'rank': 1234
-              }
-            ]
-          },
-          {
-            'Code': 123,
-            'Name': 123,
-            'StartTime': 123,
-            'EndTime': 123,
-            'Rate': 123,
-            'Person': 123,
-            'PrincipalEmployeeName': 123,
-            'StateName': 123,
-            'detail': [
-              {
-                'type': 1,
-                'name': 12,
-                'item': 123,
-                'rank': 1234
-              }
-            ]
-          }
-        ],
         stopcontent: false,
         index: 1,  //当前页面编号,
         title:['1','2','3']
       }
     },
     components: {
-      Header,
-      Table
+      Table,
+      Header
+    },
+    methods: {
+      getDocRegimeItem(){
+        this.$get(this.api.getDocRegimeItem).then(res=>{
+          console.log('类型返回值：',res)
+          if(res.data.State===200){
+            this.title=res.data.Data
+          }else {
+            this.$confirm({
+              type:'error',
+              message:res.data.Msg
+            })
+          }
+        })
+      },//获取安全公示类型合集
+      tabClik(a){
+        console.log('click',a.index)
+        this.$refs.tabs[a.index].getDocInstitutionPage()
+      },//tab被选择
+
+    },
+    created(){
+      this.getDocRegimeItem()
     }
   }
 </script>
@@ -212,15 +74,10 @@
     height:100%;
     overflow: hidden;
   }
-  .wrapper .table {
-    margin:0 0 0 25px;
-    width: calc(100% - 50px);
-    height: calc(100% - 55px)
-  }
   .el-tabs{
-    height:calc(100% - 50px) 
+    height:calc(100% - 50px)
   }
-  div>>>.el-tabs__header{
+ .el-tabs__header{
     background: #fff
   }
 </style>

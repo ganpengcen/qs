@@ -8,6 +8,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '../static/css/my.css'
 import '../static/cssreset.css'
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
 import QuillEditor from 'vue-quill-editor'
 Vue.use(QuillEditor)
 import {post,get} from './axios/axios'

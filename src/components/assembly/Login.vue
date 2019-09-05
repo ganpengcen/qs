@@ -20,7 +20,7 @@
 
         <div style="margin:-5px 0 0 30px">
           <el-button
-            
+
             @click="signin"
             class="button1"
             type="primary"
@@ -52,7 +52,8 @@ export default {
       let that = this;
       this.$post(this.api.userSignin, {
         AccountCode: "1",
-        Login: "admin",
+        Login: "adm" +
+        "in",
         Pwd: "123456"
       }).then(res => {
         if (res.data.State === 200) {

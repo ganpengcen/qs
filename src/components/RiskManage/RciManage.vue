@@ -39,7 +39,7 @@
             height="calc(100vh - 300px)"
             @row-click="inf"
           >
-            <el-table-column label="编号" prop="ID"></el-table-column>
+            <el-table-column label="编号" prop="Code"></el-table-column>
             <el-table-column label="名称" prop="Name"></el-table-column>
             <el-table-column label="类别" prop="DangerSortName"></el-table-column>
             <el-table-column label="操作">

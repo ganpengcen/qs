@@ -161,13 +161,14 @@ export default {
   getDangerRelationsPage:Host+'api/dangerSet/getDangerRelationsPage',//根据主题ID分页获取风控项配置列表
 
   //安全会议
-  addDocMeeting:Host+'addDocMeeting',//新建安全会议
-  getDocMeetingsQuery:Host+'getDocMeetingsQuery',//分页获取安全会议
-  delDocMeeting:Host+'delDocMeeting/',//删除安全会议
-  editDocMeeting:Host+'editDocMeeting',//修改安全会议
-  getDocMeetingModel:Host+'getDocMeetingModel/',//获取安全会议模型
+  addDocMeeting:Host+'meeting/addDocMeeting',//新建安全会议
+  getDocMeetingsQuery:Host+'meeting/getDocMeetingsQuery',//分页获取安全会议
+  delDocMeeting:Host+'meeting/delDocMeeting/',//删除安全会议
+  editDocMeeting:Host+'meeting/editDocMeeting',//修改安全会议
+  getDocMeetingModel:Host+'meeting/getDocMeetingModel/',//获取安全会议模型
 
 //资质管理
+  getDocLicenseItem:Host+'api/certificate/getDocLicenseItem',//获取资质类型集合
   addDocCertificate:Host+'api/certificate/addDocCertificate',//新建资质
   delDocCertificate:Host+'api/certificate/delDocCertificate/',//删除资质
   getDocCertificateModel:Host+'api/certificate/getDocCertificateModel/',//获取资质模型
@@ -181,7 +182,28 @@ export default {
   editTraining:Host+'api/training/editTraining',//删除培训
   getTrainingModel:Host+'api/training/getTrainingModel/',//获取培训模型
   getTrainingsPage:Host+'api/training/getTrainingsPage',//分页获取培训列表
-  getTrainingEmpsPage:Host+'api/training/getTrainingEmpsPage',//根据培训ID分页获取培训人员列表
+  getTrainingEmpsItem:Host+'api/training/getTrainingEmpsItem/',//根据ID获取培训人员合集
 
+  //风险公示
+  addDocInstitution:Host+'api/institution/addDocInstitution',//新建
+  delDocInstitution:Host+'api/institution/delDocInstitution/',//删除
+  editDocInstitution:Host+'api/institution/editDocInstitution',//修改
+  getDocInstitutionModel:Host+'api/institution/getDocInstitutionModel/',//获取模型
+  getDocInstitutionPage:Host+'api/institution/getDocInstitutionPage',//分页
+  getDocRegimeItem:Host+'api/institution/getDocRegimeItem',//获取风险公示类型
 
+  //档案管理
+  addHealDocment:Host+'api/healDocment/addHealDocment',//新建档案管理
+  delHealDocment:Host+'api/healDocment/delHealDocment/',//删除档案管理
+  editHealDocment:Host+'api/healDocment/editHealDocment',//修改档案管理
+  getHealDocmentModel:Host+'api/healDocment/getHealDocmentModel/',//获取档案管理模型
+  getHealDocmentsPage:Host+'api/healDocment/getHealDocmentsPage',//分页获取
+  getHealDocmentSelector:Host+'api/healDocment/getHealDocmentSelector',//获取人员健康选择器
+
+//体间管理
+  addHealRecords:Host+'api/healRecords/addHealRecords',//新建体检记录\
+  delHealRecords:Host+'api/healRecords/delHealRecords/',//删除体间记录
+  editHealRecords:Host+'api/healRecords/editHealRecords',//修改体检记录
+  getHealRecordsModel:Host+'api/healRecords/getHealRecordsModel/',//获取模型
+  getHealRecordsPage:Host+'api/healRecords/getHealRecordsPage',//分页获取体检记录
 }

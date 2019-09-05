@@ -2,52 +2,12 @@
   <div class="wrapper">
     <Header title="档案管理" text="资质管理"></Header>
     <div class="table">
-      <el-tabs :tab-position="left" style="overflow: hidden;">
-        <el-tab-pane label="用户管理1">
-          <Table :lable2="123" @newcontent="newcontent"></Table>
+      <el-tabs :tab-position="left" style="overflow: hidden;" @tab-click="tabClik">
+        <el-tab-pane v-for="item,index in DocLicenseItem" :label="item.Name" :name="item.ID" :key="item.ID">
+          <Table :ID="item.ID" ref="tabs"></Table>
         </el-tab-pane>
       </el-tabs>
     </div>
-    <el-dialog title="新建质资" :visible.sync="newlist" width="600px" style="height: 100%;overflow: auto">
-    <div style="height: 350px;overflow-x: hidden;overflow-y: auto;background-color: white;padding: 10px">
-      <el-form labelWidth="120px">
-        <el-form-item label="质资">
-          <el-input style="width: 200px"></el-input>
-        </el-form-item>
-        <el-form-item label="持有人:">
-          <el-input style="width: 200px"></el-input>
-        </el-form-item>
-        <el-form-item label="有效期">
-          <el-date-picker style="width: 200px:"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="审核日期">
-          <el-date-picker style="width: 200px:"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="颁发机构">
-          <el-input style="width: 200px:"></el-input>
-        </el-form-item>
-        <el-form-item label="点击上传">
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            multiple
-            :limit="3"
-            :on-exceed="handleExceed"
-            :file-list="fileList">
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-          </el-upload>
-        </el-form-item>
-      </el-form>
-    </div>
-    <span slot="footer" class="dialog-footer">
-    <el-button @click="newlist = false">取 消</el-button>
-    <el-button type="primary" @click="newlist = false">确 定</el-button>
-  </span>
-  </el-dialog>
   </div>
 </template>
 
@@ -59,35 +19,11 @@
       Table,
       Header
     },
-    methods: {
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
-      deletcontent(){
-        this.deletlist = true
-      },
-      newcontent () {
-         this.newlist =true
-      },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
-      beforeRemove(file, fileList) {
-        return this.$confirm(`确定移除 ${ file.name }？`);
-      }
-    },
     data () {
       return {
-        fileList: '',
+        DocLicenseItem:[],
+        fileList:[],
+        upFileList:[],
         newlist: false,
         deletlist:false,
         changedetail:false,
@@ -246,10 +182,51 @@
         index: 1  //当前页面编号
       }
     },
-    components: {
-      Header,
-      Table
-    }
+    methods: {
+      getDocLicenseItem(){
+        this.$get(this.api.getDocLicenseItem).then(res=>{
+          console.log('获取类型返回值:',res)
+          if(res.data.State===200){
+            this.DocLicenseItem=res.data.Data
+          }else {
+            this.$message({
+              type:'error',
+              message:res.data.Msg
+            })
+          }
+        })
+      },//获取资质类型合集
+      tabClik(a){
+          this.$refs.tabs[a.index].getDocCertificatePage()
+      },//tab被选择
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
+      deletcontent(){
+        this.deletlist = true
+      },
+      newcontent () {
+         this.newlist =true
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeRemove(file, fileList) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
+      }
+    },
+    created(){
+      this.getDocLicenseItem()
+    },
   }
 </script>
 
@@ -265,9 +242,9 @@
     height: calc(100% - 55px)
   }
   .el-tabs{
-    height:calc(100% - 50px) 
+    height:calc(100% - 50px)
   }
-  div>>>.el-tabs__header{
+  .el-tabs__header{
     background: #fff
   }
 </style>

@@ -10,7 +10,7 @@
               <el-input style="width: 120px" v-model="key"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary">查询</el-button>
+              <el-button type="primary" @click="getDocMeetingsQuery">查询</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -18,20 +18,28 @@
       <div class="table-main">
         <div class="detail">
           <el-table :data="Items" class="datalist" border  height="calc(100vh - 355px)">
-            <el-table-column prop="Person" label="会议主体">
+            <el-table-column prop="Motif" label="会议主题">
             </el-table-column>
-            <el-table-column prop="PrincipalEmployeeName" label="会议时间">
+            <el-table-column prop="MeetingDate" label="会议时间">
             </el-table-column>
-            <el-table-column prop="PrincipalEmployeeName" label="地点">
+            <el-table-column prop="Site" label="地点">
             </el-table-column>
-            <el-table-column prop="PrincipalEmployeeName" label="参会人员">
+            <el-table-column prop="Employee" label="参会人员">
             </el-table-column>
-            <el-table-column prop="StateName" label="主持">
+            <el-table-column prop="MeetingMaster" label="主持">
+            </el-table-column>
+            <el-table-column label="操作">
+              <div slot-scope="scope">
+                <el-link :underline="false" type="primary">详情</el-link>
+                <el-link :underline="false" type="primary" @click="changeW(scope.row.ID)">修改</el-link>
+                <el-link :underline="false" type="primary" @click="delDocMeeting(scope.row.ID)">删除</el-link>
+              </div>
             </el-table-column>
           </el-table>
         </div>
       </div>
     </div>
+
     <div class="table-foot">
       <el-pagination
         @size-change="handleSizeChange"
@@ -43,7 +51,7 @@
         :total.sync="page.total">
       </el-pagination>
     </div>
-
+ <!--弹框-->
     <div >
       <el-dialog title="新建安全会议" :visible.sync="dialogFormVisible" width="680px">
         <div class="content">
@@ -58,10 +66,7 @@
               <el-input v-model="form.Site" autocomplete="off"  style="width:180px"></el-input>
             </el-form-item>
             <el-form-item label="参会人员">
-              <el-select v-model="form.Employee" placeholder="选择参会人员"  style="width:180px">
-                <el-option  v-for="item in personSelect" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
+              <el-input v-model="form.Employee" placeholder="请输入参会人员" style="width: 180px"></el-input>
             </el-form-item>
             <el-form-item label="会议日期：" >
               <el-col :span="11">
@@ -73,6 +78,7 @@
             <el-form-item label="内容:">
               <div style="vertical-align: top;line-height: 40px;width: 400px;">
                 <editor v-model="form.Content"></editor>
+                <el-input v-model="form.Content" style="width:180px" placeholder="请输入类容"></el-input>
               </div>
             </el-form-item>
             <el-upload
@@ -109,6 +115,70 @@
           <el-button type="primary" @click="addDocMeeting">确定</el-button>
         </div>
       </el-dialog>
+
+      <el-dialog title="修改安全会议" :visible.sync="dg2" width="680px">
+        <div class="content">
+          <el-form :inline="true"   label-width="100px">
+            <el-form-item label="会议主题：" >
+              <el-input v-model="changeDetail.Motif" autocomplete="off"  style="width:180px"></el-input>
+            </el-form-item>
+            <el-form-item label="主持人：" >
+              <el-input v-model="changeDetail.MeetingMaster" autocomplete="off"  style="width:180px"></el-input>
+            </el-form-item>
+            <el-form-item label="会议地点：" >
+              <el-input v-model="changeDetail.Site" autocomplete="off"  style="width:180px"></el-input>
+            </el-form-item>
+            <el-form-item label="参会人员">
+             <el-input style="width: 180px" v-model="changeDetail.Employee"></el-input>
+            </el-form-item>
+            <el-form-item label="会议日期：" >
+              <el-col :span="11">
+                <el-form-item prop="date1">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="changeDetail.MeetingDate" @change="dateChange" style="width: 180px;"></el-date-picker>
+                </el-form-item>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="内容:">
+              <div style="vertical-align: top;line-height: 40px;width: 400px;">
+                <editor v-model="form.Content"></editor>
+              </div>
+            </el-form-item>
+            <el-upload
+              class="upload-demo"
+              action="http://quickcq.com:8008/api/attachFile/uploadFile"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :on-success="fileSuccess"
+              multiple
+              :limit="3"
+              :headers="header"
+              :file-list="fileList"
+              :on-exceed="handleExceed"
+            >
+              <el-button size="small" type="primary">点击上传</el-button>
+            </el-upload>
+          </el-form>
+
+          <el-form labelWidth="75px" :inline="true">
+            <el-form-item v-for="(item, index) in userDefine" :label="item.Caption" :key="index">
+              <el-input v-if="item.DataType ==='字符'" v-model="item.ItemValue" style="width: 220px"></el-input>
+
+              <el-select v-model="item.ItemValue" v-if="item.DataType === '词典'" :multiple="true" :collapse-tags="true">
+                <el-option v-for="(a, b) in item.DictSelection" :key="b" :value="a.ID" :label="a.DictName"></el-option>
+              </el-select>
+
+              <el-checkbox v-model="item.ItemValue" v-if="item.DataType === '是非'"></el-checkbox>
+              <el-input v-if="item.DataType ==='整数'" v-model="item.ItemValue" style="width: 220px"></el-input>
+              <el-input v-if="item.DataType ==='数字'" v-model="item.ItemValue" style="width: 220px"></el-input>
+              <el-date-picker v-if="item.DatTYpe==='日期'" v-model="item.ItemValue"></el-date-picker>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dg2 = false" >取消</el-button>
+          <el-button type="primary" @click="editDocMeeting">确定</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -123,6 +193,7 @@
     },
     data () {
       return {
+        totalPerson:'',
         fileList:[],
         upFileList:[],
         page:{
@@ -146,8 +217,13 @@
         },
         userDefine:[],
         key:'',
-
+        dg2:false,
         dialogFormVisible: false,
+        ID:'',
+        changeDetail:{},
+
+
+
         ruleForm:{
           date1: "",
           date2: "",
@@ -156,10 +232,6 @@
           user: '',
           region: '',
         },
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4,
         Items: [
           {
             'Code': 123,
@@ -311,10 +383,32 @@
       }
     },
     methods: {
+      formDate(data){
+        if(data) {
+          let year = data.getFullYear()
+          let mouth = (data.getMonth() + 1) > 10 ? (data.getMonth() + 1) : '0' + (data.getMonth() + 1)
+          let day = data.getDate() > 10 ? data.getDate() : '0' + data.getDate()
+          let hour = data.getHours() > 10 ? data.getHours() : '0' + data.getHours()
+          let seconds = data.getSeconds()
+          let minute = data.getMinutes()
+          let d = year + '-' + mouth + '-' + day + ' ' + hour + ':' + minute + ':' + seconds
+          return d
+        } else {
+          return false
+        }
+      },  //格式hua日期
+      dateChange(value){
+        console.log('日期改变',value)
+        console.log('模型',this.changeDetail.MeetingDate)
+        console.log('格式化：',this.formDate(value))
+        this.changeDetail.MeetingDate= this.formDate(value)
+      },//日期改变
       dg1(){
+        this.upFileList=[]
+        this.fileList=[]
         this.dialogFormVisible = true
         this.getUserDefines()
-      },
+      }, //新建窗口
       addDocMeeting(){
         let userData=[]
         this.userDefine.forEach(item=>{
@@ -335,16 +429,10 @@
             })
           }
         })
-        let user= []
-          this.userDefine.forEach((item)=>{
-          user.push({
-
-          })
-          })
         let param = {
           "Motif": this.form.Motif,
           "Employee": this.form.Employee,
-          "MeetingDate":  this.form.MeetingDate,
+          "MeetingDate":  this.formDate(this.form.MeetingDate),
           "MeetingMaster":  this.form.MeetingMaster,
           "Site": this.form.Site,
           "Content":  this.form.Content,
@@ -352,6 +440,22 @@
           "UserDefineds": userData
         }
         console.log('新建安全会议参数:',param)
+        this.$post(this.api.addDocMeeting,param).then(res=>{
+          console.log('新建返回参数:',res)
+          if(res.data.State===200){
+            this.dialogFormVisible=false
+            this.getDocMeetingsQuery()
+            this.$message({
+              type:'success',
+              message:'新建成功'
+            })
+          } else{
+            this.$message({
+              type:'error',
+              message:res.data.Msg
+            })
+          }
+        })
       },  //新建安全会议
       getpersonSelect(){
       }, //获取人员选择器
@@ -368,6 +472,7 @@
         this.$post(this.api.getDocMeetingsQuery,param).then(res=>{
           console.log('分页返回值:',res)
           if(res.data.State === 200){
+            this.key=''
             this.Items = res.data.Data.Data
             this.page.total = res.data.Data.Items
           } else{
@@ -405,7 +510,116 @@
           }
         })
       }, //获取用户自定义项
+      changeW(ID){
+        this.ID =ID
+        this.dg2=true
+        this.getfiles(ID)
+        this.getUserDefinedList(ID)
+        this.getDocMeetingModel(ID)
+      },  //修改窗口
+      getDocMeetingModel(ID){
+        this.$get(this.api.getDocMeetingModel+ID).then(res=>{
+          console.log('模型返回值:',res)
+          if(res.data.State===200){
+            this.changeDetail=res.data.Data
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.Msg
+            })
+          }
+        })
+      }, //获取模型
+      editDocMeeting(){
+        let user = []
+        this.userDefine.forEach(i=>{
+          user.push({
+            DefinedID:i.ID,
+            DefinedValue:i.ItemValue
+          })
+        })
+        let param={
+          "ID": this.ID,
+          "Motif":this.changeDetail.Motif,
+          "Employee": this.changeDetail.Employee,
+          "MeetingDate": this.changeDetail.MeetingDate,
+          "MeetingMaster": this.changeDetail.MeetingMaster,
+          "Site": this.changeDetail.Site,
+          "Content": this.changeDetail.Content,
+          "AttachFiles": this.upFileList,
+          "UserDefineds": user
+        }
+        console.log('修改参数；',param)
+        this.$post(this.api.editDocMeeting,param).then(res=>{
+          if(res.data.State===200){
+            this.dg2=false
+            this.getDocMeetingsQuery()
+            this.$message({
+              type:'success',
+              message:'修改成功'
+            })
+          }
+        })
+      },//修改安全会议
+      delDocMeeting(ID){
+          this.$confirm('提示','你将永久删除该条会议,是否确认?',{
+            confirmButtonText:'确认',
+            cancelButtonText:'取消',
+            type:'warning'
+          }).then(()=>{
+              this.$get(this.api.delDocMeeting+ID).then(res=>{
+                if(res.data.State===200){
+                  this.getDocMeetingsQuery()
+                  this.$message({
+                    type:'success',
+                    message:'删除成功'
+                  })
+                }else {
+                  this.$message({
+                    type:'error',
+                    message:res.data.Msg
+                  })
+                }
+              })
+          }).catch(()=>{
+            this.$message( {
+              type:'info',
+              message:'已取消'
+            })
+          })
+      },//删除安全会议
 
+      getfiles(ID) {
+        this.fileList = []
+        this.upFileList = []
+        this.$get(this.api.getfiles+ID).then(res=> {
+          console.log('file',res)
+          if(res.data.State === 200){
+            console.log('获取文件成功')
+            console.log(res)
+            res.data.Data.forEach(item => {
+              this.fileList.push({
+                name:item.FileTitle,
+                url:item.FileUrl,
+                ID:item.ID
+              })
+              this.upFileList.push({
+                "FileTitle":item.FileTitle,
+                "FileUrl":item.FileUrl,
+                "FileType":item.FileType,
+              })
+            })
+            console.log('文件列表')
+            console.log(this.upFileList)
+            console.log(this.fileList)
+          } else {
+            this.$message({
+              type:'error',
+              message:res.data.msg
+            })
+          }
+        })
+      }, //获取文件
       fileSuccess(res,file,filelist) {
         console.log('进入文件上传')
         console.log('res',res)
@@ -455,15 +669,34 @@
       handleExceed(files, fileList) {
         this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
-
       handleSizeChange(val) {   //修改分页条数
         this.page.size = val
         console.log('分页数改变')
+        this.getDocMeetingsQuery()
         console.log('分页数:',this.page.size)
       },  //分页数目改变
       handleCurrentChange(val) {   //当前展示页
         this.page.index = val
+        this.getDocMeetingsQuery()
       },  //当前页改变
+      getUserDefinedList(ID){
+        let param={
+          "DefinedType": 6,
+          "BusinessID": ID
+        }
+        this.$post(this.api.UserDefined.getUserDefinedList,param).then(res=>{
+          console.log('自定义项详情:',res)
+          if(res.data.State === 200){
+            res.data.Data.forEach(item=>{
+              if(item.DataType === '词典') {
+                item.ItemValue = JSON.parse(item.ItemValue)
+              }
+            })
+            this.userDefine =res.data.Data
+            console.log('userDefine',this.userDefine)
+          }
+        })
+      }, //获取自定义详情
     },
     created(){
       this.getDocMeetingsQuery()
