@@ -525,6 +525,7 @@
           console.log('修改返回值:', res)
           if (res.data.State === 200) {
             this.changedetail=false
+            this.getTrainingEmpsPage()
             this.$message({
               type: 'success',
               message: '修改成功'

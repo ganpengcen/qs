@@ -558,11 +558,16 @@
               type:'success',
               message:'修改成功'
             })
+          }else {
+            this.$message({
+              type:'error',
+              message:res.data.Msg
+            })
           }
         })
       },//修改安全会议
       delDocMeeting(ID){
-          this.$confirm('提示','你将永久删除该条会议,是否确认?',{
+          this.$confirm('你将永久删除该条会议,是否确认?','提示',{
             confirmButtonText:'确认',
             cancelButtonText:'取消',
             type:'warning'

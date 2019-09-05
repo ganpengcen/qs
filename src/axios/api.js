@@ -105,18 +105,18 @@ export default {
   delFile: Host + 'api/attachFile/delFile/', //删除文件
 
     //设备
-  addFacilitySort:Host + 'addFacilitySort',// 新建设备类型
-  delFacilitySort:Host + 'delFacilitySort/', //删除设备类型
-  addFacility:Host+ 'addFacility',// 新建设备设施
-  editFacility:Host+'editFacility',//修改设备设施
-  delFacility:Host+'delFacility/',//删除设备设施
-  getFacilityModel:Host + 'getFacilityModel/', //获取设备设施模型
-  getFacilitiesPage:Host+'getFacilitiesPage',//根据类别ID分页分页获取列表
-  getFacilitySelector:Host+'getFacilitySelector',//获取所有设备设施
-  getSortTree:Host+'getSortTree/', //获取设备类别树
-  getFacilitiesSorts:Host+ 'getFacilitiesSorts/',//获取设备设类被树节点
-  etSortParents:Host+'etSortParents/',//获取设备类别父级
-  getSortChildrenIds:Host+'getSortChildrenIds/',//获取设备类别子集ID集合
+  addFacilitySort:Host + 'api/facilities/addFacilitySort',// 新建设备类型
+  delFacilitySort:Host + 'api/facilities/delFacilitySort/', //删除设备类型
+  addFacility:Host+ 'api/facilities/addFacility',// 新建设备设施
+  editFacility:Host+'api/facilities/editFacility',//修改设备设施
+  delFacility:Host+'api/facilities/delFacility/',//删除设备设施
+  getFacilityModel:Host + 'api/facilities/getFacilityModel/', //获取设备设施模型
+  getFacilitiesPage:Host+'api/facilities/getFacilitiesPage',//根据类别ID分页分页获取列表
+  getFacilitySelector:Host+'api/facilities/getFacilitySelector',//获取所有设备设施
+  getSortTree:Host+'api/facilities/getSortTree/', //获取设备类别树
+  getFacilitiesSorts:Host+ 'api/facilities/getFacilitiesSorts/',//获取设备设类被树节点
+  etSortParents:Host+'api/facilities/etSortParents/',//获取设备类别父级
+  getSortChildrenIds:Host+'api/facilities/getSortChildrenIds/',//获取设备类别子集ID集合
 //执行标准
   addSafetyStandard:Host+'api/safetyStandard/addSafetyStandard',//新建安全标准
   delSafetyStandard:Host+ 'api/safetyStandard/delSafetyStandard/',//删除安全标准
@@ -126,23 +126,22 @@ export default {
   getSafetyStandardSelector:Host+'api/safetyStandard/getSafetyStandardSelector/',// 获取安全标准选择器
 
   //风控项
-  addDanger:Host+'addDanger',//新建风控项
-  addDangerSort:Host+'addDangerSort',//新建风控项类别
-  delDanger:Host+'delDanger/',//删除风控项
-  delDangerSort:Host+'delDangerSort/',//删除风控项类别
-  editDanger:Host+'editDanger',//修改风控项
-  getDangerModel:Host+'getDangerModel/',//获取风控项模型
-  getDangerListL:Host+'getDangerList/',//根据风控项类别ID获取风控项列表
-  getChildrenIdItems:Host+'getChildrenIdItems/',//获取子集ID集合
-  getDangerSorts:Host+'getDangerSorts/',//获取风控项类别树节点,
-  getDangerSortTree:Host+'getDangerSortTree/',//获取风控项类别树
-  getParentsItems:Host+'getParentsItems/',//获取风控项父级集合,
-  getDangerLevelSelector:Host+'getDangerLevelSelector',// 获取风险等级选择器
-  getDangerSelector:Host+'getDangerSelector/',//根据风控项类别获取风控项选择器
-  getSafetyStandardSelector:Host+'api/safetyStandard/getSafetyStandardSelector/',//根据风控项类别获取标准选择器
-  getSafetyStandardItems:Host+'getSafetyStandardItems/',//根据风控项ID获取安全标准
-  addDangerSafetyStandard:Host+'addDangerSafetyStandard',//风控项新添加安全标准
-  delDangerSafetyStandard:Host+'delDangerSafetyStandard/',//删除安全标准
+  addDanger:Host+'api/danger/addDanger',//新建风控项
+  addDangerSort:Host+'api/danger/addDangerSort',//新建风控项类别
+  delDanger:Host+'api/danger/delDanger/',//删除风控项
+  delDangerSort:Host+'api/danger/delDangerSort/',//删除风控项类别
+  editDanger:Host+'api/danger/editDanger',//修改风控项
+  getDangerModel:Host+'api/danger/getDangerModel/',//获取风控项模型
+  getDangerListL:Host+'api/danger/getDangerList/',//根据风控项类别ID获取风控项列表
+  getChildrenIdItems:Host+'api/danger/getChildrenIdItems/',//获取子集ID集合
+  getDangerSorts:Host+'api/danger/getDangerSorts/',//获取风控项类别树节点,
+  getDangerSortTree:Host+'api/danger/getDangerSortTree/',//获取风控项类别树
+  getParentsItems:Host+'api/danger/getParentsItems/',//获取风控项父级集合,
+  getDangerLevelSelector:Host+'api/danger/getDangerLevelSelector',// 获取风险等级选择器
+  getDangerSelector:Host+'api/danger/getDangerSelector/',//根据风控项类别获取风控项选择器
+  getSafetyStandardItems:Host+'api/danger/getSafetyStandardItems/',//根据风控项ID获取安全标准
+  addDangerSafetyStandard:Host+'api/danger/addDangerSafetyStandard',//风控项新添加安全标准
+  delDangerSafetyStandard:Host+'api/danger/delDangerSafetyStandard/',//删除安全标准
 
   //风险点管理
   addDangerPoint:Host+'api/dangerPoint/addDangerPoint',//新建风险点
@@ -161,11 +160,11 @@ export default {
   getDangerRelationsPage:Host+'api/dangerSet/getDangerRelationsPage',//根据主题ID分页获取风控项配置列表
 
   //安全会议
-  addDocMeeting:Host+'meeting/addDocMeeting',//新建安全会议
-  getDocMeetingsQuery:Host+'meeting/getDocMeetingsQuery',//分页获取安全会议
-  delDocMeeting:Host+'meeting/delDocMeeting/',//删除安全会议
-  editDocMeeting:Host+'meeting/editDocMeeting',//修改安全会议
-  getDocMeetingModel:Host+'meeting/getDocMeetingModel/',//获取安全会议模型
+  addDocMeeting:Host+'api/meeting/addDocMeeting',//新建安全会议
+  getDocMeetingsQuery:Host+'api/meeting/getDocMeetingsQuery',//分页获取安全会议
+  delDocMeeting:Host+'api/meeting/delDocMeeting/',//删除安全会议
+  editDocMeeting:Host+'api/meeting/editDocMeeting',//修改安全会议
+  getDocMeetingModel:Host+'api/meeting/getDocMeetingModel/',//获取安全会议模型
 
 //资质管理
   getDocLicenseItem:Host+'api/certificate/getDocLicenseItem',//获取资质类型集合

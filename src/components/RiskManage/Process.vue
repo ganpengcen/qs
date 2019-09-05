@@ -67,7 +67,7 @@
           </el-form-item>
           <el-form-item label="作业岗位">
             <el-select v-model="tetxFlow.PostID">
-              <el-option :label="item.PostID" :value="item.PostID" v-for="item,index in post" :key="index"></el-option>
+              <el-option :label="item.PostName" :value="item.PostID" v-for="item,index in post" :key="index"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="流程回退">
@@ -436,6 +436,22 @@ export default {
         "UserDefineds": user
       }
       console.log('修改参数:',param)
+      this.$post(this.api.TextFlow.editOpreation,param).then(res=>{
+        console.log('修改返回值:',res)
+        if(res.data.State===200){
+          this.getTextFlow()
+          this.dg2=false
+          this.$message({
+            type:'success',
+            message:'修改成功'
+          })
+        }else {
+          this.$message({
+            type:'error',
+            message:res.data.Msg
+          })
+        }
+      })
     }, //提交修改
     OpreationFlow(detail) {
       this.FlowDetail = detail

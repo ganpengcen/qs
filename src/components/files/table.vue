@@ -25,7 +25,7 @@
               <div slot-scope="scope">
                 <el-link :underline="false" type="primary" style="font-size: 12px" @click="listdetail=true">详情</el-link>
                 <el-link :underline="false" type="primary" style="font-size: 12px" @click="changeW(scope.row.ID)">修改</el-link>
-                <el-link :underline="false" type="primary" @click="deletcontent(scope.row.ID)" style="font-size: 12px">删除</el-link>
+                <el-link :underline="false" type="primary" @click="deletContent(scope.row.ID)" style="font-size: 12px">删除</el-link>
               </div>
             </el-table-column>
           </el-table>
@@ -308,13 +308,15 @@ export default {
         }
       })
     },//修改
-    deletcontent (ID) {
+    deletContent (ID) {
+      console.log("ID",ID)
       this.$confirm('确认删除这条记录吗？','提示',{
         confirmButtonText: '确认',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(()=> {
         this.$get(this.api.delDocInstitution+ID).then(res=>{
+          console.log('删除返回值：',res)
           if(res.data.State===200){
             this.getDocInstitutionPage()
             this.$message({

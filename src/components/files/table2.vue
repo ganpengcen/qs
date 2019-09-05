@@ -28,7 +28,7 @@
               <div slot-scope="scope">
                 <el-link :underline="false" type="primary">详情</el-link>
                 <el-link :underline="false" type="primary" @click="changeW(scope.row.ID)">修改</el-link>
-                <el-link :underline="false" type="primary" @click="deletcontent">删除</el-link>
+                <el-link :underline="false" type="primary" @click="deletcontent(scope.row.ID)">删除</el-link>
               </div>
             </el-table-column>
           </el-table>
@@ -385,16 +385,27 @@
       handleExceed(files, fileList) {
         this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
-
-      deletcontent () {
+      deletcontent (ID) {
+        console.log('ID',ID)
         this.$confirm('确定删除这条记录吗?', '提示',{
           confirmButtonText: '确认',
           cancelButtonText: '取消',
           type:'warning'
         }).then(()=>{
-          this.$message({
-            type:'success',
-            message:'删除成功'
+          this.$get(this.api.delDocCertificate+ID).then(res=>{
+            if(res.data.State===200)
+            {
+              this.getDocCertificatePage()
+              this.$message({
+                type: 'success',
+                message: '删除成功'
+              })
+            }else {
+              this.$message({
+                type:'error',
+                message:res.data.Msg
+              })
+            }
           })
         }).catch(()=>{
           this.$message({
