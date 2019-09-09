@@ -253,17 +253,8 @@
         OrgName:'',
         changeData:[],
         ID:'',
-
-
-
         newcontent:false,
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4,
         changedetail:false,
-        stopcontent: false,
-        index: 1  //当前页面编号
       }
     },
     watch:{

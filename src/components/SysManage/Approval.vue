@@ -8,15 +8,20 @@
         </div>
         <div>
           <p style="margin-top: 15px;font-size: 15px">节点名称</p>
-          <el-input v-model="checkNodeName" size="small" @change="changeNodename" value="12"></el-input>
+          <el-input v-model="checkNodeName" size="small" @change="changeNodename"></el-input>
         </div>
         <div style="margin-top: 10px">
           <p>节点类型</p>
-          <el-radio v-model="nodeType" label="simple">单人审核</el-radio>
-          <el-radio v-model="nodeType" label="mut">多人审核</el-radio>
+          <el-radio v-model="nodeType" label="single" @change="typeChange">普通</el-radio>
+          <el-radio v-model="nodeType" label="mut" @change="typeChange">多人会审</el-radio>
           <p style="margin-top: 10px">选择审核人:</p>
           <p style="font-size: 12px;padding-left: 15px">(最多20人)</p>
-          <el-select :multiple="nodeType=='mut'" @change="selectChange()" v-model="selectValue">
+          <p>{{nodeType}}</p>
+          <p>{{nodeType!='mut'}}</p>
+          <el-select @change="selectChange()" v-model="selectValue" v-if="nodeType=='single'">
+            <el-option v-for="(item,index) in personDetail" :label="item.name" :value="item.name"  :key="item.index"></el-option>
+          </el-select>
+          <el-select :multiple="nodeType=='mut'" @change="mutSelectChange()" v-model="mutSelectValue" :collapse-tags="true" v-if="nodeType=='mut'">
             <el-option v-for="(item,index) in personDetail" :label="item.name" :value="item.name"  :key="item.index"></el-option>
           </el-select>
         </div>
@@ -24,10 +29,10 @@
       <div class="dialog-right" style="flex: 1;overflow: auto;height: calc(100vh - 255px)" v-if="branch">
         <div v-for="(item,index1) in branch" :key="index1" style="margin-bottom: 10px">
           <div class="top" @click="fold(index1)" ref="topFolder">
-            <span style="margin-right: 10px">业务类型:{{item.type}}</span>
-            <span>流程名称:{{item.name}}</span>
+            <span style="margin-right: 10px">业务类型:{{item.BusinessType}}</span>
+            <span>流程名称:{{item.Name}}</span>
             <span style="float: right;margin-right: 10px">
-                  <el-button size="small" @click="save(index1)">保存</el-button>
+                  <el-button size="small" @click.stop="save(index1)">保存</el-button>
                 </span>
           </div>
           <div class="foldDiv" :class="{fold:!(foldDetail.indexOf(index1)===(-1))}">
@@ -35,15 +40,15 @@
               <div >
                 <draggable v-model="item.Node" >
                   <transition-group tag="div" class="drop-wrapper">
-                    <div class="nodeWrapper" v-for="(data,index2) in item.Node" :key="data.name" ref="node">
+                    <div class="nodeWrapper" v-for="(data,index2) in item.Node" :key="index2" ref="node">
                       <div @click="dianji(index1,index2)" style=" border-radius: 2px;
                        float: left; width: 160px;margin-top: 20px" :class="{active:indexone === index1 && indextwo === index2}">
                         <div class="node">
                           <p style="margin-bottom: 10px;font-size: 16px;line-height: 20px;margin-top: 10px">{{data.name}}</p>
                           <div style="padding-left: 10px;font-size: 15px;margin-top: 10px">
-                            <span v-for="(name, index) in data.family" :index="index" style="margin-right: 6px;">{{name.name}}</span>
+                            <span v-for="(name, index) in data.childs" :index="index" style="margin-right: 6px;">{{name.name}}</span>
                           </div>
-                          <i class="el-icon-delete" style="position: absolute;top: 10px;right: 10px;" @click="deleteNode(index1,index2)"></i>
+                          <i class="el-icon-delete" style="position: absolute;top: 10px;right: 10px;" @click="delFlowPoint(index1,index2)"></i>
                         </div>
                       </div>
                       <div style="float: left;width: 90px;height: 62px;background-color: rgba(209, 209, 209,0.2);margin-top: 20px;padding-top: 30px">
@@ -62,28 +67,28 @@
         </div>
 
         <div class="add" style="margin: 20px 0 0 30px">
-          <el-link type="primary" :underline="false" @click="addBranch=true">+添加流程</el-link>
+          <el-link type="primary" :underline="false" @click="dg1=true">+添加流程</el-link>
         </div>
 
       </div>
     </div>
 
-    <el-dialog title="新建审批流程" :visible.sync="addBranch" style="height: 100%;width: 100%;overflow: hidden">
+    <el-dialog title="新建审批流程" :visible.sync="dg1" style="height: 100%;width: 100%;overflow: hidden">
       <div style="height: 200px;overflow-x: hidden;overflow-y: auto;background-color: white;padding-top: 20px">
-        <el-form labelWidth="180px" v-model="form">
+        <el-form labelWidth="180px" v-model="newFlowMaster">
           <el-form-item label="业务类型">
-            <el-select v-model="form.type">
-              <el-option v-for="(item, index) in typeDetail" :label="item.name" :value="item.name" :key="index"></el-option>
+            <el-select v-model="newFlowMaster.BusinessType">
+              <el-option v-for="(item, index) in typeSelect" :label="item.Caption" :value="item.Value" :key="item.Value"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="流程名称">
-            <el-input style="width: 200px" v-model="form.name"></el-input>
+            <el-input style="width: 200px" v-model="newFlowMaster.Name"></el-input>
           </el-form-item>
         </el-form>
       </div>
       <span slot="footer">
-        <el-button @click="addBranch = false">取消</el-button>
-        <el-button @click="dialogadd" type="primary">确认</el-button>
+        <el-button @click="dg1 = false">取消</el-button>
+        <el-button @click="addFlowMaster" type="primary">确认</el-button>
       </span>
     </el-dialog>
   </div>
@@ -102,8 +107,20 @@
     },
     data() {
       return {
+        typeSelect:[],
+        newFlowMaster:{},
+        dg1:false,
+        branch:[{Node:[{}]}],
+        mutSelectValue:[],
+        selectValue:'',
+        nodeType:'single',
+        checkNodeName: '',
+        indexone:'0',
+        indextwo:'0',
+        foldIndex:'',
+
+
         foldDetail:[],
-        nodeType:'mut',
         personDetail:[
           {name: '一'},
           {name: 'er'},
@@ -112,7 +129,6 @@
           {name: 'wu'},
           {name: '6'}
         ],
-        addBranch:false,
         form: {
           name:'',
           type:''
@@ -121,73 +137,112 @@
           {name:'作业申请'},
           {name:'巡察任务'}
         ],
-        branch:[
-          {
-            type:'业务类型',
-            name:'流程名称',
-            Node:[
-              {
-                name:'节点一',
-                deleteShow:false,
-                family:[{
-                  name:'er'
-                },
-                  {
-                    name:'san'
-                  }
-                ]
-              },
-              {
-                name:'节点二',
-                family:[
-                  {
-                    name:'er'
-                  },
-                  {
-                    name:'san'
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            type:'业务类型',
-            name:'流程名称',
-            Node:[
-              {
-                name:'节点一',
-                family:[{
-                  name:'er'
-                },
-                  {
-                    name:'san'
-                  }
-                ]
-              },
-              {
-                name:'节点二',
-                family:[{
-                  name:'er'
-                },
-                  {
-                    name:'er'
-                  }
-                ]
-              }
-            ]
-          }
-        ],
         type:'fromdata',
-        checkNodeName: '',
-        selectValue:'',
-        indexone:'0',
-        indextwo:'0',
-        foldIndex:''
       }
     },
     methods: {
-      deleteNode(index1,index2) {
-        this.branch[index1].Node.splice(index2,1)
+      setText(){
+        let arr2=[]
+        console.log('arr2',arr2[0])
+        let obj={}
+        let arr=[{}]
+        console.log('obj',obj)
+        console.log('arr',arr[0])
+        this.$set(obj,'a',1)
+        this.$set(arr[0],'a','1')
+        console.log('obj',obj.a)
+        console.log('arr',arr[0].a)
+      },
+
+      getBusinessType(){
+        this.$get(this.api.getBusinessType).then(res=>{
+          console.log('业务类型返回值:',res)
+          if(res.data.State===200){
+            this.typeSelect=res.data.Data
+          }else{
+            this.$message({
+              type:'error',
+              message:res.data.Msg
+            })
+          }
+        })
+      },//获取业务类型
+      addFlowMaster(){
+         let param = {
+           "Name": this.newFlowMaster.Name,
+           "BusinessType": this.newFlowMaster.BusinessType
+         }
+         console.log('新建流程参数:',param)
+         this.$post(this.api.addFlowMaster,param).then(res=>{
+           if(res.data.State===200){
+             this.getFlowMastersPage()
+             this.dg1=false
+             this.$message({
+               type:'success',
+               message:'新建成功'
+             })
+           }else {
+             this.$message({
+               type:'error',
+               message:res.data.Msg
+             })
+           }
+         })
+      },//新建审批流程
+      getFlowMastersPage(){
+        let parma={
+          "PageSize": 100,
+          "PageIndex": 0,
+          "KeyWord": "",
+          "Query": '',
+          "OrderString": "",
+          "ToExcel": false
+        }
+        this.$post(this.api.getFlowMastersPage).then(res=>{
+          console.log('流程列表返回值:',res)
+          if(res.data.State===200){
+            res.data.Data.Data.forEach(i=>{
+              this.$set(i,'Node',[])
+            })
+            this.branch=res.data.Data.Data
+          }else {
+            this.$message({
+              type:'error',
+              message:res.data.Msg
+            })
+          }
+        })
+      },//获取流程列表
+
+      typeChange(){
+        this.branch[this.indexone].Node[this.indextwo].type=this.nodeType
+      },  //设置类型
+      delFlowPoint(index1,index2) {
+        this.$confirm('你将永久删除该节点是否确认?','提示',{
+          confirmButtonText:'确认',
+          cancelButtontText:'取消',
+          type:'warning'
+        }).then(()=>{
+          this.$get(this.api.delFlowPoint,+ID).then(res=>{
+            if(res.data.State===200){
+              this.$message({
+                type:'success',
+                message:'删除修改'
+              })
+            }else {
+              this.$message({
+                type:'error',
+                message:res.data.Msg
+              })
+            }
+          })
+        }).catch(()=>{
+          this.$message({
+            type:'info',
+            message:'取消'
+          })
+        })
+      //  this.branch[index1].Node.splice(index2,1)
       },
       fold (index1) {
         if(this.foldDetail.indexOf(index1)!==(-1)){
@@ -199,62 +254,64 @@
         }
         console.log(this.foldDetail)
       },
-      save (index) {
+      save (index)  {
         alert('第'+ (index+1)+'排数据保存成功')
+        console.log('branch',this.branch[index])
+      },
+      mutSelectChange(){
+        console.log(this.indexone)
+        console.log('mutselectValue',this.mutSelectValue)
+        let len = this.mutSelectValue.length
+        var temp = []
+        if(len>0) {
+          for (var i = 0; i < len; i++) {
+            temp.push({
+              name: this.mutSelectValue[i]
+            })
+          }
+        }
+          this.branch[this.indexone].Node[this.indextwo].childs = temp
       },
       selectChange(){
-        console.log(this.indexone)
-        let len = this.selectValue.length
-        var temp = []
-        for (var i = 0; i < len; i++) {
-          temp.push({
-            name: this.selectValue[i]
-          })
-        }
-        this.branch[this.indexone].Node[this.indextwo].family = temp
+        console.log('selectChange',this.selectValue)
+       this.branch[this.indexone].Node[this.indextwo].childs.push({
+         name:this.selectValue
+       })
       },
       dianji (index1,index2) {
         console.log('dianjile')
-        let temp = []
-        let len = this.branch[index1].Node[index2].family.length
-        this.branch[index1].Node[index2].family.forEach((item)=>{
-          temp.push(item.name)
-        })
-        this.selectValue = temp
+        console.log('branch',this.branch)
+        let temp = ''
+        let len = this.branch[index1].Node[index2].childs.length
+        this.selectValue=this.branch[index1].Node[index2].childs.name
         this.indexone = index1
         this.indextwo = index2
-      },
-      dialogadd () {
-        this.branch.push(  {
-          fold:false,
-          type:this.form.type,
-          name:this.form.name,
-          Node:[{
-            name:'',
-            family:[{
-              name:''
-            },
-              {
-                name:''
-              }
-            ]
-          }
-          ]},)
-        this.addBranch=false
+        this.checkNodeName=this.branch[index1].Node[index2].name
       },
       addNodeDetail (index1) {
         this.branch[index1].Node.push( {
           name:'',
-          family:[{
+          type:'',
+          childs:[{
             name:''
           }
           ]
         })
+        console.log('添加节点:',this.branch)
       },
       changeNodename () {
-        this.branch[this.indexone].Node[this.indextwo].name = this.checkNodeName
-        console.log(this.checkNodeName)
+//        console.log(this.branch)
+//        console.log(this.indexone)
+//        console.log(this.indextwo)
+//        console.log(this.checkNodeName)
+//        console.log(this.branch[this.indexone])
+//        console.log(this.branch[this.indexone].Node[this.indextwo])
+        this.branch[this.indexone].Node[this.indextwo].name=this.checkNodeName
       }
+    },
+    created(){
+      this.getBusinessType()
+      this.getFlowMastersPage()
     }
   };
 </script>

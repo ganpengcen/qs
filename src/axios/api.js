@@ -124,6 +124,7 @@ export default {
   getSafetyStandardModel:Host+'api/safetyStandard/getSafetyStandardModel/',//获取安全标准模型
   getSafetyStandardsPage:Host+'api/safetyStandard/getSafetyStandardsPage',//分页获取安全标准列表
   getSafetyStandardSelector:Host+'api/safetyStandard/getSafetyStandardSelector/',// 获取安全标准选择器
+  getFacilitiesBySortId:Host+'api/facilities/getFacilitiesBySortId/',//根据类别Id获取设备设施选择器
 
   //风控项
   addDanger:Host+'api/danger/addDanger',//新建风控项
@@ -205,4 +206,31 @@ export default {
   editHealRecords:Host+'api/healRecords/editHealRecords',//修改体检记录
   getHealRecordsModel:Host+'api/healRecords/getHealRecordsModel/',//获取模型
   getHealRecordsPage:Host+'api/healRecords/getHealRecordsPage',//分页获取体检记录
+
+  //视频监控
+  addvideo:Host+'api/video/addvideo',//新建摄像头
+  delVideo:Host+'api/video/delVideo/',//删除摄像头
+  getVideoModel:Host+'api/video/getVideoModel/',//获取摄像头模型
+  editVideo:Host+'api/video/editVideo',//修改摄像头信息
+  getVideosPage:Host+'api/video/getVideosPage',//分页获取摄像头列表
+
+
+  //枚举项
+  getSubjectType:Host+'api/enum/getSubjectType',//获取主体类型
+  getBusinessType:Host+'api/enum/getBusinessType',//获取业务单类型
+  //审批流程
+
+  addFlowMaster:Host+'api/flow/addFlowMaster',//新建审批流程
+  delFlowMaster:Host+'api/flow/delFlowMaster/',//删除审批流程
+  editFlowMaster:Host+'api/flow/editFlowMaster',//修改审批流程
+  addFlowPoint:Host+'api/flow/addFlowPoint',//新建审批节点
+  delFlowPoint:Host+'api/flow/delFlowPoint/',//删除审批节点
+  editFlowPoint:Host+'api/flow/editFlowPoint',//修改审批节点
+  getFlowMasterModel:Host+'api/flow/getFlowMasterModel/',//获取流程模型
+  getFlowMastersPage:Host+'api/flow/getFlowMastersPage',//分页获取流程列表
+  getFlowMasterSelector:Host+'api/flow/getFlowMasterSelector/',//根据业务类型ID获取审批流程选择器
+  getPointsByBusinessType:Host+'api/flow/getPointsByBusinessType',//根据业务类型和MasterID分页获取审批节点列表
+  getPendingTasksPage:Host+'api/flow/getPendingTasksPage',//分页获取审批单据列表
+  getMyApprovalPage:Host+'api/flow/getMyApprovalPage',//分页获取哦的审批单据列表
+  getMyFlow:Host+'api/Flow',//分页获取我的申请单据列表
 }
