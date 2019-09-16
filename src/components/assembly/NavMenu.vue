@@ -33,9 +33,9 @@
           <i class="el-icon-view"></i>
           <span>审批管理</span>
         </template>
-        <el-menu-item index>待审批</el-menu-item>
-        <el-menu-item index>我的申请</el-menu-item>
-        <el-menu-item index>我的审批</el-menu-item>
+        <el-menu-item index="/wait">待审批</el-menu-item>
+        <el-menu-item index="/application">我的申请</el-menu-item>
+        <el-menu-item index="/mine">我的审批</el-menu-item>
       </el-submenu>
       <el-submenu index="4">
         <template slot="title">

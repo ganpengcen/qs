@@ -40,7 +40,7 @@
               <div >
                 <draggable v-model="item.Node" >
                   <transition-group tag="div" class="drop-wrapper">
-                    <div class="nodeWrapper" v-for="(data,index2) in item.Node" :key="index2" ref="node">
+                    <div class="nodeWrapper" v-for="data,index2 in item.Node" :key="index2+0" ref="node">
                       <div @click="dianji(index1,index2)" style=" border-radius: 2px;
                        float: left; width: 160px;margin-top: 20px" :class="{active:indexone === index1 && indextwo === index2}">
                         <div class="node">

@@ -35,7 +35,9 @@ const health=resolve=>void(require(['../components/health/health.vue'],resolve))
 const manage=resolve=>void(require(['../components/health/manage.vue'],resolve));
 const hw=resolve=>void(require(['../components/SysManage/HelloWorld.vue'],resolve));
 const pointManage=resolve=>void(require(['../components/RiskManage/pointManage.vue'],resolve));
-
+const wait=resolve=>void(require(['../components/approve/wait.vue'],resolve));
+const mine=resolve=>void(require(['../components/approve/mine.vue'],resolve));
+const application=resolve=>void(require(['../components/approve/application.vue'],resolve));
 
 export default new Router({
   routes: [
@@ -55,6 +57,21 @@ export default new Router({
       },
       /************主页面的类容*************/
       children: [
+        {
+          path: '/mine',
+          name: 'mine',
+          component: mine
+        },
+        {
+          path: '/application',
+          name: 'application',
+          component: application
+        },
+        {
+          path: '/wait',
+          name: 'wait',
+          component: wait
+        },
         {
           path: '/hw',
           name: 'hw',
